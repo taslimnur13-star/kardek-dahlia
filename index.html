@@ -1,499 +1,246 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Dashboard Catatan Obat – R. Dahlia</title>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
-<style>
 :root {
-  --bg-app: #f3f4f8;
-  --bg-card: #ffffff;
-  --text-main: #1e293b;
-  --text-muted: #64748b;
-  --primary: #4f46e5;
-  --primary-hover: #4338ca;
-  --primary-light: #eef2ff;
-  --border: #e2e8f0;
-  --shadow: rgba(0, 0, 0, 0.04);
+    --bg-color: #e0e8eb; /* Warna latar belakang utama (biru keabuan muda) */
+    --white: #ffffff;
+    --text-main: #2d3748;
+    --text-light: #a0aec0;
+    --accent-green: #6bc3b6;
+    --accent-red: #f2a6a6;
+    --shadow-light: #ffffff;
+    --shadow-dark: #b8c5cc;
+    --border-radius: 20px;
 }
 
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { background: var(--bg-app); color: var(--text-main); font-family: 'Plus Jakarta Sans', system-ui, sans-serif; font-size: 13.5px; min-height: 100vh; }
-
-.app-container { display: flex; height: 100vh; overflow: hidden; }
-
-/* SIDEBAR */
-aside { width: 240px; background: #ffffff; border-right: 1px solid var(--border); display: flex; flex-direction: column; padding: 20px 16px; flex-shrink: 0; }
-.brand { display: flex; align-items: center; gap: 10px; padding-bottom: 20px; border-bottom: 1px solid var(--border); margin-bottom: 20px; }
-.brand-icon { width: 36px; height: 36px; background: var(--primary); color: #fff; border-radius: 10px; display: grid; place-items: center; font-weight: 800; }
-.brand-info b { display: block; font-size: 14px; color: var(--text-main); }
-.brand-info small { color: var(--text-muted); font-size: 11px; }
-
-nav { display: flex; flex-direction: column; gap: 4px; flex: 1; }
-nav button { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 10px; border: 0; background: none; color: var(--text-muted); font: inherit; font-weight: 600; cursor: pointer; text-align: left; width: 100%; }
-nav button:hover { background: var(--primary-light); color: var(--primary); }
-nav button.active { background: var(--primary); color: #fff; }
-
-.sync-badge { padding: 12px; background: var(--primary-light); border-radius: 12px; font-size: 11.5px; color: var(--primary); text-align: center; font-weight: 600; margin-top: auto; transition: 0.3s; }
-.sync-badge.err { background: #fef2f2; color: #dc2626; }
-
-/* MAIN CONTENT */
-main { flex: 1; display: flex; flex-direction: column; overflow: hidden; background: var(--bg-app); }
-
-.topbar { background: #fff; border-bottom: 1px solid var(--border); padding: 14px 24px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
-.topbar-title h1 { font-size: 18px; font-weight: 800; color: var(--text-main); }
-.topbar-title p { color: var(--text-muted); font-size: 12px; }
-
-.search-bar { display: flex; align-items: center; background: var(--bg-app); border: 1px solid var(--border); border-radius: 20px; padding: 6px 14px; width: 280px; }
-.search-bar input { border: 0; background: transparent; outline: 0; width: 100%; font: inherit; color: var(--text-main); }
-
-.top-actions { display: flex; gap: 10px; }
-.btn { border: 0; padding: 8px 14px; border-radius: 10px; font: inherit; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 6px; transition: 0.2s; }
-.btn-primary { background: var(--primary); color: #fff; }
-.btn-primary:hover { background: var(--primary-hover); }
-.btn-secondary { background: #fff; border: 1px solid var(--border); color: var(--text-main); }
-.btn-secondary:hover { background: var(--bg-app); }
-.btn-sm { padding: 5px 10px; font-size: 11.5px; border-radius: 8px; }
-
-/* KANBAN BOARD CONTAINER */
-.board-header { padding: 16px 24px 8px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
-.filter-group { display: flex; align-items: center; gap: 8px; background: #fff; padding: 4px; border-radius: 12px; border: 1px solid var(--border); overflow-x: auto; max-width: 100%; }
-.filter-btn { border: 0; background: none; padding: 6px 12px; border-radius: 8px; font: inherit; font-size: 12px; font-weight: 700; color: var(--text-muted); cursor: pointer; white-space: nowrap; }
-.filter-btn.active { background: var(--primary-light); color: var(--primary); }
-
-.kanban-board { flex: 1; display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; padding: 12px 24px 24px; overflow-x: auto; }
-.kanban-col { background: #eef2f6; border-radius: 16px; padding: 14px; display: flex; flex-direction: column; gap: 12px; max-height: 100%; overflow: hidden; border: 1px solid rgba(0,0,0,0.03); }
-.col-header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 4px; }
-.col-title { font-size: 13px; font-weight: 800; display: flex; align-items: center; gap: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
-.count-badge { background: #fff; padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: 800; }
-
-.col-cards { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; padding-right: 2px; }
-
-/* STIKER DAFTAR NAMA PASIEN */
-.patient-card { background: #fff; border-radius: 12px; border: 1px solid var(--border); padding: 12px; cursor: pointer; transition: all 0.15s ease; display: flex; flex-direction: column; gap: 8px; box-shadow: 0 2px 4px var(--shadow); }
-.patient-card:hover { transform: translateY(-2px); box-shadow: 0 6px 12px rgba(0,0,0,0.08); border-color: var(--primary); }
-
-.card-top { display: flex; justify-content: space-between; align-items: center; }
-.room-badge { background: var(--primary-light); color: var(--primary); font-weight: 800; font-size: 11px; padding: 2px 8px; border-radius: 6px; }
-.doc-name { color: var(--text-muted); font-size: 11px; }
-
-.patient-name { font-size: 14px; font-weight: 800; color: var(--text-main); line-height: 1.2; }
-.action-plan { font-size: 11px; color: #64748b; background: #f8fafc; padding: 4px 8px; border-radius: 6px; border-left: 3px solid var(--primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-
-.card-bottom { display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed var(--border); padding-top: 8px; margin-top: 2px; gap: 6px; flex-wrap: wrap; }
-.med-progress { font-size: 11px; font-weight: 700; color: var(--text-muted); }
-.ttv-alert-pill { background: #fef2f2; color: #dc2626; font-size: 10px; font-weight: 800; padding: 2px 6px; border-radius: 99px; }
-
-/* MODALS */
-dialog { border: 0; border-radius: 18px; background: #fff; padding: 20px; width: min(560px, 94vw); max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 40px rgba(0,0,0,0.2); margin: auto; }
-dialog::backdrop { background: rgba(15, 23, 42, 0.5); }
-dialog h3 { font-size: 16px; font-weight: 800; color: var(--text-main); margin-bottom: 14px; border-bottom: 1px solid var(--border); padding-bottom: 8px; }
-
-label { display: block; font-size: 11.5px; font-weight: 700; color: var(--text-muted); margin: 10px 0 4px; }
-input:not([type=checkbox]), select, textarea { font: inherit; background: #f8fafc; border: 1px solid var(--border); border-radius: 10px; padding: 8px 12px; width: 100%; outline: 0; transition: 0.2s; }
-input:focus, select:focus, textarea:focus { border-color: var(--primary); background: #fff; box-shadow: 0 0 0 3px var(--primary-light); }
-
-.g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-.g3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-
-.mr { display: grid; grid-template-columns: 1.6fr 1fr auto; gap: 8px; margin: 8px 0; padding-bottom: 8px; border-bottom: 1px dashed var(--border); }
-.mr .rt, .mr .sl { grid-column: 1 / -1; }
-.sl { display: flex; gap: 8px; flex-wrap: wrap; }
-.sl label { display: flex; align-items: center; gap: 4px; margin: 0; color: var(--text-main); font-size: 12px; cursor: pointer; }
-
-.dose-item { display: flex; align-items: center; justify-content: space-between; padding: 10px; border-radius: 10px; background: #f8fafc; border: 1px solid var(--border); margin-bottom: 6px; gap: 8px; }
-.dose-item.done { background: #f0fdf4; border-color: #bbf7d0; }
-.dose-item.late { background: #fef2f2; border-color: #fecaca; }
-
-.toast { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); background: #1e293b; color: #fff; padding: 10px 20px; border-radius: 99px; font-weight: 700; font-size: 12px; z-index: 9999; box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
-
-.ttv-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 12px; }
-.ttv-table th, .ttv-table td { padding: 8px 10px; text-align: left; border-bottom: 1px solid var(--border); }
-.ttv-table th { background: #f8fafc; color: var(--text-muted); font-weight: 700; }
-.ttv-badge-abnormal { color: #dc2626; font-weight: 800; }
-.muted { color: var(--text-muted); }
-
-@media (max-width: 1024px) {
-  .kanban-board { grid-template-columns: repeat(2, 1fr); }
-}
-@media (max-width: 640px) {
-  .app-container { flex-direction: column; height: 100dvh; }
-  aside { width: 100%; height: auto; padding: 12px; border-right: 0; border-bottom: 1px solid var(--border); flex-direction: row; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;}
-  .brand { border-bottom: 0; margin-bottom: 0; padding-bottom: 0; }
-  nav { flex-direction: row; width: 100%; overflow-x: auto; gap: 8px; }
-  nav button { width: auto; white-space: nowrap; padding: 8px 12px; font-size: 12px;}
-  .sync-badge { width: 100%; margin-top: 0; padding: 8px; }
-  .kanban-board { grid-template-columns: 1fr; padding: 12px; }
-  .search-bar { width: 100%; }
-  .top-actions { width: 100%; }
-  .top-actions .btn { flex: 1; }
-}
-</style>
-</head>
-<body>
-
-<div class="app-container">
-  <!-- SIDEBAR NAVIGATION -->
-  <aside>
-    <div class="brand">
-      <div class="brand-icon">RD</div>
-      <div class="brand-info">
-        <b>Ruang Dahlia</b>
-        <small>Dashboard Perawat</small>
-      </div>
-    </div>
-    <nav>
-      <button class="active" id="navDashboard">📌 Dashboard</button>
-      <button id="navTTV">❤️ Riwayat TTV</button>
-      <button id="btnBackup">💾 Cadangkan</button>
-    </nav>
-    <div class="sync-badge" id="syncStatus">☁️ Memuat...</div>
-  </aside>
-
-  <!-- MAIN CONTENT AREA -->
-  <main>
-    <header class="topbar">
-      <div class="topbar-title">
-        <h1 id="greeting">Selamat Tugas!</h1>
-        <p id="dateToday">Memuat tanggal...</p>
-      </div>
-      <div class="search-bar">
-        <span>🔍</span>
-        <input id="q" placeholder="Cari nama, kamar, dokter..." aria-label="Cari">
-      </div>
-      <div class="top-actions">
-        <button class="btn btn-secondary" id="btnInputTTV">❤️ Input TTV</button>
-        <button class="btn btn-primary" id="btnAddPatient">➕ Tambah Pasien</button>
-      </div>
-    </header>
-
-    <!-- BOARD FILTER BAR -->
-    <div class="board-header">
-      <div class="filter-group" id="filterTindakan">
-        <button class="filter-btn active" data-p="">Semua Pasien</button>
-        <button class="filter-btn" data-p="ada">Ada Rencana Tindakan</button>
-        <button class="filter-btn" data-p="tanpa">Tanpa Tindakan</button>
-      </div>
-      <small class="muted" style="font-weight:600;">Ketuk stiker nama pasien untuk kelola obat & TTV</small>
-    </div>
-
-    <!-- KANBAN BOARD 4 KOLOM -->
-    <div class="kanban-board">
-      <!-- KOLOM 1: MENUNGGU -->
-      <div class="kanban-col" style="background:#eff6ff;">
-        <div class="col-header" style="color:#1e40af;">
-          <span class="col-title">⏳ Menunggu Obat</span>
-          <span class="count-badge" id="cnt-todo">0</span>
-        </div>
-        <div class="col-cards" id="col-todo"></div>
-      </div>
-
-      <!-- KOLOM 2: TERLAMBAT -->
-      <div class="kanban-col" style="background:#fef2f2;">
-        <div class="col-header" style="color:#991b1b;">
-          <span class="col-title">⚠️ Terlambat</span>
-          <span class="count-badge" id="cnt-late">0</span>
-        </div>
-        <div class="col-cards" id="col-late"></div>
-      </div>
-
-      <!-- KOLOM 3: SELESAI -->
-      <div class="kanban-col" style="background:#f0fdf4;">
-        <div class="col-header" style="color:#166534;">
-          <span class="col-title">✅ Sudah Diberikan</span>
-          <span class="count-badge" id="cnt-done">0</span>
-        </div>
-        <div class="col-cards" id="col-done"></div>
-      </div>
-
-      <!-- KOLOM 4: PERHATIAN TTV -->
-      <div class="kanban-col" style="background:#fffbe6;">
-        <div class="col-header" style="color:#d48806;">
-          <span class="col-title">🚨 Perhatian TTV</span>
-          <span class="count-badge" id="cnt-ttv">0</span>
-        </div>
-        <div class="col-cards" id="col-ttv"></div>
-      </div>
-    </div>
-  </main>
-</div>
-
-<!-- MODAL TAMBAH / UBAH PASIEN -->
-<dialog id="dlg"><form id="f">
-  <h3>Data Pasien</h3>
-  <label for="nama">Nama Pasien</label><input id="nama" required placeholder="Contoh: Tn. Ahmad">
-  <div class="g2">
-    <div><label for="kamar">Kamar / Bed</label><input id="kamar" required placeholder="Contoh: Dahlia 01"></div>
-    <div><label for="dokter">Dokter DPJP</label><input id="dokter" required placeholder="Contoh: dr. Indra, Sp.PD"></div>
-  </div>
-  <label>Daftar Obat Pasien</label>
-  <div id="meds"></div>
-  <button type="button" class="btn btn-secondary btn-sm" id="addm" style="margin-top:6px;">+ Tambah Obat</button>
-  
-  <label for="rc">Rencana Tindakan / Observasi</label>
-  <textarea id="rc" rows="3" placeholder="Contoh: Observasi TTV tiap 4 jam, cek gula darah acak"></textarea>
-  
-  <div style="display:flex; justify-content:space-between; margin-top:16px;">
-    <button type="button" class="btn btn-secondary" id="del" style="color:#dc2626;" hidden>Hapus Pasien</button>
-    <div style="display:flex; gap:8px;">
-      <button type="button" class="btn btn-secondary" data-x>Batal</button>
-      <button type="submit" class="btn btn-primary">Simpan Pasien</button>
-    </div>
-  </div>
-</form></dialog>
-
-<!-- MODAL INPUT TTV -->
-<dialog id="tdlg"><form id="tf">
-  <h3>Catat TTV Pasien</h3>
-  <label for="tp">Pilih Pasien</label><select id="tp" required></select>
-  <div class="g3">
-    <div><label for="td">Tekanan Darah</label><input id="td" placeholder="120/80"></div>
-    <div><label for="nd">Nadi (x/mnt)</label><input id="nd" type="number" min="0"></div>
-    <div><label for="rr">Napas (x/mnt)</label><input id="rr" type="number" min="0"></div>
-    <div><label for="sh">Suhu (°C)</label><input id="sh" type="number" step="0.1"></div>
-    <div><label for="sp">SpO₂ (%)</label><input id="sp" type="number" min="0" max="100"></div>
-  </div>
-  <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:16px;">
-    <button type="button" class="btn btn-secondary" data-x>Batal</button>
-    <button type="submit" class="btn btn-primary">Simpan TTV</button>
-  </div>
-</form></dialog>
-
-<!-- MODAL PEMBERIAN OBAT -->
-<dialog id="mdlg">
-  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; gap:8px;">
-    <h3 id="m-patient-name" style="margin:0; border:0;">Pemberian Obat</h3>
-    <button type="button" class="btn btn-secondary btn-sm" id="btnEditPatientForm">✏️ Edit Pasien</button>
-  </div>
-  <p id="m-patient-sub" class="muted" style="font-size:12px; margin-bottom:14px;"></p>
-  
-  <div id="m-dose-list"></div>
-  
-  <div style="display:flex; justify-content:space-between; margin-top:16px; align-items:center; gap: 8px; flex-wrap: wrap;">
-    <button type="button" class="btn btn-secondary btn-sm" id="btnViewPatientTTVHistory">📜 Riwayat TTV Pasien</button>
-    <button type="button" class="btn btn-secondary" data-x>Tutup</button>
-  </div>
-</dialog>
-
-<!-- MODAL RIWAYAT TTV -->
-<dialog id="ttvDlg" style="width:min(760px, 94vw);">
-  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-    <h3 id="ttvDlgTitle" style="margin:0; border:0;">Riwayat Catatan TTV</h3>
-    <button type="button" class="btn btn-secondary btn-sm" data-x>✕ Tutup</button>
-  </div>
-  <div id="ttvContent" style="max-height:60vh; overflow-y:auto;"></div>
-</dialog>
-
-<!-- MODAL BACKUP -->
-<dialog id="bdlg">
-  <h3>Cadangkan / Pulihkan Data</h3>
-  <p class="muted" style="font-size:12px; margin-bottom:8px;">Salin teks di bawah untuk cadangan. Tempel teks cadangan lalu tekan Pulihkan untuk mengembalikan data.</p>
-  <textarea id="bt" rows="8"></textarea>
-  <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:14px;">
-    <button type="button" class="btn btn-secondary" data-x>Tutup</button>
-    <button type="button" class="btn btn-primary" id="br">Pulihkan Data</button>
-  </div>
-</dialog>
-
-<!-- DIALOG KONFIRMASI -->
-<dialog id="cdlg">
-  <p id="cm" style="margin-bottom:14px; font-weight:700;"></p>
-  <div style="display:flex; justify-content:flex-end; gap:8px;">
-    <button type="button" class="btn btn-secondary" data-x>Batal</button>
-    <button type="button" class="btn btn-primary" id="cy" style="background:#dc2626;">Lanjutkan</button>
-  </div>
-</dialog>
-
-<script>
-// ================= KONFIGURASI =================
-const GAS_URL = "https://script.google.com/macros/s/AKfycbx5mkBpvjr0cxfDq6t7H58TA-U9IjVo0Wc0eqjnr3VCh_DxFPmJHM6gwl8NHTXN3-DH/exec";
-const KEY = "catatan-obat-dahlia-v2";
-const KEY_SYNC = "catatan-obat-last-sync";
-
-// ================= UTILITAS =================
-const $ = s => document.querySelector(s);
-const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
-const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2,6);
-const p2 = n => String(n).padStart(2,"0");
-
-const nowStr = () => { 
-  const d = new Date(); 
-  return `${d.getFullYear()}-${p2(d.getMonth()+1)}-${p2(d.getDate())}T${p2(d.getHours())}:${p2(d.getMinutes())}`; 
-};
-const isToday = v => typeof v === "string" && v.length >= 10 && v.slice(0,10) === nowStr().slice(0,10);
-const toMin = t => { const a = String(t||"0:0").split(":"); return (+a[0]||0)*60 + (+a[1]||0); };
-const byRoom = (a,b) => String(a.kamar).localeCompare(String(b.kamar),"id",{numeric:true});
-
-// Siklus shift dimulai 06:00. Jam 00:00–05:59 dihitung sebagai lanjutan hari sebelumnya.
-const nowMin = () => { const d = new Date(); const m = d.getHours()*60+d.getMinutes(); return m < 360 ? m + 1440 : m; };
-const schedMin = t => { const m = toMin(t); return m < 360 ? m + 1440 : m; };
-
-function toast(t) {
-  const e = document.createElement("div"); 
-  e.className = "toast"; 
-  e.textContent = t;
-  document.body.appendChild(e); 
-  setTimeout(() => e.remove(), 2400);
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
 }
 
-let askCb = null;
-function ask(msg, cb) { 
-  $("#cm").textContent = msg; 
-  askCb = cb; 
-  $("#cdlg").showModal(); 
+body {
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
 }
 
-// ================= STATE =================
-let data = [];
-let pf = "";
-let editId = null;
-let selectedPatientId = null;
-
-// ================= STATUS & LOGIKA =================
-function abn(p) {
-  const a = {};
-  const s = (p.td || "").split("/");
-  if (s.length === 2 && (+s[0] >= 140 || +s[0] < 90 || +s[1] >= 90)) a.td = "TD " + p.td;
-  if (p.nd && (+p.nd > 100 || +p.nd < 60)) a.nd = "Nadi " + p.nd;
-  if (p.rr && (+p.rr > 24 || +p.rr < 12)) a.rr = "RR " + p.rr;
-  if (p.sh && (+p.sh >= 37.5 || +p.sh < 36)) a.sh = "Suhu " + p.sh;
-  if (p.sp && +p.sp < 95) a.sp = "SpO₂ " + p.sp;
-  return a;
+/* Efek Neumorphism / Floating */
+.floating {
+    background: var(--white);
+    border-radius: var(--border-radius);
+    box-shadow: 8px 8px 16px var(--shadow-dark), 
+               -8px -8px 16px var(--shadow-light);
 }
 
-function getPatientStatus(p) {
-  let total = 0, done = 0, late = 0;
-  const now = nowMin();
-  (p.obat || []).forEach(m => {
-    (m.jam || []).forEach(s => {
-      total++;
-      if (isToday(m.done?.[s])) done++;
-      else if (now > schedMin(s) + 60) late++;
-    });
-  });
-  return {
-    total, done, late,
-    pending: total - done - late,
-    hasAbnormalTTV: Object.keys(abn(p)).length > 0
-  };
+.app-container {
+    display: flex;
+    width: 100%;
+    max-width: 1400px;
+    background: var(--bg-color);
+    border-radius: 30px;
+    box-shadow: 20px 20px 60px var(--shadow-dark), 
+               -20px -20px 60px var(--shadow-light);
+    overflow: hidden;
+    height: 90vh;
 }
 
-// Satu pasien = satu kolom prioritas (mencegah duplikasi kartu)
-function columnOf(p) {
-  const s = getPatientStatus(p);
-  if (s.hasAbnormalTTV) return "ttv";
-  if (s.late > 0) return "late";
-  if (s.total > 0 && s.done === s.total) return "done";
-  return "todo";
+/* Sidebar Kiri */
+.sidebar-left {
+    width: 80px;
+    padding: 30px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: var(--white);
+    border-radius: 30px;
+    margin: 20px;
+    box-shadow: 8px 8px 16px var(--shadow-dark);
 }
 
-// ================= PERSISTENSI & SINKRONISASI =================
-function setSyncBadge(state, text) {
-  const el = $("#syncStatus");
-  el.classList.toggle("err", state === "err");
-  el.textContent = text;
+.logo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-weight: 700;
+    font-size: 14px;
+    margin-bottom: 40px;
+}
+.logo i { font-size: 24px; margin-bottom: 5px; }
+
+.nav-icons {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    flex: 1;
+}
+.nav-icons a {
+    color: var(--text-light);
+    font-size: 20px;
+    text-decoration: none;
+    transition: 0.3s;
+}
+.nav-icons a.active, .nav-icons a:hover { color: var(--text-main); }
+
+/* Konten Utama */
+.main-content {
+    flex: 1;
+    padding: 30px;
+    overflow-y: auto;
 }
 
-async function persist() {
-  // Tandai updatedAt agar sinkronisasi bisa merge data terbaru
-  data.forEach(p => { if (!p.updatedAt) p.updatedAt = Date.now(); });
-  
-  // Selalu simpan ke lokal dulu
-  try { localStorage.setItem(KEY, JSON.stringify(data)); } catch(e){}
-  const ts = new Date().toISOString();
-  try { localStorage.setItem(KEY_SYNC, ts); } catch(e){}
-  setSyncBadge("ok", `☁️ Tersimpan ${ts.slice(11,16)}`);
-
-  // Kirim ke Google Sheets (jika URL valid)
-  if (!GAS_URL || GAS_URL.includes("ISI_URL")) return;
-  try {
-    await fetch(GAS_URL, {
-      method: 'POST', 
-      mode: 'no-cors',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ action: 'save', data })
-    });
-    setSyncBadge("ok", `☁️ Sync ${new Date().toLocaleTimeString("id-ID",{hour:"2-digit",minute:"2-digit"})}`);
-  } catch(e) {
-    setSyncBadge("err", "⚠️ Gagal sync ke cloud");
-  }
+/* Top Bar */
+.top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 30px;
 }
 
-// Merge per-id: ambil yang updatedAt-nya paling baru
-function mergeData(local, cloud) {
-  const map = new Map();
-  [...local, ...cloud].forEach(p => {
-    if (!p || !p.id) return;
-    const prev = map.get(p.id);
-    const t = p.updatedAt || 0;
-    const pt = prev?.updatedAt || 0;
-    if (!prev || t >= pt) map.set(p.id, p);
-  });
-  return [...map.values()];
+.timer-widget {
+    padding: 15px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+.timer-widget .time { font-weight: 600; font-size: 14px; }
+.progress-bar {
+    width: 100%;
+    height: 6px;
+    background: #eee;
+    border-radius: 3px;
+    overflow: hidden;
+}
+.progress-bar .fill {
+    width: 60%;
+    height: 100%;
+    background: linear-gradient(90deg, #f2a6a6, #6bc3b6);
+}
+.controls { display: flex; gap: 10px; }
+.controls button {
+    border: none;
+    background: transparent;
+    color: var(--text-main);
+    cursor: pointer;
+    font-size: 16px;
 }
 
-async function loadFromCloud() {
-  if (!GAS_URL || GAS_URL.includes("ISI_URL")) {
-    setSyncBadge("ok", "💾 Mode Lokal");
-    return;
-  }
-  
-  try {
-    // Timeout 8 detik agar tidak menggantung (freeze) di HP
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 8000);
+.user-status {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-size: 14px;
+}
+.avatars { display: flex; }
+.avatars img {
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    border: 2px solid var(--white);
+    margin-left: -10px;
+}
+.badge {
+    background: var(--white);
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 12px;
+    box-shadow: 2px 2px 5px var(--shadow-dark);
+}
+.light-text { color: var(--text-light); font-weight: 400; }
+.profile { display: flex; align-items: center; gap: 10px; text-align: right; }
+.profile img { width: 40px; height: 40px; border-radius: 50%; }
 
-    const res = await fetch(GAS_URL + "?action=read", { cache: "no-store", signal: controller.signal });
-    clearTimeout(timeoutId);
-    
-    const cloud = await res.json();
-    if (Array.isArray(cloud)) {
-      const merged = mergeData(data, cloud);
-      data = merged;
-      try { localStorage.setItem(KEY, JSON.stringify(data)); } catch(e){}
-      render();
-      setSyncBadge("ok", `☁️ Tersinkron ${new Date().toLocaleTimeString("id-ID",{hour:"2-digit",minute:"2-digit"})}`);
-    } else {
-      setSyncBadge("ok", "💾 Mode Lokal");
-    }
-  } catch(e) {
-    // Jika cloud tidak terjangkau/timeout, biarkan data lokal berjalan
-    setSyncBadge("err", "⚠️ Cloud Offline");
-  }
+/* Grid Layout */
+.content-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 30px;
 }
 
-// ================= RENDER BOARD =================
-function render() {
-  const q = $("#q").value.toLowerCase();
-  const filtered = data.filter(p => {
-    const hay = (p.nama + " " + p.kamar + " " + p.dokter + " " + (p.rc || "")).toLowerCase();
-    return hay.includes(q) && ((pf !== "ada" || !!p.rc) && (pf !== "tanpa" || !p.rc));
-  }).sort(byRoom);
+/* Header Section */
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+.filters span {
+    margin-left: 15px;
+    font-size: 14px;
+    color: var(--text-light);
+    cursor: pointer;
+}
+.filters span.active { color: var(--text-main); font-weight: 600; }
 
-  const lists = { todo: [], late: [], done: [], ttv: [] };
-  filtered.forEach(p => lists[columnOf(p)].push(p));
+/* Chart Area */
+.chart-container {
+    padding: 20px;
+    height: 250px;
+}
+.dates {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: var(--text-light);
+    margin-bottom: 20px;
+}
+.dates .active { color: var(--text-main); font-weight: 600; }
+.chart-placeholder { width: 100%; height: 100%; }
 
-  const renderCard = p => {
-    const s = getPatientStatus(p);
-    const ab = abn(p);
-    const abKeys = Object.keys(ab);
-    return `
-      <div class="patient-card" data-pid="${p.id}">
-        <div class="card-top">
-          <span class="room-badge">${esc(p.kamar)}</span>
-          <span class="doc-name">${esc(p.dokter)}</span>
-        </div>
-        <div class="patient-name">${esc(p.nama)}</div>
-        ${p.rc ? `<div class="action-plan">📌 ${esc(p.rc)}</div>` : ""}
-        <div class="card-bottom">
-          <span class="med-progress">💊 ${s.done}/${s.total}${s.late ? ` · ⏰ ${s.late}` : ""}</span>
-          ${abKeys.length ? `<span class="ttv-alert-pill">⚠️ ${esc(abKeys.map(k => ab[k]).join(", "))}</span>` : ""}
-        </div>
-      </div>`;
-  };
+/* Ongoing Calls Grid */
+.calls-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 20px;
+    margin-top: 15px;
+}
+.call-card {
+    padding: 15px;
+}
+.card-header {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 15px;
+}
+.card-header img { width: 40px; height: 40px; border-radius: 50%; }
+.card-header h4 { font-size: 14px; }
+.badge.green { background: #e6f7f4; color: var(--accent-green); padding: 2px 8px; border-radius: 10px; font-size: 10px; box-shadow: none; }
+.card-body p { font-size: 13px; font-weight: 500; display: flex; align-items: center; gap: 5px; }
 
-  $("#col-todo").innerHTML = lists.todo.map(renderCard).join("") || `<small class="muted">Kosong</small>`;
-  $("#col-late").innerHTML = lists.late.map(renderCard).join("") || `<small class="muted">Kosong</small>`;
-  $("#col-done").innerHTML = lists.done.map(renderCard).join("") || `<small class="muted">Kosong</small>`;
-  $("#col-ttv").innerHTML  = lists.ttv.map(renderCard).join("")  || `<small
+/* Right Column Lists */
+.list-card {
+    padding: 15px;
+    margin-top: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+.list-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.list-item img { width: 35px; height: 35px; border-radius: 50%; }
+.item-info { display: flex; flex-direction: column; flex: 1; }
+.item-info span { font-size: 13px; font-weight: 600; }
+.item-info small { font-size: 11px; color: var(--text-light); }
+.list-item .time { font-size: 11px; color: var(--text-light); }
+
+/* Widget */
+.widget-card {
+    padding: 20px;
+    background: var(--white);
+    border-radius: var(--border-radius);
+    text-align: center;
+}
+.widget-card h3 { font-size: 14px; margin-bottom: 10px; }
+.widget-card h1 { font-size: 32px; color: var(--text-main); margin-bottom: 15px; }
+
+.mt-20 { margin-top: 20px; }
+
+/* Scrollbar styling */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-thumb { background: #ccc; border-radius: 3px; }
