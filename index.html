@@ -9,7 +9,6 @@
 :root {
   --bg-gradient: linear-gradient(160deg, #1b263b, #0d1b2a);
   --card-bg: rgba(255, 255, 255, 0.08);
-  --card-solid: #ffffff;
   --text-main: #ffffff;
   --text-muted: #94a3b8;
   --primary: #3a86ff;
@@ -34,37 +33,39 @@ body { background: var(--bg-gradient); color: var(--text-main); min-height: 100v
 
 /* Hero Card / Progress */
 .hero-card { background: linear-gradient(135deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.95)); border-radius: 24px; padding: 20px; border: var(--border-glass); box-shadow: var(--shadow); display: flex; align-items: center; gap: 16px; position: relative; overflow: hidden; }
-.progress-ring { width: 70px; height: 70px; border-radius: 50%; display: grid; place-items: center; background: conic-gradient(var(--accent) 0% 75%, rgba(255,255,255,0.1) 75% 100%); flex: none; }
+.progress-ring { width: 70px; height: 70px; border-radius: 50%; display: grid; place-items: center; background: conic-gradient(var(--accent) 0% 100%, rgba(255,255,255,0.1) 0% 100%); flex: none; }
 .progress-inner { width: 56px; height: 56px; border-radius: 50%; background: #0f172a; display: grid; place-items: center; font-size: 12px; font-weight: 800; color: var(--accent); }
 .hero-info h3 { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
 .hero-info p { font-size: 12px; color: var(--text-muted); margin-bottom: 12px; }
 .action-btn-hero { background: linear-gradient(135deg, #4cc9f0, #3a86ff); border: 0; color: #fff; padding: 8px 16px; border-radius: 12px; font-size: 12px; font-weight: 700; cursor: pointer; box-shadow: 0 4px 12px rgba(58,134,255,0.4); }
 
-/* Menu Utama Grid (Icon Kotak) */
-.section-title { font-size: 14px; font-weight: 700; margin-top: 6px; display: flex; justify-content: align-items; align-items: center; }
+/* Menu Utama Grid */
+.section-title { font-size: 14px; font-weight: 700; margin-top: 6px; display: flex; justify-content: space-between; align-items: center; }
 .menu-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
 .menu-item { background: var(--card-bg); border: var(--border-glass); border-radius: 20px; padding: 14px 8px; text-align: center; cursor: pointer; transition: 0.2s; display: flex; flex-direction: column; align-items: center; gap: 8px; }
 .menu-item:hover { background: rgba(255,255,255,0.15); }
 .menu-icon { width: 44px; height: 44px; border-radius: 14px; background: rgba(58, 134, 255, 0.2); display: grid; place-items: center; font-size: 20px; color: var(--accent); }
 .menu-item span { font-size: 11px; font-weight: 600; color: #e2e8f0; }
 
-/* Daftar Kategori / Pasien Horizontal */
-.patient-scroll { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 6px; scrollbar-width: none; }
+/* Daftar Pasien Horizontal Scroll */
+.patient-scroll { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 8px; scrollbar-width: none; }
 .patient-scroll::-webkit-scrollbar { display: none; }
-.patient-card-horiz { min-width: 160px; background: linear-gradient(135deg, #1e293b, #0f172a); border: var(--border-glass); border-radius: 18px; padding: 14px; cursor: pointer; flex: none; box-shadow: var(--shadow); }
+.patient-card-horiz { min-width: 150px; background: linear-gradient(135deg, #1e293b, #0f172a); border: var(--border-glass); border-radius: 18px; padding: 14px; cursor: pointer; flex: none; box-shadow: var(--shadow); transition: 0.2s; position: relative; }
+.patient-card-horiz.active { border: 2px solid var(--accent); background: linear-gradient(135deg, #25334d, #142338); box-shadow: 0 0 15px rgba(76, 201, 240, 0.4); }
 .patient-card-horiz b { font-size: 13px; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 2px; }
 .patient-card-horiz small { color: var(--text-muted); font-size: 10.5px; display: block; }
 
-/* Panel List / Content */
+/* Content Panel */
 .content-panel { background: #ffffff; color: #1e293b; border-radius: 24px; padding: 18px; box-shadow: var(--shadow); }
-.content-panel h3 { font-size: 15px; font-weight: 800; margin-bottom: 12px; color: #0f172a; display: flex; justify-content: space-between; align-items: center; }
+.content-panel h3 { font-size: 15px; font-weight: 800; margin-bottom: 4px; color: #0f172a; display: flex; justify-content: space-between; align-items: center; }
+.patient-active-title { font-size: 12px; color: #64748b; font-weight: 600; margin-bottom: 12px; border-bottom: 1px dashed #cbd5e1; padding-bottom: 8px; }
 .list-item-app { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f1f5f9; }
 .list-item-app:last-child { border-bottom: 0; }
 .badge-status { padding: 4px 10px; border-radius: 20px; font-size: 10.5px; font-weight: 700; }
 .bg-ok { background: #dcfce7; color: #15803d; }
 .bg-wt { background: #fef9c3; color: #a16207; }
 
-/* Floating Bottom Navigation Bar */
+/* Floating Bottom Nav */
 .bottom-nav { position: fixed; bottom: 12px; left: 50%; transform: translateX(-50%); width: calc(100% - 32px); max-width: 410px; background: rgba(15, 23, 42, 0.9); backdrop-filter: blur(12px); border: var(--border-glass); border-radius: 28px; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; z-index: 99; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
 .nav-icon-btn { background: none; border: 0; color: #94a3b8; font-size: 20px; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 2px; }
 .nav-icon-btn.active { color: var(--accent); }
@@ -101,19 +102,19 @@ dialog h3 { font-size: 16px; font-weight: 800; margin-bottom: 12px; color: #0f17
     </div>
   </div>
 
-  <!-- Hero Card / Progress Belajar & Tugas -->
+  <!-- Hero Card Progress Pasien Aktif -->
   <div class="hero-card">
-    <div class="progress-ring">
-      <div class="progress-inner" id="prog-txt">75%</div>
+    <div class="progress-ring" id="ring-bg">
+      <div class="progress-inner" id="prog-txt">0%</div>
     </div>
     <div class="hero-info">
-      <h3>Progres Pemberian Obat</h3>
-      <p id="hero-sub-txt">Menyiapkan jadwal hari ini...</p>
+      <h3 id="hero-title">Progres Obat Pasien</h3>
+      <p id="hero-sub-txt">Pilih pasien untuk melihat jadwal</p>
       <button class="action-btn-hero" onclick="scrollToJadwal()">Lihat Jadwal</button>
     </div>
   </div>
 
-  <!-- Menu Utama (4x2 Grid ala Aplikasi Modern) -->
+  <!-- Menu Utama -->
   <div class="section-title">Menu Utama</div>
   <div class="menu-grid">
     <div class="menu-item" onclick="openPasienModal()">
@@ -134,23 +135,24 @@ dialog h3 { font-size: 16px; font-weight: 800; margin-bottom: 12px; color: #0f17
     </div>
   </div>
 
-  <!-- Daftar Pasien (Horizontal Scroll Cards) -->
-  <div class="section-title" style="justify-content:space-between;">
+  <!-- Daftar Pasien Horizontal Card -->
+  <div class="section-title">
     <span>Daftar Pasien R. Dahlia</span>
     <small id="total-pasien-lbl" style="color:var(--text-muted); font-weight:normal;">0 Pasien</small>
   </div>
   <div class="patient-scroll" id="patient-scroll-container">
-    <!-- Rendered Dynamically -->
+    <!-- Dynamically Populated -->
   </div>
 
-  <!-- Content Panel: Jadwal Obat Hari Ini -->
+  <!-- Content Panel: Jadwal Obat Pasien Terpilih -->
   <div class="content-panel" id="panel-jadwal">
     <h3>
       <span>Jadwal Obat Hari Ini</span>
       <span style="font-size:11px; font-weight:normal; color:#64748b;" id="date-label"></span>
     </h3>
+    <div class="patient-active-title" id="active-patient-name">Pasien Terpilih: -</div>
     <div id="doses-container">
-      <!-- Rendered Dynamically -->
+      <!-- Dynamically Populated -->
     </div>
   </div>
 
@@ -158,7 +160,7 @@ dialog h3 { font-size: 16px; font-weight: 800; margin-bottom: 12px; color: #0f17
 
 </div>
 
-<!-- Bottom Navigation Bar (Floating) -->
+<!-- Floating Navigation Bar -->
 <nav class="bottom-nav">
   <button class="nav-icon-btn active" onclick="location.reload()">🏠<span style="font-size:9px;">Home</span></button>
   <button class="nav-icon-btn" onclick="openTtvModal()">🩺<span style="font-size:9px;">TTV</span></button>
@@ -174,7 +176,7 @@ dialog h3 { font-size: 16px; font-weight: 800; margin-bottom: 12px; color: #0f17
     <div class="form-group"><label>Nama Pasien</label><input id="p-nama" required placeholder="Contoh: SARMADI, TN"></div>
     <div class="form-group"><label>Kamar</label><input id="p-kamar" required placeholder="Dahlia 1"></div>
     <div class="form-group"><label>Dokter DPJP</label><input id="p-dokter" required placeholder="dr. Putu Giani, Sp.JP"></div>
-    <div class="form-group"><label>Nama Obat (Pisahkan dengan koma)</label><input id="p-obat" placeholder="Inj. Cefotaxime, Paracetamol"></div>
+    <div class="form-group"><label>Nama Obat (Pisahkan dengan koma)</label><input id="p-obat" placeholder="Ranitidin (21:00), Citicolin (19:00)"></div>
     <div class="form-group"><label>Rencana Tindakan</label><textarea id="p-rc" rows="2" placeholder="Observasi TTV..."></textarea></div>
     <div class="form-actions">
       <button type="button" class="btn-mod" onclick="document.getElementById('dlg-pasien').close()">Batal</button>
@@ -212,6 +214,7 @@ dialog h3 { font-size: 16px; font-weight: 800; margin-bottom: 12px; color: #0f17
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx5mkBpvjr0cxfDq6t7H58TA-U9IjVo0Wc0eqjnr3VCh_DxFPmJHM6gwl8NHTXN3-DH/exec";
 const KEY = "catatan-obat-v1";
 let data = [];
+let selectedPatientId = null;
 
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
@@ -237,9 +240,10 @@ async function loadCloudData() {
   try {
     const res = await fetch(SCRIPT_URL);
     const cloud = await res.json();
-    if (Array.isArray(cloud)) {
+    if (Array.isArray(cloud) && cloud.length > 0) {
       data = cloud;
       try { localStorage.setItem(KEY, JSON.stringify(data)); } catch (e) {}
+      if (!selectedPatientId && data.length > 0) selectedPatientId = data[0].id;
       render();
       $("#sync-status").textContent = "Terhubung dengan Google Sheets cloud.";
     }
@@ -248,52 +252,71 @@ async function loadCloudData() {
   }
 }
 
+function selectPatient(pId) {
+  selectedPatientId = pId;
+  render();
+}
+
 function render() {
   $("#date-label").textContent = new Date().toLocaleDateString("id-ID", { weekday: 'short', day: 'numeric', month: 'short' });
   $("#total-pasien-lbl").textContent = `${data.length} Pasien`;
 
+  if (data.length > 0 && !selectedPatientId) {
+    selectedPatientId = data[0].id;
+  }
+
   // Render Horizontal Patient Cards
   $("#patient-scroll-container").innerHTML = data.map(p => `
-    <div class="patient-card-horiz" onclick="alert('Pasien: ${esc(p.nama)}\nKamar: ${esc(p.kamar)}\nDPJP: ${esc(p.dokter)}')">
+    <div class="patient-card-horiz ${p.id === selectedPatientId ? 'active' : ''}" onclick="selectPatient('${p.id}')">
       <b>${esc(p.nama)}</b>
       <small>Kamar: ${esc(p.kamar)}</small>
-      <small style="color:var(--accent);">💉 ${(p.obat || []).length} Obat</small>
+      <small style="color:var(--accent); font-weight:700; margin-top:2px;">💉 ${(p.obat || []).length} Obat</small>
     </div>
   `).join("") || `<div style="color:var(--text-muted); font-size:12px; padding:10px;">Belum ada pasien terdaftar. Tekan ＋ untuk menambah.</div>`;
 
-  // Collect all medication doses
-  let allDoses = [];
-  data.forEach(p => (p.obat || []).forEach(m => (m.jam || ["08:00", "16:00"]).forEach(s => {
-    const done = m.done && m.done[s];
-    allDoses.push({ p, m, s, done });
-  })));
+  // Render Medication List for Selected Patient Only
+  const p = data.find(x => x.id === selectedPatientId);
 
-  const total = allDoses.length;
-  const finished = allDoses.filter(x => x.done).length;
-  const pct = total ? Math.round((finished / total) * 100) : 100;
-  
-  $("#prog-txt").textContent = `${pct}%`;
-  $("#hero-sub-txt").textContent = `${finished} dari ${total} jadwal obat selesai`;
-  
-  if (total - finished > 0) {
-    $("#notif-badge").style.display = "grid";
-    $("#notif-badge").textContent = total - finished;
-  } else {
-    $("#notif-badge").style.display = "none";
-  }
+  if (p) {
+    $("#active-patient-name").textContent = `Pasien: ${p.nama} (Kamar ${p.kamar})`;
 
-  // Render Doses List
-  $("#doses-container").innerHTML = allDoses.map((x, idx) => `
-    <div class="list-item-app">
-      <div>
-        <b style="font-size:12.5px; color:#0f172a; display:block;">${esc(x.m.nama)} (${x.s})</b>
-        <small style="color:#64748b; font-size:11px;">Kamar ${esc(x.p.kamar)} - ${esc(x.p.nama)}</small>
+    let patientDoses = [];
+    (p.obat || []).forEach(m => {
+      const jamList = (m.jam && m.jam.length) ? m.jam : ["08:00", "16:00"];
+      jamList.forEach(s => {
+        const done = m.done && m.done[s];
+        patientDoses.push({ m, s, done });
+      });
+    });
+
+    const total = patientDoses.length;
+    const finished = patientDoses.filter(x => x.done).length;
+    const pct = total ? Math.round((finished / total) * 100) : 100;
+
+    $("#prog-txt").textContent = `${pct}%`;
+    $("#ring-bg").style.background = `conic-gradient(var(--accent) 0% ${pct}%, rgba(255,255,255,0.1) ${pct}% 100%)`;
+    $("#hero-title").textContent = `Progres Obat: ${p.nama}`;
+    $("#hero-sub-txt").textContent = `${finished} dari ${total} jadwal obat selesai hari ini`;
+
+    $("#doses-container").innerHTML = patientDoses.map(x => `
+      <div class="list-item-app">
+        <div>
+          <b style="font-size:13px; color:#0f172a; display:block;">${esc(x.m.nama)} (${x.s})</b>
+          <small style="color:#64748b; font-size:11px;">Kamar ${esc(p.kamar)} - ${esc(p.nama)}</small>
+        </div>
+        <button class="badge-status ${x.done ? 'bg-ok' : 'bg-wt'}" style="border:0; cursor:pointer;" onclick="toggleDose('${p.id}', '${x.m.id}', '${x.s}')">
+          ${x.done ? '✓ Selesai' : '⏳ Menunggu'}
+        </button>
       </div>
-      <button class="badge-status ${x.done ? 'bg-ok' : 'bg-wt'}" style="border:0; cursor:pointer;" onclick="toggleDose('${x.p.id}', '${x.m.id}', '${x.s}')">
-        ${x.done ? '✓ Selesai' : '⏳ Menunggu'}
-      </button>
-    </div>
-  `).join("") || `<div style="color:#64748b; font-size:12px; text-align:center; padding:16px;">Belum ada jadwal obat hari ini.</div>`;
+    `).join("") || `<div style="color:#64748b; font-size:12px; text-align:center; padding:16px;">Belum ada daftar obat untuk pasien ini.</div>`;
+
+  } else {
+    $("#active-patient-name").textContent = "Pilih salah satu pasien di atas";
+    $("#prog-txt").textContent = "0%";
+    $("#hero-title").textContent = "Progres Obat Pasien";
+    $("#hero-sub-txt").textContent = "Belum ada pasien yang dipilih";
+    $("#doses-container").innerHTML = `<div style="color:#64748b; font-size:12px; text-align:center; padding:16px;">Klik kartu pasien di atas untuk melihat jadwal obat.</div>`;
+  }
 }
 
 function toggleDose(pId, mId, s) {
@@ -323,13 +346,21 @@ function openPasienModal() {
 $("#f-pasien").onsubmit = e => {
   e.preventDefault();
   const obatStr = $("#p-obat").value.trim();
-  const obatArr = obatStr ? obatStr.split(',').map(o => ({
-    id: uid(),
-    nama: o.trim(),
-    dosis: 'Standard',
-    jam: ["08:00", "16:00"],
-    done: {}
-  })) : [];
+  const obatArr = obatStr ? obatStr.split(',').map(o => {
+    let nama = o.trim();
+    let jam = ["08:00", "16:00"];
+    const match = nama.match(/\(([^)]+)\)/);
+    if (match) {
+      jam = [match[1]];
+    }
+    return {
+      id: uid(),
+      nama: nama,
+      dosis: 'Standard',
+      jam: jam,
+      done: {}
+    };
+  }) : [];
 
   const newP = {
     id: uid(),
@@ -340,6 +371,7 @@ $("#f-pasien").onsubmit = e => {
     obat: obatArr
   };
   data.push(newP);
+  selectedPatientId = newP.id;
   persist();
   render();
   $("#dlg-pasien").close();
@@ -374,6 +406,7 @@ $("#btn-restore").onclick = () => {
     const parsed = JSON.parse($("#txt-backup").value);
     if (Array.isArray(parsed)) {
       data = parsed;
+      if (data.length > 0) selectedPatientId = data[0].id;
       persist();
       render();
       $("#dlg-backup").close();
@@ -389,12 +422,13 @@ function toggleSyncNow() {
   alert("Menyinkronkan ulang data dengan cloud...");
 }
 
-// Load initial data
+// Initial Load
 try {
   const local = localStorage.getItem(KEY);
   if (local) data = JSON.parse(local) || [];
 } catch (e) { data = []; }
 
+if (data.length > 0) selectedPatientId = data[0].id;
 render();
 loadCloudData();
 </script>
