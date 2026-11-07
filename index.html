@@ -92,8 +92,9 @@ dialog h3 { font-size: 16px; font-weight: 800; margin-bottom: 12px; color: #0f17
 
 .med-builder-box { background: #f1f5f9; border-radius: 14px; padding: 10px; margin-bottom: 8px; border: 1px solid #e2e8f0; }
 .med-row-top { display: flex; gap: 6px; margin-bottom: 6px; }
-.shift-checks { display: flex; gap: 12px; flex-wrap: wrap; font-size: 11px; font-weight: 600; color: #334155; align-items: center; margin-top: 6px; background: #e2e8f0; padding: 6px 10px; border-radius: 8px; }
-.shift-checks label { display: flex; align-items: center; gap: 4px; cursor: pointer; }
+.shift-time-row { display: flex; gap: 8px; margin-top: 6px; align-items: center; background: #e2e8f0; padding: 6px 10px; border-radius: 8px; font-size: 11px; font-weight: 700; color: #334155; }
+.shift-time-row label { display: flex; align-items: center; gap: 4px; flex: 1; cursor: pointer; }
+.shift-time-row input[type="time"] { padding: 3px 6px; border-radius: 6px; border: 1px solid #cbd5e1; font-size: 11px; background: #fff; width: 85px; }
 
 .form-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 16px; }
 .btn-mod { padding: 9px 16px; border-radius: 12px; font-weight: 700; font-size: 12px; border: 0; cursor: pointer; }
@@ -161,9 +162,9 @@ dialog h3 { font-size: 16px; font-weight: 800; margin-bottom: 12px; color: #0f17
   <div class="section-title" style="margin-top:2px;">Filter Tampilan</div>
   <div class="filter-tabs" id="filter-tabs-container">
     <button class="ftab active" onclick="setFilter('semua', this)">Semua Jadwal</button>
-    <button class="ftab" onclick="setFilter('Pagi', this)">☀️ Pagi (07:00)</button>
-    <button class="ftab" onclick="setFilter('Siang', this)">🌤️ Siang (14:00)</button>
-    <button class="ftab" onclick="setFilter('Malam', this)">🌙 Malam (22:00)</button>
+    <button class="ftab" onclick="setFilter('Pagi', this)">☀️ Shift Pagi</button>
+    <button class="ftab" onclick="setFilter('Siang', this)">🌤️ Shift Siang</button>
+    <button class="ftab" onclick="setFilter('Malam', this)">🌙 Shift Malam</button>
     <button class="ftab" onclick="setFilter('tindakan', this)">📋 Ada Tindakan</button>
   </div>
 
@@ -230,7 +231,7 @@ dialog h3 { font-size: 16px; font-weight: 800; margin-bottom: 12px; color: #0f17
     </div>
 
     <div class="form-group">
-      <label>Daftar Obat, Rute & Jam Shift Pemberian</label>
+      <label>Daftar Obat, Rute & Jam Pemberian per Shift</label>
       <div id="med-list-container">
         <!-- Dynamic medicine rows -->
       </div>
@@ -280,12 +281,6 @@ const KEY = "catatan-obat-v1";
 let data = [];
 let selectedPatientId = null;
 let currentFilter = 'semua';
-
-const SHIFT_TIMES = {
-  'Pagi': '07:00',
-  'Siang': '14:00',
-  'Malam': '22:00'
-};
 
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
@@ -376,17 +371,16 @@ function render() {
     `).join("") || `<div style="color:#64748b; font-size:12px; text-align:center; padding:16px;">Tidak ada pasien dengan rencana tindakan khusus.</div>`;
 
   } else if (currentFilter === 'Pagi' || currentFilter === 'Siang' || currentFilter === 'Malam') {
-    const shiftTimeStr = SHIFT_TIMES[currentFilter];
-    $("#panel-heading-title").textContent = `Jadwal Shift ${currentFilter} (${shiftTimeStr}) – Semua Pasien`;
+    $("#panel-heading-title").textContent = `Jadwal Shift ${currentFilter} (Semua Pasien)`;
     $("#patient-info-box").style.display = "none";
 
     let shiftDoses = [];
     data.forEach(p => {
       (p.obat || []).forEach(m => {
-        const shifts = m.shifts || ['Pagi'];
-        if (shifts.includes(currentFilter)) {
+        if (m.shiftTimes && m.shiftTimes[currentFilter] && m.shiftTimes[currentFilter].active) {
+          const timeVal = m.shiftTimes[currentFilter].time || '-';
           const done = m.done && m.done[currentFilter];
-          shiftDoses.push({ p, m, shiftName: currentFilter, time: shiftTimeStr, done });
+          shiftDoses.push({ p, m, shiftName: currentFilter, time: timeVal, done });
         }
       });
     });
@@ -414,12 +408,15 @@ function render() {
 
       let patientDoses = [];
       (p.obat || []).forEach(m => {
-        const shifts = (m.shifts && m.shifts.length) ? m.shifts : ['Pagi'];
-        shifts.forEach(s => {
-          const done = m.done && m.done[s];
-          const time = SHIFT_TIMES[s] || '07:00';
-          patientDoses.push({ m, shiftName: s, time, done });
-        });
+        if (m.shiftTimes) {
+          Object.keys(m.shiftTimes).forEach(s => {
+            if (m.shiftTimes[s].active) {
+              const time = m.shiftTimes[s].time || '00:00';
+              const done = m.done && m.done[s];
+              patientDoses.push({ m, shiftName: s, time, done });
+            }
+          });
+        }
       });
 
       const total = patientDoses.length;
@@ -473,14 +470,18 @@ function scrollToJadwal() {
   $("#panel-jadwal").scrollIntoView({ behavior: 'smooth' });
 }
 
-/* Dynamic Medicine Builder UI with Shift Hours */
+/* Dynamic Medicine Builder UI with Custom Time Inputs */
 function addMedBuilderRow(medData = {}) {
   const container = $("#med-list-container");
   const div = document.createElement("div");
   div.className = "med-builder-box";
   
   const currentRute = medData.rute || 'Oral';
-  const currentShifts = medData.shifts || ['Pagi'];
+  const st = medData.shiftTimes || {
+    Pagi: { active: true, time: '07:00' },
+    Siang: { active: false, time: '14:00' },
+    Malam: { active: false, time: '22:00' }
+  };
 
   div.innerHTML = `
     <div class="med-row-top">
@@ -497,11 +498,19 @@ function addMedBuilderRow(medData = {}) {
         <option ${currentRute==='Syringe pump'?'selected':''}>Syringe pump</option>
       </select>
     </div>
-    <div class="shift-checks">
-      <span>Shift & Jam:</span>
-      <label><input type="checkbox" class="mb-shift" value="Pagi" ${currentShifts.includes('Pagi')?'checked':''}> Pagi (07:00)</label>
-      <label><input type="checkbox" class="mb-shift" value="Siang" ${currentShifts.includes('Siang')?'checked':''}> Siang (14:00)</label>
-      <label><input type="checkbox" class="mb-shift" value="Malam" ${currentShifts.includes('Malam')?'checked':''}> Malam (22:00)</label>
+    <div class="shift-time-rows" style="display:flex; flex-direction:column; gap:4px; margin-top:6px;">
+      <div class="shift-time-row">
+        <label><input type="checkbox" class="chk-shift" value="Pagi" ${st.Pagi?.active?'checked':''}> Pagi</label>
+        <input type="time" class="time-shift" data-shift="Pagi" value="${st.Pagi?.time || '07:00'}">
+      </div>
+      <div class="shift-time-row">
+        <label><input type="checkbox" class="chk-shift" value="Siang" ${st.Siang?.active?'checked':''}> Siang</label>
+        <input type="time" class="time-shift" data-shift="Siang" value="${st.Siang?.time || '14:00'}">
+      </div>
+      <div class="shift-time-row">
+        <label><input type="checkbox" class="chk-shift" value="Malam" ${st.Malam?.active?'checked':''}> Malam</label>
+        <input type="time" class="time-shift" data-shift="Malam" value="${st.Malam?.time || '22:00'}">
+      </div>
     </div>
   `;
   container.appendChild(div);
@@ -565,14 +574,21 @@ $("#f-pasien").onsubmit = e => {
     if (!nama) return;
     const dosis = box.querySelector(".mb-dosis").value.trim() || 'Standard';
     const rute = box.querySelector(".mb-rute").value;
-    const shifts = [...box.querySelectorAll(".mb-shift:checked")].map(cb => cb.value);
     
+    const shiftTimes = {};
+    box.querySelectorAll(".shift-time-row").forEach(row => {
+      const shiftName = row.querySelector(".time-shift").getAttribute("data-shift");
+      const isChecked = row.querySelector(".chk-shift").checked;
+      const timeVal = row.querySelector(".time-shift").value || '00:00';
+      shiftTimes[shiftName] = { active: isChecked, time: timeVal };
+    });
+
     obatArr.push({
       id: uid(),
       nama: nama,
       dosis: dosis,
       rute: rute,
-      shifts: shifts.length > 0 ? shifts : ['Pagi'],
+      shiftTimes: shiftTimes,
       done: {}
     });
   });
@@ -630,7 +646,7 @@ function openBackupModal() {
 
 $("#btn-restore").onclick = () => {
   try {
-    const parsed = JSON.parse($("#txt-backup").value);
+  const parsed = JSON.parse($("#txt-backup").value);
     if (Array.isArray(parsed)) {
       data = parsed;
       if (data.length > 0) selectedPatientId = data[0].id;
