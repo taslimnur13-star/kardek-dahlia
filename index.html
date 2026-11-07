@@ -31,26 +31,32 @@ body { background: var(--bg-gradient); color: var(--text-main); min-height: 100v
 .notif-btn { width: 40px; height: 40px; border-radius: 50%; background: var(--card-bg); border: var(--border-glass); display: grid; place-items: center; cursor: pointer; color: #fff; position: relative; }
 .notif-btn b { position: absolute; top: -2px; right: -2px; background: #e63946; font-size: 9px; width: 16px; height: 16px; border-radius: 50%; display: grid; place-items: center; }
 
-/* Hero Card / Progress */
+/* Hero Card */
 .hero-card { background: linear-gradient(135deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.95)); border-radius: 24px; padding: 20px; border: var(--border-glass); box-shadow: var(--shadow); display: flex; align-items: center; gap: 16px; position: relative; overflow: hidden; }
 .progress-ring { width: 70px; height: 70px; border-radius: 50%; display: grid; place-items: center; background: conic-gradient(var(--accent) 0% 100%, rgba(255,255,255,0.1) 0% 100%); flex: none; }
 .progress-inner { width: 56px; height: 56px; border-radius: 50%; background: #0f172a; display: grid; place-items: center; font-size: 12px; font-weight: 800; color: var(--accent); }
 .hero-info h3 { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
 .hero-info p { font-size: 12px; color: var(--text-muted); margin-bottom: 12px; }
-.action-btn-hero { background: linear-gradient(135deg, #4cc9f0, #3a86ff); border: 0; color: #fff; padding: 8px 16px; border-radius: 12px; font-size: 12px; font-weight: 700; cursor: pointer; box-shadow: 0 4px 12px rgba(58,134,255,0.4); }
+.action-btn-hero { background: linear-gradient(135deg, #4cc9f0, #3a86ff); border: 0; color: #fff; padding: 6px 12px; border-radius: 10px; font-size: 11px; font-weight: 700; cursor: pointer; margin-right: 4px; }
 
-/* Menu Utama Grid */
-.section-title { font-size: 14px; font-weight: 700; margin-top: 6px; display: flex; justify-content: space-between; align-items: center; }
+/* Menu Utama & Filter Shift */
+.section-title { font-size: 14px; font-weight: 700; margin-top: 4px; display: flex; justify-content: space-between; align-items: center; }
 .menu-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
-.menu-item { background: var(--card-bg); border: var(--border-glass); border-radius: 20px; padding: 14px 8px; text-align: center; cursor: pointer; transition: 0.2s; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.menu-item { background: var(--card-bg); border: var(--border-glass); border-radius: 20px; padding: 12px 6px; text-align: center; cursor: pointer; transition: 0.2s; display: flex; flex-direction: column; align-items: center; gap: 6px; }
 .menu-item:hover { background: rgba(255,255,255,0.15); }
-.menu-icon { width: 44px; height: 44px; border-radius: 14px; background: rgba(58, 134, 255, 0.2); display: grid; place-items: center; font-size: 20px; color: var(--accent); }
-.menu-item span { font-size: 11px; font-weight: 600; color: #e2e8f0; }
+.menu-icon { width: 40px; height: 40px; border-radius: 12px; background: rgba(58, 134, 255, 0.2); display: grid; place-items: center; font-size: 18px; color: var(--accent); }
+.menu-item span { font-size: 10.5px; font-weight: 600; color: #e2e8f0; }
 
-/* Daftar Pasien Horizontal Scroll */
-.patient-scroll { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 8px; scrollbar-width: none; }
+/* Filter Tabs Shift & Tindakan */
+.filter-tabs { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 2px; scrollbar-width: none; }
+.filter-tabs::-webkit-scrollbar { display: none; }
+.ftab { background: var(--card-bg); border: var(--border-glass); color: var(--text-muted); padding: 6px 12px; border-radius: 12px; font-size: 11px; font-weight: 700; cursor: pointer; white-space: nowrap; flex: none; }
+.ftab.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+
+/* Daftar Pasien Horizontal */
+.patient-scroll { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 6px; scrollbar-width: none; }
 .patient-scroll::-webkit-scrollbar { display: none; }
-.patient-card-horiz { min-width: 150px; background: linear-gradient(135deg, #1e293b, #0f172a); border: var(--border-glass); border-radius: 18px; padding: 14px; cursor: pointer; flex: none; box-shadow: var(--shadow); transition: 0.2s; position: relative; }
+.patient-card-horiz { min-width: 150px; background: linear-gradient(135deg, #1e293b, #0f172a); border: var(--border-glass); border-radius: 18px; padding: 14px; cursor: pointer; flex: none; box-shadow: var(--shadow); position: relative; }
 .patient-card-horiz.active { border: 2px solid var(--accent); background: linear-gradient(135deg, #25334d, #142338); box-shadow: 0 0 15px rgba(76, 201, 240, 0.4); }
 .patient-card-horiz b { font-size: 13px; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 2px; }
 .patient-card-horiz small { color: var(--text-muted); font-size: 10.5px; display: block; }
@@ -58,7 +64,12 @@ body { background: var(--bg-gradient); color: var(--text-main); min-height: 100v
 /* Content Panel */
 .content-panel { background: #ffffff; color: #1e293b; border-radius: 24px; padding: 18px; box-shadow: var(--shadow); }
 .content-panel h3 { font-size: 15px; font-weight: 800; margin-bottom: 4px; color: #0f172a; display: flex; justify-content: space-between; align-items: center; }
-.patient-active-title { font-size: 12px; color: #64748b; font-weight: 600; margin-bottom: 12px; border-bottom: 1px dashed #cbd5e1; padding-bottom: 8px; }
+.patient-active-box { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px dashed #cbd5e1; padding-bottom: 8px; margin-bottom: 10px; }
+.patient-active-title { font-size: 12px; color: #64748b; font-weight: 600; }
+.action-btns-patient { display: flex; gap: 6px; }
+.btn-mini { background: #e2e8f0; border: 0; padding: 4px 8px; border-radius: 6px; font-size: 10px; font-weight: 700; cursor: pointer; color: #334155; }
+.btn-mini.del { background: #fee2e2; color: #991b1b; }
+
 .list-item-app { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f1f5f9; }
 .list-item-app:last-child { border-bottom: 0; }
 .badge-status { padding: 4px 10px; border-radius: 20px; font-size: 10.5px; font-weight: 700; }
@@ -97,12 +108,12 @@ dialog h3 { font-size: 16px; font-weight: 800; margin-bottom: 12px; color: #0f17
         <p>Ns. Taslim Nur, S.Kep (R. Dahlia)</p>
       </div>
     </div>
-    <div class="notif-btn" id="btn-bell" title="Lihat Obat Terlambat">
+    <div class="notif-btn" id="btn-bell" title="Notifikasi Obat">
       🔔 <b id="notif-badge" style="display:none">0</b>
     </div>
   </div>
 
-  <!-- Hero Card Progress Pasien Aktif -->
+  <!-- Hero Card -->
   <div class="hero-card">
     <div class="progress-ring" id="ring-bg">
       <div class="progress-inner" id="prog-txt">0%</div>
@@ -110,24 +121,26 @@ dialog h3 { font-size: 16px; font-weight: 800; margin-bottom: 12px; color: #0f17
     <div class="hero-info">
       <h3 id="hero-title">Progres Obat Pasien</h3>
       <p id="hero-sub-txt">Pilih pasien untuk melihat jadwal</p>
-      <button class="action-btn-hero" onclick="scrollToJadwal()">Lihat Jadwal</button>
+      <div>
+        <button class="action-btn-hero" onclick="scrollToJadwal()">Jadwal</button>
+      </div>
     </div>
   </div>
 
-  <!-- Menu Utama -->
+  <!-- Menu Utama & Filter Cepat Shift / Tindakan -->
   <div class="section-title">Menu Utama</div>
   <div class="menu-grid">
     <div class="menu-item" onclick="openPasienModal()">
       <div class="menu-icon">👥</div>
-      <span>Tambah Pasien</span>
+      <span>Tambah</span>
     </div>
     <div class="menu-item" onclick="openTtvModal()">
       <div class="menu-icon">🩺</div>
-      <span>Input TTV</span>
+      <span>TTV</span>
     </div>
     <div class="menu-item" onclick="openBackupModal()">
       <div class="menu-icon">💾</div>
-      <span>Cadangan</span>
+      <span>Backup</span>
     </div>
     <div class="menu-item" onclick="toggleSyncNow()">
       <div class="menu-icon">🔄</div>
@@ -135,24 +148,40 @@ dialog h3 { font-size: 16px; font-weight: 800; margin-bottom: 12px; color: #0f17
     </div>
   </div>
 
-  <!-- Daftar Pasien Horizontal Card -->
+  <!-- Filter Shift & Tindakan di Menu Utama -->
+  <div class="section-title" style="margin-top:2px;">Filter Tampilan</div>
+  <div class="filter-tabs" id="filter-tabs-container">
+    <button class="ftab active" onclick="setFilter('semua', this)">Semua Jadwal</button>
+    <button class="ftab" onclick="setFilter('Pagi', this)">☀️ Shift Pagi</button>
+    <button class="ftab" onclick="setFilter('Siang', this)">🌤️ Shift Siang</button>
+    <button class="ftab" onclick="setFilter('Malam', this)">🌙 Shift Malam</button>
+    <button class="ftab" onclick="setFilter('tindakan', this)">📋 Ada Tindakan</button>
+  </div>
+
+  <!-- Daftar Pasien Horizontal -->
   <div class="section-title">
     <span>Daftar Pasien R. Dahlia</span>
     <small id="total-pasien-lbl" style="color:var(--text-muted); font-weight:normal;">0 Pasien</small>
   </div>
   <div class="patient-scroll" id="patient-scroll-container">
-    <!-- Dynamically Populated -->
+    <!-- Rendered Dynamically -->
   </div>
 
-  <!-- Content Panel: Jadwal Obat Pasien Terpilih -->
+  <!-- Content Panel: Jadwal Obat / Filter Hasil -->
   <div class="content-panel" id="panel-jadwal">
     <h3>
-      <span>Jadwal Obat Hari Ini</span>
+      <span id="panel-heading-title">Jadwal Obat Hari Ini</span>
       <span style="font-size:11px; font-weight:normal; color:#64748b;" id="date-label"></span>
     </h3>
-    <div class="patient-active-title" id="active-patient-name">Pasien Terpilih: -</div>
+    <div class="patient-active-box" id="patient-info-box">
+      <div class="patient-active-title" id="active-patient-name">Pilih pasien di atas</div>
+      <div class="action-btns-patient" id="patient-action-buttons" style="display:none;">
+        <button class="btn-mini" onclick="editCurrentPatient()">✏️ Edit</button>
+        <button class="btn-mini del" onclick="deleteCurrentPatient()">🗑️ Hapus</button>
+      </div>
+    </div>
     <div id="doses-container">
-      <!-- Dynamically Populated -->
+      <!-- Rendered Dynamically -->
     </div>
   </div>
 
@@ -169,15 +198,16 @@ dialog h3 { font-size: 16px; font-weight: 800; margin-bottom: 12px; color: #0f17
   <button class="nav-icon-btn" onclick="scrollToJadwal()">📋<span style="font-size:9px;">Jadwal</span></button>
 </nav>
 
-<!-- Dialog Tambah Pasien -->
+<!-- Dialog Tambah/Edit Pasien -->
 <dialog id="dlg-pasien">
   <form id="f-pasien">
-    <h3>Tambah Pasien Baru</h3>
+    <h3 id="modal-patient-title">Tambah Pasien Baru</h3>
+    <input type="hidden" id="p-edit-id">
     <div class="form-group"><label>Nama Pasien</label><input id="p-nama" required placeholder="Contoh: SARMADI, TN"></div>
     <div class="form-group"><label>Kamar</label><input id="p-kamar" required placeholder="Dahlia 1"></div>
     <div class="form-group"><label>Dokter DPJP</label><input id="p-dokter" required placeholder="dr. Putu Giani, Sp.JP"></div>
-    <div class="form-group"><label>Nama Obat (Pisahkan dengan koma)</label><input id="p-obat" placeholder="Ranitidin (21:00), Citicolin (19:00)"></div>
-    <div class="form-group"><label>Rencana Tindakan</label><textarea id="p-rc" rows="2" placeholder="Observasi TTV..."></textarea></div>
+    <div class="form-group"><label>Nama Obat & Shift (Format: Nama Obat [Shift])</label><input id="p-obat" placeholder="Ranitidin [Pagi], Cefotaxime [Malam]"></div>
+    <div class="form-group"><label>Rencana Tindakan Medis</label><textarea id="p-rc" rows="2" placeholder="Contoh: Observasi TTV tiap 4 jam, Rawat Luka..."></textarea></div>
     <div class="form-actions">
       <button type="button" class="btn-mod" onclick="document.getElementById('dlg-pasien').close()">Batal</button>
       <button class="btn-mod pri">Simpan Pasien</button>
@@ -215,6 +245,7 @@ const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx5mkBpvjr0cxfDq6t7H
 const KEY = "catatan-obat-v1";
 let data = [];
 let selectedPatientId = null;
+let currentFilter = 'semua'; // 'semua', 'Pagi', 'Siang', 'Malam', 'tindakan'
 
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
@@ -254,6 +285,17 @@ async function loadCloudData() {
 
 function selectPatient(pId) {
   selectedPatientId = pId;
+  currentFilter = 'semua';
+  document.querySelectorAll('.ftab').forEach((btn, idx) => {
+    if(idx === 0) btn.classList.add('active'); else btn.classList.remove('active');
+  });
+  render();
+}
+
+function setFilter(filterType, btnElem) {
+  currentFilter = filterType;
+  document.querySelectorAll('.ftab').forEach(b => b.classList.remove('active'));
+  btnElem.classList.add('active');
   render();
 }
 
@@ -267,111 +309,215 @@ function render() {
 
   // Render Horizontal Patient Cards
   $("#patient-scroll-container").innerHTML = data.map(p => `
-    <div class="patient-card-horiz ${p.id === selectedPatientId ? 'active' : ''}" onclick="selectPatient('${p.id}')">
+    <div class="patient-card-horiz ${p.id === selectedPatientId && currentFilter === 'semua' ? 'active' : ''}" onclick="selectPatient('${p.id}')">
       <b>${esc(p.nama)}</b>
       <small>Kamar: ${esc(p.kamar)}</small>
       <small style="color:var(--accent); font-weight:700; margin-top:2px;">💉 ${(p.obat || []).length} Obat</small>
+      ${p.rc ? '<small style="color:#fbbf24; margin-top:1px;">📋 Ada Tindakan</small>' : ''}
     </div>
   `).join("") || `<div style="color:var(--text-muted); font-size:12px; padding:10px;">Belum ada pasien terdaftar. Tekan ＋ untuk menambah.</div>`;
 
-  // Render Medication List for Selected Patient Only
-  const p = data.find(x => x.id === selectedPatientId);
+  // Render Content Based on Filter
+  if (currentFilter === 'tindakan') {
+    $("#panel-heading-title").textContent = "Filter: Pasien dengan Rencana Tindakan";
+    $("#patient-info-box").style.display = "none";
 
-  if (p) {
-    $("#active-patient-name").textContent = `Pasien: ${p.nama} (Kamar ${p.kamar})`;
+    const tindakanPasien = data.filter(p => p.rc && p.rc.trim() !== "");
+    $("#doses-container").innerHTML = tindakanPasien.map(p => `
+      <div class="list-item-app" style="align-items:flex-start; flex-direction:column; gap:4px;">
+        <div>
+          <b style="font-size:13px; color:#0f172a;">${esc(p.nama)} (Kamar ${esc(p.kamar)})</b>
+          <small style="color:#64748b; display:block;">DPJP: ${esc(p.dokter)}</small>
+        </div>
+        <div style="background:#f1f5f9; padding:8px 12px; border-radius:8px; width:100%; font-size:11.5px; color:#334155;">
+          <b>Rencana Tindakan:</b> ${esc(p.rc)}
+        </div>
+      </div>
+    `).join("") || `<div style="color:#64748b; font-size:12px; text-align:center; padding:16px;">Tidak ada pasien dengan rencana tindakan khusus.</div>`;
 
-    let patientDoses = [];
-    (p.obat || []).forEach(m => {
-      const jamList = (m.jam && m.jam.length) ? m.jam : ["08:00", "16:00"];
-      jamList.forEach(s => {
-        const done = m.done && m.done[s];
-        patientDoses.push({ m, s, done });
+  } else if (currentFilter === 'Pagi' || currentFilter === 'Siang' || currentFilter === 'Malam') {
+    $("#panel-heading-title").textContent = `Jadwal Obat Shift ${currentFilter} (Semua Pasien)`;
+    $("#patient-info-box").style.display = "none";
+
+    let shiftDoses = [];
+    data.forEach(p => {
+      (p.obat || []).forEach(m => {
+        const shiftName = m.shift || 'Pagi';
+        if (shiftName.toLowerCase() === currentFilter.toLowerCase()) {
+          const done = m.done && m.done[shiftName];
+          shiftDoses.push({ p, m, shiftName, done });
+        }
       });
     });
 
-    const total = patientDoses.length;
-    const finished = patientDoses.filter(x => x.done).length;
-    const pct = total ? Math.round((finished / total) * 100) : 100;
-
-    $("#prog-txt").textContent = `${pct}%`;
-    $("#ring-bg").style.background = `conic-gradient(var(--accent) 0% ${pct}%, rgba(255,255,255,0.1) ${pct}% 100%)`;
-    $("#hero-title").textContent = `Progres Obat: ${p.nama}`;
-    $("#hero-sub-txt").textContent = `${finished} dari ${total} jadwal obat selesai hari ini`;
-
-    $("#doses-container").innerHTML = patientDoses.map(x => `
+    $("#doses-container").innerHTML = shiftDoses.map(x => `
       <div class="list-item-app">
         <div>
-          <b style="font-size:13px; color:#0f172a; display:block;">${esc(x.m.nama)} (${x.s})</b>
-          <small style="color:#64748b; font-size:11px;">Kamar ${esc(p.kamar)} - ${esc(p.nama)}</small>
+          <b style="font-size:13px; color:#0f172a; display:block;">${esc(x.m.nama)} [${x.shiftName}]</b>
+          <small style="color:#64748b; font-size:11px;">Kamar ${esc(x.p.kamar)} - ${esc(x.p.nama)}</small>
         </div>
-        <button class="badge-status ${x.done ? 'bg-ok' : 'bg-wt'}" style="border:0; cursor:pointer;" onclick="toggleDose('${p.id}', '${x.m.id}', '${x.s}')">
+        <button class="badge-status ${x.done ? 'bg-ok' : 'bg-wt'}" style="border:0; cursor:pointer;" onclick="toggleShiftDose('${x.p.id}', '${x.m.id}', '${x.shiftName}')">
           ${x.done ? '✓ Selesai' : '⏳ Menunggu'}
         </button>
       </div>
-    `).join("") || `<div style="color:#64748b; font-size:12px; text-align:center; padding:16px;">Belum ada daftar obat untuk pasien ini.</div>`;
+    `).join("") || `<div style="color:#64748b; font-size:12px; text-align:center; padding:16px;">Tidak ada obat untuk shift ${currentFilter}.</div>`;
 
   } else {
-    $("#active-patient-name").textContent = "Pilih salah satu pasien di atas";
-    $("#prog-txt").textContent = "0%";
-    $("#hero-title").textContent = "Progres Obat Pasien";
-    $("#hero-sub-txt").textContent = "Belum ada pasien yang dipilih";
-    $("#doses-container").innerHTML = `<div style="color:#64748b; font-size:12px; text-align:center; padding:16px;">Klik kartu pasien di atas untuk melihat jadwal obat.</div>`;
+    // Mode Default: Menampilkan jadwal per pasien yang diklik
+    $("#panel-heading-title").textContent = "Jadwal Obat Hari Ini";
+    $("#patient-info-box").style.display = "flex";
+
+    const p = data.find(x => x.id === selectedPatientId);
+    if (p) {
+      $("#active-patient-name").textContent = `Pasien: ${p.nama} (Kamar ${p.kamar})`;
+      $("#patient-action-buttons").style.display = "flex";
+
+      let patientDoses = [];
+      (p.obat || []).forEach(m => {
+        const shiftName = m.shift || 'Pagi';
+        const done = m.done && m.done[shiftName];
+        patientDoses.push({ m, shiftName, done });
+      });
+
+      const total = patientDoses.length;
+      const finished = patientDoses.filter(x => x.done).length;
+      const pct = total ? Math.round((finished / total) * 100) : 100;
+
+      $("#prog-txt").textContent = `${pct}%`;
+      $("#ring-bg").style.background = `conic-gradient(var(--accent) 0% ${pct}%, rgba(255,255,255,0.1) ${pct}% 100%)`;
+      $("#hero-title").textContent = `Progres Obat: ${p.nama}`;
+      $("#hero-sub-txt").textContent = `${finished} dari ${total} obat selesai diberikan`;
+
+      $("#doses-container").innerHTML = patientDoses.map(x => `
+        <div class="list-item-app">
+          <div>
+            <b style="font-size:13px; color:#0f172a; display:block;">${esc(x.m.nama)} <span style="font-size:10px; color:var(--primary); background:#e0f2fe; padding:2px 6px; border-radius:4px;">${x.shiftName}</span></b>
+            <small style="color:#64748b; font-size:11px;">Rencana: ${esc(p.rc || 'Rutinitas ruang rawat')}</small>
+          </div>
+          <button class="badge-status ${x.done ? 'bg-ok' : 'bg-wt'}" style="border:0; cursor:pointer;" onclick="toggleDose('${p.id}', '${x.m.id}', '${x.shiftName}')">
+            ${x.done ? '✓ Selesai' : '⏳ Menunggu'}
+          </button>
+        </div>
+      `).join("") || `<div style="color:#64748b; font-size:12px; text-align:center; padding:16px;">Belum ada daftar obat untuk pasien ini.</div>`;
+
+    } else {
+      $("#active-patient-name").textContent = "Pilih salah satu pasien di atas";
+      $("#patient-action-buttons").style.display = "none";
+      $("#prog-txt").textContent = "0%";
+      $("#hero-title").textContent = "Progres Obat Pasien";
+      $("#hero-sub-txt").textContent = "Belum ada pasien yang dipilih";
+      $("#doses-container").innerHTML = `<div style="color:#64748b; font-size:12px; text-align:center; padding:16px;">Klik kartu pasien di atas untuk melihat jadwal obat.</div>`;
+    }
   }
 }
 
-function toggleDose(pId, mId, s) {
+function toggleDose(pId, mId, shiftName) {
   const p = data.find(x => x.id === pId);
   if (!p) return;
   const m = (p.obat || []).find(x => x.id === mId);
   if (!m) return;
   m.done = m.done || {};
-  m.done[s] = m.done[s] ? "" : new Date().toISOString();
+  m.done[shiftName] = m.done[shiftName] ? "" : new Date().toISOString();
   persist();
   render();
+}
+
+function toggleShiftDose(pId, mId, shiftName) {
+  toggleDose(pId, mId, shiftName);
 }
 
 function scrollToJadwal() {
   $("#panel-jadwal").scrollIntoView({ behavior: 'smooth' });
 }
 
-function openPasienModal() {
-  $("#p-nama").value = "";
-  $("#p-kamar").value = "";
-  $("#p-dokter").value = "";
-  $("#p-obat").value = "";
-  $("#p-rc").value = "";
+function openPasienModal(isEdit = false) {
+  $("#modal-patient-title").textContent = isEdit ? "Edit Data Pasien" : "Tambah Pasien Baru";
+  if (!isEdit) {
+    $("#p-edit-id").value = "";
+    $("#p-nama").value = "";
+    $("#p-kamar").value = "";
+    $("#p-dokter").value = "";
+    $("#p-obat").value = "";
+    $("#p-rc").value = "";
+  }
   $("#dlg-pasien").showModal();
+}
+
+function editCurrentPatient() {
+  const p = data.find(x => x.id === selectedPatientId);
+  if (!p) return;
+  $("#p-edit-id").value = p.id;
+  $("#p-nama").value = p.nama || "";
+  $("#p-kamar").value = p.kamar || "";
+  $("#p-dokter").value = p.dokter || "";
+  $("#p-rc").value = p.rc || "";
+  
+  // Format obat kembali ke string input
+  const obatStr = (p.obat || []).map(o => `${o.nama} [${o.shift || 'Pagi'}]`).join(", ");
+  $("#p-obat").value = obatStr;
+
+  openPasienModal(true);
+}
+
+function deleteCurrentPatient() {
+  const p = data.find(x => x.id === selectedPatientId);
+  if (!p) return;
+  if (confirm(`Hapus data pasien ${p.nama} dari sistem?`)) {
+    data = data.filter(x => x.id !== selectedPatientId);
+    selectedPatientId = data.length > 0 ? data[0].id : null;
+    persist();
+    render();
+    alert("Pasien berhasil dihapus.");
+  }
 }
 
 $("#f-pasien").onsubmit = e => {
   e.preventDefault();
+  const editId = $("#p-edit-id").value;
   const obatStr = $("#p-obat").value.trim();
+  
+  // Parsing nama obat dan shift (Contoh: Ranitidin [Pagi], Cefotaxime [Malam])
   const obatArr = obatStr ? obatStr.split(',').map(o => {
-    let nama = o.trim();
-    let jam = ["08:00", "16:00"];
-    const match = nama.match(/\(([^)]+)\)/);
+    let raw = o.trim();
+    let shift = 'Pagi';
+    let nama = raw;
+    const match = raw.match(/\[(.*?)\]/);
     if (match) {
-      jam = [match[1]];
+      shift = match[1].trim();
+      nama = raw.replace(/\[.*?\]/, '').trim();
     }
     return {
       id: uid(),
       nama: nama,
-      dosis: 'Standard',
-      jam: jam,
+      shift: shift,
       done: {}
     };
   }) : [];
 
-  const newP = {
-    id: uid(),
-    nama: $("#p-nama").value.trim(),
-    kamar: $("#p-kamar").value.trim(),
-    dokter: $("#p-dokter").value.trim(),
-    rc: $("#p-rc").value.trim(),
-    obat: obatArr
-  };
-  data.push(newP);
-  selectedPatientId = newP.id;
+  if (editId) {
+    // Proses Edit Pasien
+    const p = data.find(x => x.id === editId);
+    if (p) {
+      p.nama = $("#p-nama").value.trim();
+      p.kamar = $("#p-kamar").value.trim();
+      p.dokter = $("#p-dokter").value.trim();
+      p.rc = $("#p-rc").value.trim();
+      p.obat = obatArr;
+    }
+  } else {
+    // Proses Tambah Pasien Baru
+    const newP = {
+      id: uid(),
+      nama: $("#p-nama").value.trim(),
+      kamar: $("#p-kamar").value.trim(),
+      dokter: $("#p-dokter").value.trim(),
+      rc: $("#p-rc").value.trim(),
+      obat: obatArr
+    };
+    data.push(newP);
+    selectedPatientId = newP.id;
+  }
+
   persist();
   render();
   $("#dlg-pasien").close();
