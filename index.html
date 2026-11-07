@@ -129,7 +129,8 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px soli
     <section class="panel" id="pasien"><div class="ph"><h2>Daftar Pasien</h2><small>Ketuk pensil untuk ubah</small></div><div class="lst" id="pts"></div></section>
   </div>
   <div class="r2 b">
-    <section class="panel" id="ttv"><div class="ph"><h2>TTV Perlu Perhatian</h2></div><div id="abn"></div></section>
+    <!-- Panel Daftar TTV Pasien Terbaru (Menggantikan TTV Perlu Perhatian) -->
+    <section class="panel" id="ttv"><div class="ph"><h2>📋 Daftar TTV Pasien Terakhir</h2><small>Pengukuran TTV terbaru tiap pasien</small></div><div class="lst" id="ttv-list"></div></section>
     <section class="panel" id="inj"><div class="ph"><h2>Obat Injeksi per Hari</h2></div><div id="injs"></div></section>
   </div>
   <!-- Panel Riwayat TTV Lengkap -->
@@ -167,11 +168,11 @@ const ic=n=>`<svg class="i" viewBox="0 0 24 24" aria-hidden="true">${P[n]}</svg>
 const $=s=>document.querySelector(s),esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const KEY="catatan-obat-v1",uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6),p2=n=>String(n).padStart(2,"0");
 let data=[],tab="",pf="",editId=null,askCb=null;
-const expandedPatients={}; // Menyimpan status terbuka/tertutup accordion pasien di jadwal
+const expandedPatients={};
 const nowStr=()=>{const d=new Date();return `${d.getFullYear()}-${p2(d.getMonth()+1)}-${p2(d.getDate())}T${p2(d.getHours())}:${p2(d.getMinutes())}`};
 const isToday=v=>typeof v==="string"&&v.slice(0,10)===nowStr().slice(0,10),fmt=v=>typeof v==="string"&&v.length>=16?v.slice(11,16):"";
 const toMin=t=>{const a=(t||"").split(":");return a.length<2?0:+a[0]*60+ +a[1]},tm=s=>{const t=toMin(s);return t<360?t+1440:t},nowMin=()=>{const d=new Date();return d.getHours()*60+d.getMinutes()};
-const JD={Injeksi:[["Pagi",["09:00"]],["Siang",["17:00","21:00"]],["Malam",["01:00"]]],Oral:[["Pagi",["07:00","12:00","15:00"]],["Sore",["19:00"]],["Malam",["23:00"]]]};
+const JD={Injeksi:[["Pagi",["09:00"]],["Siang",["17:00","21:00"]],["Malam",["01:00"]]] ,Oral:[["Pagi",["07:00","12:00","15:00"]],["Sore",["19:00"]],["Malam",["23:00"]]]};
 const bt=s=>{const t=toMin(s);return t>=360&&t<720?"Pagi":t>=720&&t<1080?"Siang":"Malam"};
 const grp=(r,s)=>{let g="";(JD[r||"Oral"]||[]).forEach(x=>{if(x[1].includes(s))g=x[0]});return g||bt(s)};
 const shift=(m,s)=>(m.rute||"Oral")==="Oral"&&s==="07:00"?"Malam":(g=>g==="Sore"?"Siang":g)(grp(m.rute,s));
@@ -229,7 +230,7 @@ function render(){
  const cnt={Pagi:0,Siang:0,Malam:0};all.forEach(x=>{if(!x.dn)cnt[x.sh]++});
  $("#tabs").innerHTML=[["","Semua",all.length],["Pagi","Pagi",cnt.Pagi],["Siang","Siang",cnt.Siang],["Malam","Malam",cnt.Malam]].map(c=>`<button class="${tab==c[0]?"on":""}" data-f="${c[0]}">${c[1]} (${c[2]})</button>`).join("");
  
- // RENDER JADWAL OBAT (DIKELOMPOKKAN PER PASIEN DENGAN ACCORDION)
+ // RENDER JADWAL OBAT (DIKELOMPOKKAN PER PASIEN)
  const filteredPatients = data.filter(hit).sort(byRoom);
  const jadwalContainer = $("#doses");
  
@@ -238,7 +239,6 @@ function render(){
  } else {
    let html = "";
    filteredPatients.forEach(p => {
-     // Ambil obat pasien dan saring berdasarkan shift tab aktif jika ada
      const pDoses = [];
      (p.obat||[]).forEach(m=>(m.jam||[]).forEach(s=>{
        const dn=isToday(m.done&&m.done[s]);
@@ -248,7 +248,7 @@ function render(){
        }
      }));
      
-     if(tab && pDoses.length === 0) return; // Lewati jika tab shift tidak ada obat untuk pasien ini
+     if(tab && pDoses.length === 0) return;
      
      const isExpanded = !!expandedPatients[p.id];
      const totalObatPasien = (p.obat||[]).length;
@@ -284,6 +284,21 @@ function render(){
 
  $("#pts").innerHTML=data.filter(hit).sort(byRoom).map(p=>{const a=Object.keys(abn(p)).length,has=p.td||p.nd||p.rr||p.sh||p.sp;return `<div class="it"><div class="tl">${esc(p.kamar)}</div><div class="tx"><b>${esc(p.nama)}</b><small>${esc(p.dokter)} · ${(p.obat||[]).length} obat</small>${p.rc?`<small>Tindakan: ${esc(p.rc)}</small>`:""}</div>${has?`<span class="pill ${a?"lt":"ok"}">${a?"Perhatian":"Normal"}</span>`:""}<button class="rb" data-e="${p.id}" aria-label="Ubah ${esc(p.nama)}">${ic("edit")}</button></div>`}).join("")||`<div class="empty">${data.length?"Tidak ada pasien yang cocok.":"Belum ada pasien."}</div>`;
  
+ // RENDER DAFTAR TTV PASIEN TERAKHIR (MENGGANTIKAN TTV PERLU PERHATIAN)
+ const ttvCurrentContainer = $("#ttv-list");
+ const activeTTVs = data.filter(p => p.td || p.nd || p.rr || p.sh || p.sp).sort(byRoom);
+ ttvCurrentContainer.innerHTML = activeTTVs.map(p => {
+   const a = Object.keys(abn(p)).length;
+   return `<div class="it">
+     <div class="tl">${esc(p.kamar)}</div>
+     <div class="tx">
+       <b>${esc(p.nama)}</b>
+       <small>TD: <b>${esc(p.td||'-')}</b> | Nadi: <b>${esc(p.nd||'-')}</b> | RR: <b>${esc(p.rr||'-')}</b> | Suhu: <b>${esc(p.sh||'-')}°C</b> | SpO₂: <b>${esc(p.sp||'-')}%</b></small>
+     </div>
+     <span class="pill ${a ? "lt" : "ok"}">${a ? "Perhatian" : "Normal"}</span>
+   </div>`;
+ }).join("") || `<div class="empty">Belum ada TTV pasien yang dicatat. Gunakan tombol "Input TTV".</div>`;
+
  // RENDER RIWAYAT TTV LENGKAP
  const ttvContainer = $("#history-ttv-list");
  let ttvHtml = "";
@@ -315,8 +330,6 @@ function render(){
  const S={};all.forEach(x=>{const k=S[x.s]=S[x.s]||{t:0,g:0};k.t++;if(x.dn)k.g++});
  const SK=Object.keys(S).sort((a,b)=>tm(a)-tm(b)),mx=Math.max(1,...SK.map(k=>S[k].t));
  $("#bars").innerHTML=SK.map((k,i)=>`<div class="bc" title="${k}: ${S[k].g} dari ${S[k].t} diberikan"><small>${S[k].g}/${S[k].t}</small><i style="height:${S[k].t/mx*120}px;background:${COL[i%6]}"></i><span>${k}</span></div>`).join("")||`<div class="empty">Belum ada jadwal obat.</div>`;
- const AB=data.map(p=>({p,a:Object.values(abn(p))})).filter(x=>x.a.length).sort((x,y)=>byRoom(x.p,y.p));
- $("#abn").innerHTML=AB.map(x=>`<div class="it"><div class="tl" style="background:linear-gradient(145deg,#f7899b,#e8607a)">${esc(x.p.kamar)}</div><div class="tx"><b>${esc(x.p.nama)}</b><small>${x.a.map(esc).join(", ")}</small></div></div>`).join("")||`<div class="empty">${data.some(p=>p.td||p.nd||p.sh)?"Semua TTV terakhir dalam batas normal.":"Belum ada TTV yang dicatat."}</div>`;
  const I={};data.forEach(p=>(p.obat||[]).filter(m=>m.rute==="Injeksi").forEach(m=>{const k=String(m.nama).trim().toLowerCase();I[k]=I[k]||{n:String(m.nama).trim(),c:0};I[k].c+=(m.jam||[]).length}));
  const IK=Object.values(I).sort((a,b)=>b.c-a.c).slice(0,6),mi=IK[0]?IK[0].c:1;
  $("#injs").innerHTML=IK.map((k,i)=>`<div class="cat"><div>${esc(k.n)}<span>${k.c}×</span></div><div class="bar"><i style="width:${k.c/mi*100}%;background:${COL[i%6]}"></i></div></div>`).join("")||`<div class="empty">Belum ada obat injeksi.</div>`}
