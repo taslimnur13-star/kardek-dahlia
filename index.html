@@ -6,8 +6,8 @@
 <title>Catatan Obat – R. Dahlia</title>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#f4f4f8;--cd:#fff;--tx:#1f1d2e;--mu:#8c8aa3;--ln:#ececf3;--ac:#7f6fe0;--acl:#dcd8fa;--on:#fff;--ok:#2e8f5a;--okb:#d9f3e2;--wt:#a86f00;--wb:#fdefc4;--lt:#d23f57;--ltb:#fddde1;--sh:0 6px 18px rgba(80,70,140,.1);color-scheme:light}
-@media(prefers-color-scheme:dark){:root{--bg:#14131c;--cd:#211f2e;--tx:#f1f0fa;--mu:#a09eb8;--ln:#302e42;--ac:#a99cf5;--acl:#3a3560;--on:#1b1630;--ok:#6fe0a0;--okb:#1c4332;--wt:#f3c45a;--wb:#4a3f1c;--lt:#ff8fa2;--ltb:#522a37;--sh:0 6px 18px rgba(0,0,0,.4);color-scheme:dark}}
+:root{--bg:#f4f4f8;--cd:#fff;--tx:#1f1d2e;--mu:#8c8aa3;--ln:#ececf3;--ac:#7f6fe0;--acl:#dcd8fa;--on:#fff;--tb:#fde6d2;--tc:#b45309;--pn:#0f766e;--ok:#2e8f5a;--okb:#d9f3e2;--wt:#a86f00;--wb:#fdefc4;--lt:#d23f57;--ltb:#fddde1;--sh:0 6px 18px rgba(80,70,140,.1);color-scheme:light}
+@media(prefers-color-scheme:dark){:root{--bg:#14131c;--cd:#211f2e;--tx:#f1f0fa;--mu:#a09eb8;--ln:#302e42;--ac:#a99cf5;--acl:#3a3560;--on:#1b1630;--tb:#4a3524;--tc:#ffb680;--pn:#5eead4;--ok:#6fe0a0;--okb:#1c4332;--wt:#f3c45a;--wb:#4a3f1c;--lt:#ff8fa2;--ltb:#522a37;--sh:0 6px 18px rgba(0,0,0,.4);color-scheme:dark}}
 *{box-sizing:border-box;margin:0}
 html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--tx);font:14px/1.45 Manrope,system-ui,-apple-system,"Segoe UI",sans-serif;max-width:460px;margin:0 auto;padding:calc(14px + env(safe-area-inset-top,0px)) 16px calc(110px + env(safe-area-inset-bottom,0px))}
@@ -32,7 +32,7 @@ h2{font-size:16px;font-weight:800;margin:6px 2px 10px}
 .pn{background:var(--cd);border-radius:22px;padding:4px 14px;box-shadow:var(--sh);margin-bottom:14px}
 .it{display:flex;align-items:center;gap:10px;padding:10px 0;border-top:1px solid var(--ln)}.it:first-child{border-top:0}
 .tl{min-width:46px;height:46px;padding:0 5px;border-radius:15px;display:grid;place-items:center;font-weight:800;font-size:12.5px;background:var(--acl);color:var(--ac);flex:none}
-.tx{flex:1;min-width:0}.tx b{display:block;font-size:13.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.tx small{color:var(--mu);font-size:11.5px;display:block}
+.tl.tm{background:var(--tb);color:var(--tc)}.nm{color:var(--pn)}.tx{flex:1;min-width:0}.tx b{display:block;font-size:13.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.tx small{color:var(--mu);font-size:11.5px;display:block}
 .dn{opacity:.55}
 .pill{padding:3px 10px;border-radius:99px;font-size:11px;font-weight:800;white-space:nowrap}.ok{background:var(--okb);color:var(--ok)}.wt{background:var(--wb);color:var(--wt)}.lt{background:var(--ltb);color:var(--lt)}
 .rb{width:38px;height:38px;border-radius:50%;background:var(--acl);color:var(--ac);display:grid;place-items:center;font-size:17px;flex:none}
@@ -118,7 +118,7 @@ async function loadFromCloud(){
 }
 
 function doses(){const o=[];data.forEach(p=>(p.obat||[]).forEach(m=>(m.jam||[]).forEach(s=>{const dn=isToday(m.done&&m.done[s]);o.push({p,m,s,dn,late:!dn&&nowMin()>tm(s)+60,sh:shift(m,s)})})));return o.sort((a,b)=>tm(a.s)-tm(b.s))}
-const dr=(x,sp)=>{const{p,m,s,dn,late,sh}=x;return `<div class="it${dn?" dn":""}"><div class="tl">${s}</div><div class="tx"><b>${esc(m.nama)} ${esc(m.dosis)}</b><small>${sp?esc(p.nama)+" · Kamar "+esc(p.kamar)+" · ":""}${esc(m.rute||"Oral")} · ${sh}${dn?" · "+fmt(m.done[s]):""}</small></div><span class="pill ${dn?"ok":late?"lt":"wt"}">${dn?"Selesai":late?"Terlambat":"Menunggu"}</span><button class="rb" data-t="${p.id}|${m.id}|${s}" aria-label="${dn?"Batalkan":"Tandai diberikan"}: ${esc(m.nama)}">${ic(dn?"undo":"check")}</button></div>`};
+const dr=(x,sp)=>{const{p,m,s,dn,late,sh}=x;return `<div class="it${dn?" dn":""}"><div class="tl tm">${s}</div><div class="tx"><b>${esc(m.nama)} ${esc(m.dosis)}</b><small>${sp?'<span class="nm">'+esc(p.nama)+"</span> · Kamar "+esc(p.kamar)+" · ":""}${esc(m.rute||"Oral")} · ${sh}${dn?" · "+fmt(m.done[s]):""}</small></div><span class="pill ${dn?"ok":late?"lt":"wt"}">${dn?"Selesai":late?"Terlambat":"Menunggu"}</span><button class="rb" data-t="${p.id}|${m.id}|${s}" aria-label="${dn?"Batalkan":"Tandai diberikan"}: ${esc(m.nama)}">${ic(dn?"undo":"check")}</button></div>`};
 const tabs=(arr,k,cur)=>`<div class="tabs">${arr.map(c=>`<button class="${cur==c[0]?"on":""}" data-${k}="${esc(c[0])}">${c[1]}</button>`).join("")}</div>`;
 
 function chart(h){const d=h.filter(x=>+x.nd).slice(-12);if(d.length<2)return'<div class="empty">Grafik nadi tampil setelah 2 kali input TTV.</div>';
@@ -136,10 +136,10 @@ home(a,G,L,W){const pc=a.length?Math.round(G/a.length*100):0,nx=a.filter(x=>!x.d
  <button class="btn wide" data-q="bk">Cadangkan / pulihkan data</button>`},
 obat(a){const c={Pagi:0,Siang:0,Malam:0};a.forEach(x=>{if(!x.dn)c[x.sh]++});
  const h=data.filter(hit).sort(byRoom).map(p=>{const ds=a.filter(x=>x.p===p&&(!tab||x.sh===tab));if(tab&&!ds.length)return"";
- return `<div class="pt${expanded[p.id]?" ex":""}"><button class="ph" data-tp="${p.id}"><div class="tl">${esc(p.kamar)}</div><div class="tx"><b>${esc(p.nama)}</b><small>${esc(p.dokter)} · ${ds.filter(x=>x.dn).length}/${ds.length} jadwal</small></div><span class="ch">${ic("chev")}</span></button><div class="pb">${ds.map(x=>dr(x)).join("")||'<div class="empty">Tidak ada jadwal.</div>'}</div></div>`}).join("");
+ return `<div class="pt${expanded[p.id]?" ex":""}"><button class="ph" data-tp="${p.id}"><div class="tl">${esc(p.kamar)}</div><div class="tx"><b class="nm">${esc(p.nama)}</b><small>${esc(p.dokter)} · ${ds.filter(x=>x.dn).length}/${ds.length} jadwal</small></div><span class="ch">${ic("chev")}</span></button><div class="pb">${ds.map(x=>dr(x)).join("")||'<div class="empty">Tidak ada jadwal.</div>'}</div></div>`}).join("");
  return `<h2>Jadwal obat hari ini</h2>${tabs([["","Semua ("+a.length+")"],["Pagi","Pagi ("+c.Pagi+")"],["Siang","Siang ("+c.Siang+")"],["Malam","Malam ("+c.Malam+")"]],"f",tab)}<div class="pn">${h||`<div class="empty">${data.length?"Tidak ada jadwal yang cocok.":"Belum ada pasien. Tambah pasien atau pulihkan data."}</div>`}</div>`},
 pasien(){const np=data.filter(p=>p.rc).length,L=data.filter(hit).sort(byRoom).map(p=>{const a=Object.keys(abn(p)).length,has=p.td||p.nd||p.rr||p.sh||p.sp;
- return `<div class="it"><div class="tl">${esc(p.kamar)}</div><div class="tx"><b>${esc(p.nama)}</b><small>${esc(p.dokter)} · ${(p.obat||[]).length} obat</small>${p.rc?`<small>Tindakan: ${esc(p.rc)}</small>`:""}</div>${has?`<span class="pill ${a?"lt":"ok"}">${a?"Perhatian":"Normal"}</span>`:""}<button class="rb" data-e="${p.id}" aria-label="Ubah ${esc(p.nama)}">${ic("edit")}</button></div>`}).join("");
+ return `<div class="it"><div class="tl">${esc(p.kamar)}</div><div class="tx"><b class="nm">${esc(p.nama)}</b><small>${esc(p.dokter)} · ${(p.obat||[]).length} obat</small>${p.rc?`<small>Tindakan: ${esc(p.rc)}</small>`:""}</div>${has?`<span class="pill ${a?"lt":"ok"}">${a?"Perhatian":"Normal"}</span>`:""}<button class="rb" data-e="${p.id}" aria-label="Ubah ${esc(p.nama)}">${ic("edit")}</button></div>`}).join("");
  return `<h2>Daftar pasien</h2><button class="btn pri wide" data-q="add">Tambah pasien</button>${tabs([["","Semua ("+data.length+")"],["ada","Ada tindakan ("+np+")"],["tanpa","Belum ada ("+(data.length-np)+")"]],"p",pf)}<div class="pn">${L||'<div class="empty">Belum ada pasien yang cocok.</div>'}</div>`},
 ttv(){const ps=data.slice().sort(byRoom);if(!sel||!ps.find(x=>x.id===sel))sel=(ps[0]||{}).id;const p=ps.find(x=>x.id===sel);
  if(!p)return `<h2>TTV</h2><div class="pn"><div class="empty">Belum ada pasien. Tambah pasien lebih dulu.</div></div>`;
