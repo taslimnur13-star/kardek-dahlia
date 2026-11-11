@@ -82,22 +82,21 @@ input:not([type=checkbox]),select,textarea{font:inherit;color:var(--tx);backgrou
 <dialog id="cdlg"><p id="cm" style="margin-bottom:6px"></p><div class="row"><button class="btn" data-x>Batal</button><button class="btn pri" id="cy" style="background:#dc2626;color:#fff">Ya, lanjutkan</button></div></dialog>
 
 <script>
-// URL Google Apps Script yang terhubung ke Google Sheet
 const GAS_URL = "https://script.google.com/macros/s/AKfycbyQRjgf7Et79WLd_UN5TO3WA8WWBjsTBWbIkh3L6tB8nDvEiGesAlkOo9xny0n1B0Rw/exec";
 
 const P={search:'<circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/>',bell:'<path d="M6 16V11a6 6 0 0112 0v5l2 2H4z"/><path d="M10 21h4"/>',plus:'<path d="M12 5v14M5 12h14"/>',chev:'<path d="M9 6l6 6-6 6"/>',home:'<path d="M3 11l9-8 9 8v9H3z"/>',users:'<circle cx="9" cy="8" r="3.5"/><path d="M2 20c0-4 3-6 7-6s7 2 7 6M17 5a3.5 3.5 0 010 7M22 20c0-3-2-5-5-5.5"/>',heart:'<path d="M12 20s-8-5-8-11a4.5 4.5 0 018-2.5A4.5 4.5 0 0120 9c0 6-8 11-8 11z"/>',syr:'<path d="M18 3l3 3-3 3M15 6l-9 9v3h3l9-9M3 21l3-3"/>',check:'<path d="M5 12l5 5 9-10"/>',pill:'<rect x="3" y="9" width="18" height="6" rx="3" transform="rotate(-35 12 12)"/><path d="M9 8l6 8"/>',undo:'<path d="M9 14L4 9l5-5M4 9h10a6 6 0 010 12h-3"/>',edit:'<path d="M4 20h4L19 9l-4-4L4 16z"/>',arr:'<path d="M5 12h14M13 6l6 6-6 6"/>',drop:'<path d="M12 3s6 6.5 6 11a6 6 0 01-12 0c0-4.5 6-11 6-11z"/>',calc:'<rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 7h8M8 12h.1M12 12h.1M16 12h.1M8 16h.1M12 16h.1M16 16h.1"/>'};
 const ic=n=>`<svg class="i" viewBox="0 0 24 24" aria-hidden="true">${P[n]}</svg>`;
-const $=s=>document.querySelector(s),esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const $=s=>document.querySelector(s),esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&","<":"<",">":">",'"':"""}[c]));
 const KEY="catatan-obat-v1",uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6),p2=n=>String(n).padStart(2,"0");
 let data=[],tab="",pf="",view="home",sel="",editId=null,askCb=null;
 const expT={},expanded={},COL=["#a592e6","#f7a8b6","#f9b85a","#f6dc7a","#a5d8a0","#93b9ee"];
 const nowStr=()=>{const d=new Date();return `${d.getFullYear()}-${p2(d.getMonth()+1)}-${p2(d.getDate())}T${p2(d.getHours())}:${p2(d.getMinutes())}`};
 const isToday=v=>typeof v==="string"&&v.slice(0,10)===nowStr().slice(0,10),fmt=v=>typeof v==="string"&&v.length>=16?v.slice(11,16):"";
 const toMin=t=>{const a=(t||"").split(":");return a.length<2?0:+a[0]*60+ +a[1]},tm=s=>{const t=toMin(s);return t<360?t+1440:t},nowMin=()=>{const d=new Date();return d.getHours()*60+d.getMinutes()};
-const JD={Injeksi:[["Pagi",["09:00"]],["Siang",["17:00","21:00"]],["Malam",["01:00"]]],Oral:[["Pagi",["07:00","12:00","15:00"]],["Sore",["19:00"]],["Malam",["23:00"]]]};
-const bt=s=>{const t=toMin(s);return t>=360&&t<720?"Pagi":t>=720&&t<1080?"Siang":"Malam"};
-const grp=(r,s)=>{let g="";(JD[r||"Oral"]||[]).forEach(x=>{if(x[1].includes(s))g=x[0]});return g||bt(s)};
-const shift=(m,s)=>(m.rute||"Oral")==="Oral"&&s==="07:00"?"Malam":(g=>g==="Sore"?"Siang":g)(grp(m.rute,s));
+const JD={Injeksi:[["Pagi",["09:00"]],["Siang",["17:00","21:00"]],["Malam",["01:00"]],["K/P",["K/P"]]],Oral:[["Pagi",["07:00","12:00","15:00"]],["Sore",["19:00"]],["Malam",["23:00"]]]};
+const bt=s=>{if(s==="K/P")return"K/P";const t=toMin(s);return t>=360&&t<720?"Pagi":t>=720&&t<1080?"Siang":"Malam"};
+const grp=(r,s)=>{if(s==="K/P")return"K/P";let g="";(JD[r||"Oral"]||[]).forEach(x=>{if(x[1].includes(s))g=x[0]});return g||bt(s)};
+const shift=(m,s)=>{if(s==="K/P")return"K/P";return(m.rute||"Oral")==="Oral"&&s==="07:00"?"Malam":(g=>g==="Sore"?"Siang":g)(grp(m.rute,s))};
 function abn(p){const a={},s=(p.td||"").split("/");if(s.length==2&&(+s[0]>=140||+s[0]<90||+s[1]>=90))a.td=1;if(p.nd&&(p.nd>100||p.nd<60))a.nd=1;if(p.rr&&(p.rr>24||p.rr<12))a.rr=1;if(p.sh&&(p.sh>=37.5||p.sh<36))a.sh=1;if(p.sp&&p.sp<95)a.sp=1;return a}
 const ROOMS=[...Array.from({length:12},(_,i)=>"K-"+(i+1)),"ISO-A","ISO-B"],
 normRoom=v=>{v=String(v??"").trim();let m=v.match(/^k\s*-?\s*(\d{1,2})$/i);if(m&&+m[1]>=1&&+m[1]<=12)return"K-"+ +m[1];m=v.match(/^iso\s*-?\s*([ab])$/i);return m?"ISO-"+m[1].toUpperCase():v},
@@ -105,7 +104,6 @@ byRoom=(a,b)=>{const i=ROOMS.indexOf(a.kamar),j=ROOMS.indexOf(b.kamar);return(i<
 function toast(t){const e=document.createElement("div");e.className="toast";e.textContent=t;e.setAttribute("role","status");document.body.appendChild(e);setTimeout(()=>e.remove(),2200)}
 function ask(msg,cb){$("#cm").textContent=msg;askCb=cb;$("#cdlg").showModal()}
 
-// SINKRONISASI KE GOOGLE SHEETS (CLOUD)
 async function persist(){
   try{localStorage.setItem(KEY,JSON.stringify(data))}catch(e){}
   if(!GAS_URL||GAS_URL.includes("ISI_URL_GOOGLE_APPS_SCRIPT"))return;
@@ -119,8 +117,24 @@ async function loadFromCloud(){
   }catch(e){console.error("Gagal membaca Cloud Data:",e)}
 }
 
-function doses(){const o=[];data.forEach(p=>(p.obat||[]).forEach(m=>(m.jam||[]).forEach(s=>{const dn=isToday(m.done&&m.done[s]);o.push({p,m,s,dn,late:!dn&&nowMin()>tm(s)+60,sh:shift(m,s)})})));return o.sort((a,b)=>tm(a.s)-tm(b.s))}
-const dr=(x,sp)=>{const{p,m,s,dn,late,sh}=x;return `<div class="it${dn?" dn":""}"><div class="tl tm">${s}</div><div class="tx"><b>${esc(m.nama)} ${esc(m.dosis)}</b><small>${sp?'<span class="nm">'+esc(p.nama)+"</span> · Kamar "+esc(p.kamar)+" · ":""}${esc(m.rute||"Oral")} · ${sh}${dn?" · "+fmt(m.done[s]):""}</small></div><span class="pill ${dn?"ok":late?"lt":"wt"}">${dn?"Selesai":late?"Terlambat":"Menunggu"}</span><button class="rb" data-t="${p.id}|${m.id}|${s}" aria-label="${dn?"Batalkan":"Tandai diberikan"}: ${esc(m.nama)}">${ic(dn?"undo":"check")}</button></div>`};
+function doses(){
+  const o=[];
+  data.forEach(p=>(p.obat||[]).forEach(m=>{
+    const jams=(m.jam&&m.jam.length)?m.jam:["Kontinyu"];
+    jams.forEach(s=>{
+      const dn=isToday(m.done&&m.done[s]);
+      const isKp=(s==="K/P"||s==="Kontinyu");
+      o.push({p,m,s,dn,late:!dn&&!isKp&&nowMin()>tm(s)+60,sh:shift(m,s)});
+    });
+  }));
+  return o.sort((a,b)=>tm(a.s)-tm(b.s));
+}
+
+const dr=(x,sp)=>{
+  const{p,m,s,dn,late,sh}=x;
+  const isSpecial=(s==="K/P"||s==="Kontinyu");
+  return `<div class="it${dn?" dn":""}"><div class="tl tm">${s}</div><div class="tx"><b>${esc(m.nama)} ${esc(m.dosis)}</b><small>${sp?'<span class="nm">'+esc(p.nama)+"</span> · Kamar "+esc(p.kamar)+" · ":""}${esc(m.rute||"Oral")} · ${sh}${dn?" · "+fmt(m.done[s]):""}</small></div><span class="pill ${dn?"ok":(!isSpecial&&late?"lt":"wt")}">${dn?"Selesai":(!isSpecial&&late?"Terlambat":"Menunggu")}</span><button class="rb" data-t="${p.id}|${m.id}|${s}" aria-label="${dn?"Batalkan":"Tandai diberikan"}: ${esc(m.nama)}">${ic(dn?"undo":"check")}</button></div>`;
+};
 const tabs=(arr,k,cur)=>`<div class="tabs">${arr.map(c=>`<button class="${cur==c[0]?"on":""}" data-${k}="${esc(c[0])}">${c[1]}</button>`).join("")}</div>`;
 
 function chart(h){const d=h.filter(x=>+x.nd).slice(-12);if(d.length<2)return'<div class="empty">Grafik nadi tampil setelah 2 kali input TTV.</div>';
@@ -136,10 +150,10 @@ home(a,G,L,W){const pc=a.length?Math.round(G/a.length*100):0,nx=a.filter(x=>!x.d
  <div class="gr">${T.map(t=>`<button class="cd ${t[0]}" data-go="${t[2]}"><div class="ct"><b>${t[1]}</b></div><p>${t[3]}</p><div class="go"><span>${t[4]}</span>${ic("arr")}</div></button>`).join("")}</div>
  <h2>Jadwal berikutnya</h2><div class="pn">${nx.map(x=>dr(x,1)).join("")||'<div class="empty">Semua jadwal hari ini sudah diberikan.</div>'}</div>
  <button class="btn wide" data-q="bk">Cadangkan / pulihkan data</button>`},
-obat(a){const c={Pagi:0,Siang:0,Malam:0};a.forEach(x=>{if(!x.dn)c[x.sh]++});
+obat(a){const c={Pagi:0,Siang:0,Malam:0,"K/P":0,Kontinyu:0};a.forEach(x=>{if(!x.dn)c[x.sh]=(c[x.sh]||0)+1});
  const h=data.filter(hit).sort(byRoom).map(p=>{const ds=a.filter(x=>x.p===p&&(!tab||x.sh===tab));if(tab&&!ds.length)return"";
  return `<div class="pt${expanded[p.id]?" ex":""}"><button class="ph" data-tp="${p.id}"><div class="tl">${esc(p.kamar)}</div><div class="tx"><b class="nm">${esc(p.nama)}</b><small>${esc(p.dokter)} · ${ds.filter(x=>x.dn).length}/${ds.length} jadwal</small></div><span class="ch">${ic("chev")}</span></button><div class="pb">${ds.map(x=>dr(x)).join("")||'<div class="empty">Tidak ada jadwal.</div>'}</div></div>`}).join("");
- return `<h2>Jadwal obat hari ini</h2>${tabs([["","Semua ("+a.length+")"],["Pagi","Pagi ("+c.Pagi+")"],["Siang","Siang ("+c.Siang+")"],["Malam","Malam ("+c.Malam+")"]],"f",tab)}<div class="pn">${h||`<div class="empty">${data.length?"Tidak ada jadwal yang cocok.":"Belum ada pasien. Tambah pasien atau pulihkan data."}</div>`}</div>`},
+ return `<h2>Jadwal obat hari ini</h2>${tabs([["","Semua ("+a.length+")"],["Pagi","Pagi ("+(c.Pagi||0)+")"],["Siang","Siang ("+(c.Siang||0)+")"],["Malam","Malam ("+(c.Malam||0)+")"],["K/P","K/P ("+(c["K/P"]||0)+")"],["Kontinyu","Kontinyu ("+(c.Kontinyu||0)+")"]],"f",tab)}<div class="pn">${h||`<div class="empty">${data.length?"Tidak ada jadwal yang cocok.":"Belum ada pasien. Tambah pasien atau pulihkan data."}</div>`}</div>`},
 pasien(){const np=data.filter(p=>p.rc).length,L=data.filter(hit).sort(byRoom).map(p=>{const a=Object.keys(abn(p)).length,has=p.td||p.nd||p.rr||p.sh||p.sp;
  return `<div class="it"><div class="tl">${esc(p.kamar)}</div><div class="tx"><b class="nm">${esc(p.nama)}</b><small>${esc(p.dokter)} · ${(p.obat||[]).length} obat</small>${p.rc?`<small class="rc">Tindakan: ${esc(p.rc)}</small>`:""}</div>${has?`<span class="pill ${a?"lt":"ok"}">${a?"Perhatian":"Normal"}</span>`:""}<button class="rb" data-e="${p.id}" aria-label="Ubah ${esc(p.nama)}">${ic("edit")}</button></div>`}).join("");
  return `<h2>Daftar pasien</h2><button class="btn pri wide" data-q="add">Tambah pasien</button>${tabs([["","Semua ("+data.length+")"],["ada","Ada tindakan ("+np+")"],["tanpa","Belum ada ("+(data.length-np)+")"]],"p",pf)}<div class="pn">${L||'<div class="empty">Belum ada pasien yang cocok.</div>'}</div>`},
@@ -147,11 +161,12 @@ ttv(){const ps=data.slice().sort((a,b)=>String(a.nama).localeCompare(String(b.na
  const card=p=>{const A=abn(p),na=Object.keys(A).length,h=p.ttv||[],lt=(h[h.length-1]||{}).t||"",has=p.td||p.nd||p.rr||p.sh||p.sp,M=[["td","TD",p.td],["nd","Nadi",p.nd],["rr","RR",p.rr],["sh","Suhu",p.sh],["sp","SpO₂",p.sp]];
  return `<div class="pt${expT[p.id]?" ex":""}"><button class="ph" data-tt="${p.id}"><div class="tl">${esc(p.kamar)}</div><div class="tx"><b class="nm">${esc(p.nama)}</b><small>${lt?"Terakhir "+(isToday(lt)?"":lt.slice(8,10)+"/"+lt.slice(5,7)+" ")+fmt(lt):"Belum ada TTV"}</small></div>${has?`<span class="pill ${na?"lt":"ok"}">${na?"Perhatian":"Normal"}</span>`:""}<span class="ch">${ic("chev")}</span></button>${has?`<div class="mt">${M.map(m=>`<div class="${m[2]?(A[m[0]]?"a":"n"):""}"><small>${m[1]}</small><b>${esc(m[2]||"-")}</b></div>`).join("")}</div>`:""}<div class="pb">${chart(h)}${h.length?`<div style="margin-top:8px">${h.slice(-10).reverse().map(t=>`<div class="it"><div class="tx"><b>${esc((t.t||"-").replace("T"," · "))}</b><small>TD ${esc(t.td||"-")} · Nadi ${esc(t.nd||"-")} · RR ${esc(t.rr||"-")} · Suhu ${esc(t.sh||"-")}°C · SpO₂ ${esc(t.sp||"-")}%</small></div></div>`).join("")}</div>`:""}</div></div>`};
  return `<h2>Tanda-tanda vital</h2><button class="btn pri wide" data-q="ttv">Input TTV</button><div class="pn">${ps.map(card).join("")||'<div class="empty">Belum ada pasien. Tambah pasien lebih dulu.</div>'}</div><p class="foot">Ketuk nama pasien untuk melihat grafik nadi dan riwayat.</p>`},
-inj(a){const I={};data.forEach(p=>(p.obat||[]).filter(m=>m.rute==="Injeksi").forEach(m=>{const k=String(m.nama).trim().toLowerCase();I[k]=I[k]||{n:String(m.nama).trim(),c:0};I[k].c+=(m.jam||[]).length}));
+inj(a){const I={};data.forEach(p=>(p.obat||[]).filter(m=>m.rute==="Injeksi").forEach(m=>{const k=String(m.nama).trim().toLowerCase();I[k]=I[k]||{n:String(m.nama).trim(),c:0};I[k].c+=((m.jam&&m.jam.length)?m.jam.length:1);}));
  const K=Object.values(I).sort((x,y)=>y.c-x.c).slice(0,6),mx=K[0]?K[0].c:1,d=a.filter(x=>x.m.rute==="Injeksi"&&hit(x.p));
  return `<h2>Obat injeksi</h2><div class="pn" style="padding:6px 14px 10px">${K.map((k,i)=>`<div class="cat">${esc(k.n)}<span>${k.c}×/hari</span><div class="bar"><i style="width:${k.c/mx*100}%;background:${COL[i%6]}"></i></div></div>`).join("")||'<div class="empty">Belum ada obat injeksi.</div>'}</div>
  <h2>Jadwal injeksi hari ini</h2><div class="pn">${d.map(x=>dr(x,1)).join("")||'<div class="empty">Tidak ada jadwal injeksi.</div>'}</div>`}
 };
+
 const K={d:"nor",bb:"",mg:"4",ml:"50",s:"0.05",st:"0.05",n:"8",pt:"",wb:"",su:"",du:"24"},
 DEF={nor:{nm:"Vascon",mg:4,ml:50,s:0.05,st:0.05},dob:{nm:"Dobutamin",mg:250,ml:50,s:2.5,st:2.5}},
 IN=[["i1","Infus / cairan IV"],["i2","Minum / oral"],["i3","Obat & flushing"],["i4","Lain (darah, makanan cair)"]],
@@ -180,46 +195,121 @@ function render(){
  $("#v").innerHTML=V[view](a,G,L,a.length-G-L);if(view==="kal")kres();if(view==="bal")bres();
  $("#nav").innerHTML=[["home","Beranda","home"],["pill","Obat","obat",L],["users","Pasien","pasien"],["heart","TTV","ttv"],["syr","Injeksi","inj"],["drop","Balance","bal"],["calc","Kalkulator","kal"]].map(n=>`<button class="${n[2]==view?"on":""}" data-go="${n[2]}" aria-label="${n[1]}">${ic(n[0])}${n[3]?`<b>${n[3]}</b>`:""}</button>`).join("");
  $("#bell").innerHTML=ic("bell")+(L?`<i>${L}</i>`:"");$("#sbt").innerHTML=ic("search")}
-function drawSl(d,ck){const r=d.querySelector(".rt").value;let h="";
- if(JD[r])JD[r].forEach(g=>g[1].forEach(t=>h+=`<label><input type="checkbox" value="${t}"${ck.includes(t)?" checked":""}>${g[0]} ${t}</label>`));
- else{ck.slice().sort((a,b)=>tm(a)-tm(b)).forEach(t=>h+=`<label><input type="checkbox" value="${t}" checked>${t}</label>`);h+=`<span class="ad"><input type="time" class="nt" aria-label="Jam pemberian"><button type="button" class="btn sm ab">Tambah jam</button></span>`}
- d.querySelector(".sl").innerHTML=h;const b=d.querySelector(".ab");if(b)b.onclick=()=>{const v=d.querySelector(".nt").value;if(!v)return;const cur=[...d.querySelectorAll(".sl input:checked")].map(c=>c.value);if(!cur.includes(v))cur.push(v);drawSl(d,cur)}}
-function medRow(m){m=m||{};const d=document.createElement("div");d.className="mr";d.dataset.id=m.id||uid();d.dataset.done=JSON.stringify(m.done||{});
- d.innerHTML=`<input class="mn" placeholder="Nama obat" aria-label="Nama obat" value="${esc(m.nama)}"><input class="md" placeholder="Dosis" aria-label="Dosis" value="${esc(m.dosis)}"><button type="button" class="btn sm" aria-label="Hapus obat">✕</button><select class="rt" aria-label="Rute">${["Oral","Injeksi","Cairan","Drip","Syringe pump"].map(r=>`<option>${r}</option>`).join("")}</select><div class="sl"></div>`;
- const s=d.querySelector(".rt");s.value=m.rute||"Oral";drawSl(d,m.jam||[]);s.onchange=()=>drawSl(d,[...d.querySelectorAll(".sl input:checked")].map(c=>c.value));d.querySelector("button").onclick=()=>d.remove();$("#meds").appendChild(d)}
+function drawSl(d,ck){
+  const r=d.querySelector(".rt").value;let h="";
+  if(JD[r])JD[r].forEach(g=>g[1].forEach(t=>h+=`<label><input type="checkbox" value="${t}"${ck.includes(t)?" checked":""}>${g[0]==="K/P"?"K/P":g[0]+" "+t}</label>`));
+  else{
+    const times=ck.filter(t=>t!=="Kontinyu");
+    times.sort((a,b)=>tm(a)-tm(b)).forEach(t=>h+=`<label><input type="checkbox" value="${t}" checked>${t}</label>`);
+    h+=`<label class="ad"><input type="checkbox" value="Kontinyu"${ck.includes("Kontinyu")?" checked":""}>Kontinyu / Tanpa Jam</label>`;
+    h+=`<span class="ad"><input type="time" class="nt" aria-label="Jam pemberian"><button type="button" class="btn sm ab">Tambah jam</button></span>`;
+  }
+  d.querySelector(".sl").innerHTML=h;
+  const b=d.querySelector(".ab");
+  if(b)b.onclick=()=>{
+    const v=d.querySelector(".nt").value;if(!v)return;
+    const cur=[...d.querySelectorAll(".sl input:checked")].map(c=>c.value);
+    if(!cur.includes(v))cur.push(v);drawSl(d,cur);
+  }
+}
+function medRow(m){
+  m=m||{};const d=document.createElement("div");d.className="mr";d.dataset.id=m.id||uid();d.dataset.done=JSON.stringify(m.done||{});
+  d.innerHTML=`<input class="mn" placeholder="Nama obat" aria-label="Nama obat" value="${esc(m.nama)}"><input class="md" placeholder="Dosis" aria-label="Dosis" value="${esc(m.dosis)}"><button type="button" class="btn sm" aria-label="Hapus obat">✕</button><select class="rt" aria-label="Rute">${["Oral","Injeksi","Cairan","Drip","Syringe pump"].map(r=>`<option>${r}</option>`).join("")}</select><div class="sl"></div>`;
+  const s=d.querySelector(".rt");s.value=m.rute||"Oral";drawSl(d,m.jam||[]);s.onchange=()=>drawSl(d,[...d.querySelectorAll(".sl input:checked")].map(c=>c.value));d.querySelector("button").onclick=()=>d.remove();$("#meds").appendChild(d)
+}
 function openP(id){editId=id;const p=data.find(x=>x.id===id)||{};$("#meds").innerHTML="";$("#nama").value=p.nama||"";const kr=normRoom(p.kamar||"");$("#kamar").innerHTML=`<option value="">Pilih kamar</option>`+ROOMS.concat(kr&&!ROOMS.includes(kr)?[kr]:[]).map(r=>`<option>${esc(r)}</option>`).join("");$("#kamar").value=kr;$("#dokter").value=p.dokter||"";$("#rc").value=p.rc||"";(p.obat&&p.obat.length?p.obat:[{}]).forEach(medRow);$("#del").hidden=!id;$("#dlg").showModal()}
-function openT(){$("#tp").innerHTML=`<option value="">Pilih pasien</option>`+data.slice().sort(byRoom).map(p=>`<option value="${esc(p.id)}"${p.id===sel?" selected":""}>Kamar ${esc(p.kamar)} · ${esc(p.nama)}</option>`).join("");["td","nd","rr","sh","sp"].forEach(k=>$("#"+k).value="");$("#tdlg").showModal()}
-$("#f").onsubmit=e=>{e.preventDefault();try{if(!$("#nama").value.trim()){toast("Isi nama pasien");$("#nama").focus();return}if(!$("#kamar").value){toast("Pilih kamar");$("#kamar").focus();return}if(!$("#dokter").value.trim()){toast("Isi nama dokter");$("#dokter").focus();return}saveP()}catch(x){console.error(x);toast("Gagal menyimpan: "+x.message)}};
-function saveP(){const old=data.find(x=>x.id===editId)||{};
- const obat=[...document.querySelectorAll("#meds .mr")].map(r=>{const n=r.querySelector(".mn").value.trim();if(!n)return null;const js=[...r.querySelectorAll(".sl input:checked")].map(c=>c.value),nt=r.querySelector(".nt");if(nt&&nt.value&&!js.includes(nt.value))js.push(nt.value);let od={};try{od=JSON.parse(r.dataset.done||"{}")}catch(x){}const nd={};js.forEach(s=>{if(od[s])nd[s]=od[s]});return{id:r.dataset.id,nama:n,dosis:r.querySelector(".md").value.trim(),jam:js,rute:r.querySelector(".rt").value,done:nd}}).filter(Boolean);
- const p={...old,id:old.id||uid(),nama:$("#nama").value.trim(),kamar:$("#kamar").value.trim(),dokter:$("#dokter").value.trim(),rc:$("#rc").value.trim(),obat};
- const i=data.findIndex(x=>x.id===p.id);if(i>-1)data[i]=p;else data.push(p);persist();$("#dlg").close();toast(i>-1?"Perubahan tersimpan":"Pasien ditambahkan");render()};
-$("#tf").onsubmit=e=>{e.preventDefault();const id=$("#tp").value,v={};["td","nd","rr","sh","sp"].forEach(k=>{const x=$("#"+k).value.trim();if(x)v[k]=x});
- if(!Object.keys(v).length){toast("Isi minimal satu nilai TTV");return}if(v.td&&!/^\d{2,3}\/\d{2,3}$/.test(v.td)){toast("Isi tekanan darah dengan format 120/80");return}
- const p=data.find(x=>x.id===id);if(!p)return;const t=nowStr();Object.assign(p,v,{wt:t.slice(11,16)});p.ttv=(p.ttv||[]).concat([{t,...v}]).slice(-50);sel=p.id;persist();render();$("#tdlg").close();toast(Object.keys(abn(v)).length?"TTV tersimpan. Ada nilai di luar batas normal.":"TTV tersimpan")};
-$("#del").onclick=()=>{const id=editId;ask("Hapus catatan pasien ini?",()=>{data=data.filter(x=>x.id!==id);persist();render();$("#dlg").close();toast("Pasien dihapus")})};
-$("#cy").onclick=()=>{const f=askCb;askCb=null;$("#cdlg").close();if(f)f()};
-$("#br").onclick=()=>{try{const v=JSON.parse($("#bt").value);if(!Array.isArray(v))throw 0;ask("Ganti semua data dengan data cadangan?",()=>{data=v;persist();render();$("#bdlg").close();toast("Data dipulihkan")})}catch(e){toast("Teks cadangan tidak valid")}};
+function openT(id){
+  const p=data.find(x=>x.id===id);
+  $("#tp").innerHTML=`<option value="">Pilih pasien</option>`+data.slice().sort(byRoom).map(p=>`<option value="${esc(p.id)}"${p.id===id?" selected":""}>Kamar ${esc(p.kamar)} · ${esc(p.nama)}</option>`).join("");
+  $("#tp").value=id||"";
+  $("#td").value=p?.td||"";
+  $("#nd").value=p?.nd||"";
+  $("#rr").value=p?.rr||"";
+  $("#sh").value=p?.sh||"";
+  $("#sp").value=p?.sp||"";
+  $("#tdlg").showModal();
+}
+
 document.addEventListener("click",e=>{
- const b=e.target.closest("button");if(!b)return;
- if(b.hasAttribute("data-x"))return b.closest("dialog").close();
- if(b.dataset.go){view=b.dataset.go;window.scrollTo(0,0);return render()}
- if(b.dataset.tp){expanded[b.dataset.tp]=!expanded[b.dataset.tp];return render()}
- if(b.dataset.f!==undefined){tab=b.dataset.f;return render()}
- if(b.dataset.p!==undefined){pf=b.dataset.p;return render()}
- if(b.dataset.s){sel=b.dataset.s;return render()}
- if(b.dataset.tt){expT[b.dataset.tt]=!expT[b.dataset.tt];sel=b.dataset.tt;return render()}
- if(b.dataset.kd){K.d=b.dataset.kd;const D=DEF[K.d];K.mg=D.mg;K.ml=D.ml;K.s=D.s;K.st=D.st;return render()}
- if(b.dataset.sv)return svRc(b.dataset.sv);
- if(b.dataset.e)return openP(b.dataset.e);
- if(b.dataset.q){const q=b.dataset.q;return q=="add"?openP(null):q=="ttv"?openT():($("#bt").value=JSON.stringify(data),$("#bdlg").showModal(),$("#bt").select())}
- if(b.dataset.t){const a=b.dataset.t.split("|"),p=data.find(x=>x.id===a[0]),m=p&&p.obat.find(x=>x.id===a[1]);if(m){m.done=m.done||{};m.done[a[2]]=isToday(m.done[a[2]])?"":nowStr();persist();render()}}});
-$("#bell").onclick=()=>{view="obat";tab="";window.scrollTo(0,0);render()};
-$("#sbt").onclick=()=>{const s=$("#sb"),on=s.classList.toggle("on");if(on)$("#q").focus();else{$("#q").value="";render()}};
-$("#addm").onclick=()=>medRow();$("#q").oninput=render;
-try{const r=localStorage.getItem(KEY);if(r)data=JSON.parse(r)||[];data.forEach(p=>(p.obat||[]).forEach(m=>{if(!Array.isArray(m.jam))m.jam=m.jam?[m.jam]:[];m.rute=m.rute||"Oral";m.done=m.done||{}}))}catch(e){data=[]}
-data.forEach(p=>{p.kamar=normRoom(p.kamar)});render();setInterval(()=>{if(view!=="bal"&&view!=="kal")render()},60000);
-// Muat data awal dari Google Sheet
+  const t=e.target.closest("[data-go],[data-q],[data-t],[data-e],[data-tp],[data-tt],[data-sv],[data-kd],[data-f],[data-p],[data-x]");
+  if(!t)return;
+  if(t.dataset.go){view=t.dataset.go;render()}
+  if(t.dataset.q==="add")openP();
+  if(t.dataset.q==="ttv")openT();
+  if(t.dataset.q==="bk"){$("#bt").value=JSON.stringify(data,null,2);$("#bdlg").showModal()}
+  if(t.dataset.t){
+    const [pid,mid,jam]=t.dataset.t.split("|");
+    const p=data.find(x=>x.id===pid),m=p?.obat?.find(x=>x.id===mid);
+    if(m){
+      m.done=m.done||{};
+      m.done[jam]=m.done[jam]?null:nowStr();
+      persist();render();
+    }
+  }
+  if(t.dataset.e)openP(t.dataset.e);
+  if(t.dataset.tp){expanded[t.dataset.tp]=!expanded[t.dataset.tp];render()}
+  if(t.dataset.tt){expT[t.dataset.tt]=!expT[t.dataset.tt];render()}
+  if(t.dataset.sv)svRc(t.dataset.sv);
+  if(t.dataset.kd){K.d=t.dataset.kd;render()}
+  if(t.dataset.f!==undefined){tab=t.dataset.f;render()}
+  if(t.dataset.p!==undefined){pf=t.dataset.p;render()}
+  if(t.dataset.x!==undefined){
+    e.target.closest("dialog").close();
+  }
+});
+
+$("#f").onsubmit=e=>{
+  e.preventDefault();
+  const nama=$("#nama").value.trim(),kamar=$("#kamar").value,dokter=$("#dokter").value.trim(),rc=$("#rc").value.trim();
+  if(!nama||!kamar||!dokter)return toast("Lengkapi nama, kamar, dan dokter");
+  
+  const meds=[...document.querySelectorAll(".mr")].map(d=>({
+    id:d.dataset.id,
+    nama:d.querySelector(".mn").value.trim(),
+    dosis:d.querySelector(".md").value.trim(),
+    rute:d.querySelector(".rt").value,
+    jam:[...d.querySelectorAll(".sl input:checked")].map(c=>c.value),
+    done:JSON.parse(d.dataset.done||"{}")
+  })).filter(m=>m.nama);
+
+  if(editId){
+    const p=data.find(x=>x.id===editId);
+    if(p)Object.assign(p,{nama,kamar:normRoom(kamar),dokter,rc,obat:meds});
+  }else{
+    data.push({id:uid(),nama,kamar:normRoom(kamar),dokter,rc,obat:meds,ttv:[]});
+  }
+  persist();render();$("#dlg").close();toast("Data pasien tersimpan");
+};
+
+$("#tf").onsubmit=e=>{
+  e.preventDefault();
+  const id=$("#tp").value,p=data.find(x=>x.id===id);
+  if(!p)return toast("Pilih pasien dulu");
+  
+  const td=$("#td").value.trim(),nd=$("#nd").value,rr=$("#rr").value,sh=$("#sh").value,sp=$("#sp").value;
+  Object.assign(p,{td,nd,rr,sh,sp});
+  p.ttv=p.ttv||[];
+  p.ttv.push({t:nowStr(),td,nd,rr,sh,sp});
+  persist();render();$("#tdlg").close();toast("TTV tersimpan");
+};
+
+$("#addm").onclick=()=>medRow();
+$("#del").onclick=()=>ask("Hapus pasien "+$("#nama").value+"?",()=>{
+  data=data.filter(x=>x.id!==editId);
+  persist();render();$("#dlg").close();toast("Pasien dihapus");
+});
+$("#cy").onclick=()=>{if(askCb)askCb();$("#cdlg").close()};
+$("#br").onclick=()=>{
+  try{
+    const parsed=JSON.parse($("#bt").value);
+    if(Array.isArray(parsed)){
+      data=parsed;persist();render();$("#bdlg").close();toast("Data berhasil dipulihkan");
+    }
+  }catch(err){toast("Format JSON cadangan tidak valid")}
+};
+
+try{data=JSON.parse(localStorage.getItem(KEY))||[]}catch(e){data=[]}
+render();
 loadFromCloud();
 </script>
 </body>
