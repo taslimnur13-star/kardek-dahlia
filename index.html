@@ -108,7 +108,7 @@ async function persist(){
   try{localStorage.setItem(KEY,JSON.stringify(data))}catch(e){}
   if(!GAS_URL||GAS_URL.includes("ISI_URL_GOOGLE_APPS_SCRIPT"))return;
   try{await fetch(GAS_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'save',data:data})})}
-  catch(e){console.error("Gagal sinkron ke Cloud:",e);toast("Gagal sinkron ke Cloud")}
+  catch(e){console.error("Gagal sinkron ke Cloud:",e);}
 }
 async function loadFromCloud(){
   if(!GAS_URL||GAS_URL.includes("ISI_URL_GOOGLE_APPS_SCRIPT"))return;
@@ -196,11 +196,14 @@ V.kal=()=>`<h2>Kalkulator dosis</h2>${tabs([["nor","Vascon"],["dob","Dobutamin"]
 ["input","change"].forEach(t=>document.addEventListener(t,e=>{const k=e.target.dataset&&e.target.dataset.k;if(!k)return;K[k]=e.target.value;if(view==="kal")kres();if(view==="bal")bres()}));
 function hit(p){const q=$("#q").value.toLowerCase();return(p.nama+" "+p.kamar+" "+p.dokter+" "+(p.rc||"")).toLowerCase().includes(q)&&(view!=="pasien"||(pf!=="ada"||!!p.rc)&&(pf!=="tanpa"||!p.rc))}
 function render(){
- const a=doses(),G=a.filter(x=>x.dn).length,L=a.filter(x=>x.late).length;
- $("#sub").textContent="R. Dahlia · "+new Date().toLocaleDateString("id-ID",{weekday:"long",day:"numeric",month:"long"});
- $("#v").innerHTML=V[view](a,G,L,a.length-G-L);if(view==="kal")kres();if(view==="bal")bres();
- $("#nav").innerHTML=[["home","Beranda","home"],["pill","Obat","obat",L],["users","Pasien","pasien"],["heart","TTV","ttv"],["syr","Injeksi","inj"],["drop","Balance","bal"],["calc","Kalkulator","kal"]].map(n=>`<button class="${n[2]==view?"on":""}" data-go="${n[2]}" aria-label="${n[1]}">${ic(n[0])}${n[3]?`<b>${n[3]}</b>`:""}</button>`).join("");
- $("#bell").innerHTML=ic("bell")+(L?`<i>${L}</i>`:"");$("#sbt").innerHTML=ic("search")}
+ try {
+   const a=doses(),G=a.filter(x=>x.dn).length,L=a.filter(x=>x.late).length;
+   $("#sub").textContent="R. Dahlia · "+new Date().toLocaleDateString("id-ID",{weekday:"long",day:"numeric",month:"long"});
+   $("#v").innerHTML=V[view](a,G,L,a.length-G-L);if(view==="kal")kres();if(view==="bal")bres();
+   $("#nav").innerHTML=[["home","Beranda","home"],["pill","Obat","obat",L],["users","Pasien","pasien"],["heart","TTV","ttv"],["syr","Injeksi","inj"],["drop","Balance","bal"],["calc","Kalkulator","kal"]].map(n=>`<button class="${n[2]==view?"on":""}" data-go="${n[2]}" aria-label="${n[1]}">${ic(n[0])}${n[3]?`<b>${n[3]}</b>`:""}</button>`).join("");
+   $("#bell").innerHTML=ic("bell")+(L?`<i>${L}</i>`:"");$("#sbt").innerHTML=ic("search");
+ } catch(err) { console.error("Render error:", err); }
+}
 
 function drawSl(d,ck){
   const r=d.querySelector(".rt").value;
@@ -228,9 +231,10 @@ function medRow(m){
 }
 
 function openP(id){editId=id;const p=data.find(x=>x.id===id)||{};$("#meds").innerHTML="";$("#nama").value=p.nama||"";const kr=normRoom(p.kamar||"");$("#kamar").innerHTML=`<option value="">Pilih kamar</option>`+ROOMS.concat(kr&&!ROOMS.includes(kr)?[kr]:[]).map(r=>`<option>${esc(r)}</option>`).join("");$("#kamar").value=kr;$("#dokter").value=p.dokter||"";$("#rc").value=p.rc||"";(p.obat&&p.obat.length?p.obat:[{}]).forEach(medRow);$("#del").hidden=!id;$("#dlg").showModal()}
+
 function openT(id){
-  const p=data.find(x=>x.id===id);
-  $("#tp").innerHTML=`<option value="">Pilih pasien</option>`+data.slice().sort(byRoom).map(p=>`<option value="${esc(p.id)}"${p.id===id?" selected":""}>Kamar ${esc(p.kamar)} · ${esc(p.nama)}</option>`).join("");
+  const p=id?data.find(x=>x.id===id):null;
+  $("#tp").innerHTML=`<option value="">Pilih pasien</option>`+data.slice().sort(byRoom).map(item=>`<option value="${esc(item.id)}"${item.id===id?" selected":""}>Kamar ${esc(item.kamar)} · ${esc(item.nama)}</option>`).join("");
   $("#tp").value=id||"";
   $("#td").value=p?.td||"";
   $("#nd").value=p?.nd||"";
