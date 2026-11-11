@@ -39,23 +39,22 @@ h2{font-size:16px;font-weight:800;margin:6px 2px 10px}
 .tabs{display:flex;gap:8px;overflow-x:auto;margin-bottom:12px;padding:2px 2px 6px}.tabs button{padding:8px 14px;border-radius:99px;background:var(--cd);font-weight:700;font-size:12.5px;white-space:nowrap;box-shadow:var(--sh)}.tabs .on{background:var(--ac);color:var(--on)}
 .pt{border-top:1px solid var(--ln);padding:6px 0}.pt:first-child{border-top:0}.ph{display:flex;align-items:center;gap:10px;width:100%;text-align:left;padding:4px 0}.pb{display:none}.pt.ex .pb{display:block}.ch{transition:transform .2s;color:var(--ac);font-size:16px}.pt.ex .ch{transform:rotate(90deg)}
 .ms{display:flex;gap:10px;overflow-x:auto;margin-bottom:14px;padding-bottom:4px}.ms div{min-width:108px;border-radius:18px;padding:12px;background:var(--cd);box-shadow:var(--sh)}.ms div.n{background:#cfcaf7;color:#2a2438}.ms div.a{background:#ffb1b1;color:#2a2438}.ms small{display:block;font-size:11.5px;opacity:.75}.ms b{font-size:16px}
-.bar{height:9px;border-radius:99px;margin-top:6px;background:var(--acl)}.bar i{display:block;height:100%;border-radius:99px}
-.cat{margin:12px 0;font-size:13px;font-weight:700;display:flex;flex-wrap:wrap}.cat span{margin-left:auto;color:var(--mu)}.cat .bar{flex-basis:100%}
-.empty{color:var(--mu);font-size:12.5px;padding:10px 0;text-align:center}
+.bar{height:9px;border-radius:9px;margin-top:6px;background:var(--acl)}.bar i{display:block;height:100%;border-radius:9px}.cat{margin:12px 0;font-size:13px;font-weight:700;display:flex;flex-wrap:wrap}.cat span{margin-left:auto;color:var(--mu)}.cat .bar{flex-basis:100%}
+.empty{color:var(--mu);font-size:12.5px;padding:10px 0}
 .btn{padding:9px 16px;border-radius:14px;background:var(--acl);color:var(--ac);font-weight:700}.pri{background:var(--ac);color:var(--on)}.sm{padding:7px 13px;font-size:12px}.wide{width:100%;margin-bottom:14px}
 nav{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(14px + env(safe-area-inset-bottom,0px));background:var(--cd);border-radius:26px;padding:7px;display:flex;gap:3px;max-width:calc(100vw - 12px);box-shadow:0 10px 30px rgba(60,50,120,.25);z-index:5}
 nav button{width:44px;height:48px;border-radius:16px;display:grid;place-items:center;font-size:21px;position:relative}nav .on{background:var(--acl);color:var(--ac)}
 nav b{position:absolute;top:2px;right:2px;background:#f0647a;color:#fff;font-size:10px;min-width:17px;height:17px;border-radius:99px;display:grid;place-items:center}
-.foot{color:var(--mu);font-size:11.5px;text-align:center;margin-top:16px}
+.foot{color:var(--mu);font-size:11.5px;text-align:center}
 dialog{border:0;border-radius:26px;background:var(--cd);color:var(--tx);padding:20px;width:min(520px,94vw);max-height:92vh;overflow:auto;box-shadow:0 20px 50px rgba(20,10,60,.45)}dialog::backdrop{background:rgba(30,20,70,.5)}
 dialog h3{margin-bottom:10px;color:var(--ac)}
 label{display:block;font-size:12.5px;font-weight:700;color:var(--mu);margin:8px 0 3px}
 input:not([type=checkbox]),select,textarea{font:inherit;color:var(--tx);background:var(--bg);border:1px solid var(--ln);border-radius:14px;padding:9px 12px;width:100%}
 .g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
 .mr{display:grid;grid-template-columns:1.6fr 1fr auto;gap:8px;margin:10px 0;padding-bottom:10px;border-bottom:1px dashed var(--ln)}.mr .rt,.mr .sl{grid-column:1/-1}
-.sl{display:flex;gap:10px;flex-wrap:wrap}.sl label,.sl .ad{display:flex;align-items:center;gap:6px;margin:0;color:var(--tx);font-size:13px}.sl .ad input{width:auto}
+.sl{display:flex;gap:14px;flex-wrap:wrap}.sl label,.sl .ad{display:flex;align-items:center;gap:6px;margin:0;color:var(--tx);font-size:13px}.sl .ad input{width:auto}
 .row{display:flex;gap:10px;justify-content:flex-end;margin-top:16px;flex-wrap:wrap}dialog .row{position:sticky;bottom:-20px;background:var(--cd);padding:12px 0 4px;z-index:2}
-.toast{position:fixed;left:50%;bottom:calc(92px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ac);color:var(--on);padding:9px 18px;border-radius:99px;font-weight:800;z-index:99;max-width:90vw;text-align:center;box-shadow:0 10px 25px rgba(0,0,0,.2)}
+.toast{position:fixed;left:50%;bottom:calc(92px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ac);color:var(--on);padding:9px 18px;border-radius:99px;font-weight:800;z-index:99;max-width:90vw;text-align:center}
 </style>
 </head>
 <body>
@@ -63,26 +62,23 @@ input:not([type=checkbox]),select,textarea{font:inherit;color:var(--tx);backgrou
   <button class="ib" id="sbt" aria-label="Cari"></button><button class="ib" id="bell" aria-label="Lihat obat terlambat"></button></header>
 <div class="sb" id="sb"><input id="q" placeholder="Cari nama, kamar, dokter…" aria-label="Cari"></div>
 <main id="v"></main>
-<p class="foot"><span>Data tersimpan lokal & tersinkron ke Cloud.</span> Alat bantu catatan, bukan pengganti rekam medis resmi.</p>
+<p class="foot"><span>Data tersimpan lokal & tersinkron ke Google Sheet.</span> Alat bantu catatan, bukan pengganti rekam medis resmi.</p>
 <nav id="nav" aria-label="Menu utama"></nav>
 
 <dialog id="dlg"><form id="f" novalidate><h3>Data pasien</h3>
   <label for="nama">Nama pasien</label><input id="nama" required>
   <div class="g2"><div><label for="kamar">Kamar</label><select id="kamar" required></select></div><div><label for="dokter">Dokter</label><input id="dokter" required></div></div>
-  <label>Obat</label><div id="meds"></div><button type="button" class="btn sm" id="addm" style="margin-top:6px">+ Tambah obat</button>
+  <label>Obat</label><div id="meds"></div><button type="button" class="btn sm" id="addm">Tambah obat</button>
   <label for="rc">Rencana tindakan</label><textarea id="rc" rows="3" placeholder="Contoh: observasi TTV tiap 4 jam"></textarea>
   <div class="row"><button type="button" class="btn" id="del" style="margin-right:auto;color:var(--lt)" hidden>Hapus pasien</button><button type="button" class="btn" data-x>Batal</button><button class="btn pri">Simpan</button></div>
 </form></dialog>
-
 <dialog id="tdlg"><form id="tf"><h3>Input TTV</h3>
   <label for="tp">Pasien</label><select id="tp" required></select>
   <div class="g3"><div><label for="td">Tekanan darah</label><input id="td" placeholder="120/80"></div><div><label for="nd">Nadi (x/mnt)</label><input id="nd" type="number"></div><div><label for="rr">Napas (x/mnt)</label><input id="rr" type="number"></div><div><label for="sh">Suhu (°C)</label><input id="sh" type="number" step="0.1"></div><div><label for="sp">SpO₂ (%)</label><input id="sp" type="number"></div></div>
   <div class="row"><button type="button" class="btn" data-x>Batal</button><button class="btn pri">Simpan TTV</button></div>
 </form></dialog>
-
 <dialog id="bdlg"><h3>Cadangkan / Pulihkan</h3><p style="color:var(--mu);font-size:12px">Cadangkan: salin teks di bawah. Pulihkan: tempel teks cadangan lalu tekan Pulihkan.</p><label for="bt">Data cadangan</label><textarea id="bt" rows="9"></textarea>
   <div class="row"><button class="btn" data-x>Tutup</button><button class="btn pri" id="br">Pulihkan</button></div></dialog>
-
 <dialog id="cdlg"><p id="cm" style="margin-bottom:6px"></p><div class="row"><button class="btn" data-x>Batal</button><button class="btn pri" id="cy" style="background:#dc2626;color:#fff">Ya, lanjutkan</button></div></dialog>
 
 <script>
@@ -90,23 +86,17 @@ const GAS_URL = "https://script.google.com/macros/s/AKfycbyQRjgf7Et79WLd_UN5TO3W
 
 const P={search:'<circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/>',bell:'<path d="M6 16V11a6 6 0 0112 0v5l2 2H4z"/><path d="M10 21h4"/>',plus:'<path d="M12 5v14M5 12h14"/>',chev:'<path d="M9 6l6 6-6 6"/>',home:'<path d="M3 11l9-8 9 8v9H3z"/>',users:'<circle cx="9" cy="8" r="3.5"/><path d="M2 20c0-4 3-6 7-6s7 2 7 6M17 5a3.5 3.5 0 010 7M22 20c0-3-2-5-5-5.5"/>',heart:'<path d="M12 20s-8-5-8-11a4.5 4.5 0 018-2.5A4.5 4.5 0 0120 9c0 6-8 11-8 11z"/>',syr:'<path d="M18 3l3 3-3 3M15 6l-9 9v3h3l9-9M3 21l3-3"/>',check:'<path d="M5 12l5 5 9-10"/>',pill:'<rect x="3" y="9" width="18" height="6" rx="3" transform="rotate(-35 12 12)"/><path d="M9 8l6 8"/>',undo:'<path d="M9 14L4 9l5-5M4 9h10a6 6 0 010 12h-3"/>',edit:'<path d="M4 20h4L19 9l-4-4L4 16z"/>',arr:'<path d="M5 12h14M13 6l6 6-6 6"/>',drop:'<path d="M12 3s6 6.5 6 11a6 6 0 01-12 0c0-4.5 6-11 6-11z"/>',calc:'<rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 7h8M8 12h.1M12 12h.1M16 12h.1M8 16h.1M12 16h.1M16 16h.1"/>'};
 const ic=n=>`<svg class="i" viewBox="0 0 24 24" aria-hidden="true">${P[n]}</svg>`;
-const $=s=>document.querySelector(s),esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const $=s=>document.querySelector(s),esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&","<":"<",">":">",'"':"""}[c]));
 const KEY="catatan-obat-v1",uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6),p2=n=>String(n).padStart(2,"0");
 let data=[],tab="",pf="",view="home",sel="",editId=null,askCb=null;
 const expT={},expanded={},COL=["#a592e6","#f7a8b6","#f9b85a","#f6dc7a","#a5d8a0","#93b9ee"];
 const nowStr=()=>{const d=new Date();return `${d.getFullYear()}-${p2(d.getMonth()+1)}-${p2(d.getDate())}T${p2(d.getHours())}:${p2(d.getMinutes())}`};
 const isToday=v=>typeof v==="string"&&v.slice(0,10)===nowStr().slice(0,10),fmt=v=>typeof v==="string"&&v.length>=16?v.slice(11,16):"";
-const toMin=t=>{if(t==="K/P")return 9999;const a=(t||"").split(":");return a.length<2?0:+a[0]*60+ +a[1]},tm=s=>{if(s==="K/P")return 9999;const t=toMin(s);return t<360?t+1440:t},nowMin=()=>{const d=new Date();return d.getHours()*60+d.getMinutes()};
-
-// UPDATED JD with K/P option under Injeksi
-const JD={
-  Injeksi:[["Pagi",["09:00"]],["Siang",["17:00","21:00"]],["Malam",["01:00"]],["K/P",["K/P"]]],
-  Oral:[["Pagi",["07:00","12:00","15:00"]],["Sore",["19:00"]],["Malam",["23:00"]]]
-};
-const bt=s=>{if(s==="K/P")return"K/P";const t=toMin(s);return t>=360&&t<720?"Pagi":t>=720&&t<1080?"Siang":"Malam"};
-const grp=(r,s)=>{if(s==="K/P")return"K/P";let g="";(JD[r||"Oral"]||[]).forEach(x=>{if(x[1].includes(s))g=x[0]});return g||bt(s)};
-const shift=(m,s)=>s==="K/P"?"K/P":(m.rute||"Oral")==="Oral"&&s==="07:00"?"Malam":(g=>g==="Sore"?"Siang":g)(grp(m.rute,s));
-
+const toMin=t=>{const a=(t||"").split(":");return a.length<2?0:+a[0]*60+ +a[1]},tm=s=>{const t=toMin(s);return t<360?t+1440:t},nowMin=()=>{const d=new Date();return d.getHours()*60+d.getMinutes()};
+const JD={Injeksi:[["Pagi",["09:00"]],["Siang",["17:00","21:00"]],["Malam",["01:00"]],["K/P",["K/P"]]],Oral:[["Pagi",["07:00","12:00","15:00"]],["Sore",["19:00"]],["Malam",["23:00"]]]};
+const bt=s=>{if(s==="K/P"||s==="Kontinyu")return s;const t=toMin(s);return t>=360&&t<720?"Pagi":t>=720&&t<1080?"Siang":"Malam"};
+const grp=(r,s)=>{if(s==="K/P"||s==="Kontinyu")return s;let g="";(JD[r||"Oral"]||[]).forEach(x=>{if(x[1].includes(s))g=x[0]});return g||bt(s)};
+const shift=(m,s)=>{if(s==="K/P"||s==="Kontinyu")return s;return(m.rute||"Oral")==="Oral"&&s==="07:00"?"Malam":(g=>g==="Sore"?"Siang":g)(grp(m.rute,s))};
 function abn(p){const a={},s=(p.td||"").split("/");if(s.length==2&&(+s[0]>=140||+s[0]<90||+s[1]>=90))a.td=1;if(p.nd&&(p.nd>100||p.nd<60))a.nd=1;if(p.rr&&(p.rr>24||p.rr<12))a.rr=1;if(p.sh&&(p.sh>=37.5||p.sh<36))a.sh=1;if(p.sp&&p.sp<95)a.sp=1;return a}
 const ROOMS=[...Array.from({length:12},(_,i)=>"K-"+(i+1)),"ISO-A","ISO-B"],
 normRoom=v=>{v=String(v??"").trim();let m=v.match(/^k\s*-?\s*(\d{1,2})$/i);if(m&&+m[1]>=1&&+m[1]<=12)return"K-"+ +m[1];m=v.match(/^iso\s*-?\s*([ab])$/i);return m?"ISO-"+m[1].toUpperCase():v},
@@ -127,8 +117,24 @@ async function loadFromCloud(){
   }catch(e){console.error("Gagal membaca Cloud Data:",e)}
 }
 
-function doses(){const o=[];data.forEach(p=>(p.obat||[]).forEach(m=>(m.jam||[]).forEach(s=>{const dn=isToday(m.done&&m.done[s]);o.push({p,m,s,dn,late:!dn&&nowMin()>tm(s)+60,sh:shift(m,s)})})));return o.sort((a,b)=>tm(a.s)-tm(b.s))}
-const dr=(x,sp)=>{const{p,m,s,dn,late,sh}=x;return `<div class="it${dn?" dn":""}"><div class="tl tm">${s}</div><div class="tx"><b>${esc(m.nama)} ${esc(m.dosis)}</b><small>${sp?'<span class="nm">'+esc(p.nama)+"</span> · Kamar "+esc(p.kamar)+" · ":""}${esc(m.rute||"Oral")} · ${sh}${dn?" · "+fmt(m.done[s]):""}</small></div><span class="pill ${dn?"ok":late?"lt":"wt"}">${dn?"Selesai":late?"Terlambat":"Menunggu"}</span><button class="rb" data-t="${p.id}|${m.id}|${s}" aria-label="${dn?"Batalkan":"Tandai diberikan"}: ${esc(m.nama)}">${ic(dn?"undo":"check")}</button></div>`};
+function doses(){
+  const o=[];
+  data.forEach(p=>(p.obat||[]).forEach(m=>{
+    const jams=(m.jam&&m.jam.length)?m.jam:["Kontinyu"];
+    jams.forEach(s=>{
+      const dn=isToday(m.done&&m.done[s]);
+      const isKp=(s==="K/P"||s==="Kontinyu");
+      o.push({p,m,s,dn,late:!dn&&!isKp&&nowMin()>tm(s)+60,sh:shift(m,s)});
+    });
+  }));
+  return o.sort((a,b)=>tm(a.s)-tm(b.s));
+}
+
+const dr=(x,sp)=>{
+  const{p,m,s,dn,late,sh}=x;
+  const isSpecial=(s==="K/P"||s==="Kontinyu");
+  return `<div class="it${dn?" dn":""}"><div class="tl tm">${s}</div><div class="tx"><b>${esc(m.nama)} ${esc(m.dosis)}</b><small>${sp?'<span class="nm">'+esc(p.nama)+"</span> · Kamar "+esc(p.kamar)+" · ":""}${esc(m.rute||"Oral")} · ${sh}${dn?" · "+fmt(m.done[s]):""}</small></div><span class="pill ${dn?"ok":(!isSpecial&&late?"lt":"wt")}">${dn?"Selesai":(!isSpecial&&late?"Terlambat":"Menunggu")}</span><button class="rb" data-t="${p.id}|${m.id}|${s}" aria-label="${dn?"Batalkan":"Tandai diberikan"}: ${esc(m.nama)}">${ic(dn?"undo":"check")}</button></div>`;
+};
 const tabs=(arr,k,cur)=>`<div class="tabs">${arr.map(c=>`<button class="${cur==c[0]?"on":""}" data-${k}="${esc(c[0])}">${c[1]}</button>`).join("")}</div>`;
 
 function chart(h){const d=h.filter(x=>+x.nd).slice(-12);if(d.length<2)return'<div class="empty">Grafik nadi tampil setelah 2 kali input TTV.</div>';
@@ -144,10 +150,10 @@ home(a,G,L,W){const pc=a.length?Math.round(G/a.length*100):0,nx=a.filter(x=>!x.d
  <div class="gr">${T.map(t=>`<button class="cd ${t[0]}" data-go="${t[2]}"><div class="ct"><b>${t[1]}</b></div><p>${t[3]}</p><div class="go"><span>${t[4]}</span>${ic("arr")}</div></button>`).join("")}</div>
  <h2>Jadwal berikutnya</h2><div class="pn">${nx.map(x=>dr(x,1)).join("")||'<div class="empty">Semua jadwal hari ini sudah diberikan.</div>'}</div>
  <button class="btn wide" data-q="bk">Cadangkan / pulihkan data</button>`},
-obat(a){const c={Pagi:0,Siang:0,Malam:0};a.forEach(x=>{if(!x.dn)c[x.sh]++});
+obat(a){const c={Pagi:0,Siang:0,Malam:0,"K/P":0,Kontinyu:0};a.forEach(x=>{if(!x.dn)c[x.sh]=(c[x.sh]||0)+1});
  const h=data.filter(hit).sort(byRoom).map(p=>{const ds=a.filter(x=>x.p===p&&(!tab||x.sh===tab));if(tab&&!ds.length)return"";
  return `<div class="pt${expanded[p.id]?" ex":""}"><button class="ph" data-tp="${p.id}"><div class="tl">${esc(p.kamar)}</div><div class="tx"><b class="nm">${esc(p.nama)}</b><small>${esc(p.dokter)} · ${ds.filter(x=>x.dn).length}/${ds.length} jadwal</small></div><span class="ch">${ic("chev")}</span></button><div class="pb">${ds.map(x=>dr(x)).join("")||'<div class="empty">Tidak ada jadwal.</div>'}</div></div>`}).join("");
- return `<h2>Jadwal obat hari ini</h2>${tabs([["","Semua ("+a.length+")"],["Pagi","Pagi ("+c.Pagi+")"],["Siang","Siang ("+c.Siang+")"],["Malam","Malam ("+c.Malam+")"]],"f",tab)}<div class="pn">${h||`<div class="empty">${data.length?"Tidak ada jadwal yang cocok.":"Belum ada pasien. Tambah pasien atau pulihkan data."}</div>`}</div>`},
+ return `<h2>Jadwal obat hari ini</h2>${tabs([["","Semua ("+a.length+")"],["Pagi","Pagi ("+(c.Pagi||0)+")"],["Siang","Siang ("+(c.Siang||0)+")"],["Malam","Malam ("+(c.Malam||0)+")"],["K/P","K/P ("+(c["K/P"]||0)+")"],["Kontinyu","Kontinyu ("+(c.Kontinyu||0)+")"]],"f",tab)}<div class="pn">${h||`<div class="empty">${data.length?"Tidak ada jadwal yang cocok.":"Belum ada pasien. Tambah pasien atau pulihkan data."}</div>`}</div>`},
 pasien(){const np=data.filter(p=>p.rc).length,L=data.filter(hit).sort(byRoom).map(p=>{const a=Object.keys(abn(p)).length,has=p.td||p.nd||p.rr||p.sh||p.sp;
  return `<div class="it"><div class="tl">${esc(p.kamar)}</div><div class="tx"><b class="nm">${esc(p.nama)}</b><small>${esc(p.dokter)} · ${(p.obat||[]).length} obat</small>${p.rc?`<small class="rc">Tindakan: ${esc(p.rc)}</small>`:""}</div>${has?`<span class="pill ${a?"lt":"ok"}">${a?"Perhatian":"Normal"}</span>`:""}<button class="rb" data-e="${p.id}" aria-label="Ubah ${esc(p.nama)}">${ic("edit")}</button></div>`}).join("");
  return `<h2>Daftar pasien</h2><button class="btn pri wide" data-q="add">Tambah pasien</button>${tabs([["","Semua ("+data.length+")"],["ada","Ada tindakan ("+np+")"],["tanpa","Belum ada ("+(data.length-np)+")"]],"p",pf)}<div class="pn">${L||'<div class="empty">Belum ada pasien yang cocok.</div>'}</div>`},
@@ -155,11 +161,12 @@ ttv(){const ps=data.slice().sort((a,b)=>String(a.nama).localeCompare(String(b.na
  const card=p=>{const A=abn(p),na=Object.keys(A).length,h=p.ttv||[],lt=(h[h.length-1]||{}).t||"",has=p.td||p.nd||p.rr||p.sh||p.sp,M=[["td","TD",p.td],["nd","Nadi",p.nd],["rr","RR",p.rr],["sh","Suhu",p.sh],["sp","SpO₂",p.sp]];
  return `<div class="pt${expT[p.id]?" ex":""}"><button class="ph" data-tt="${p.id}"><div class="tl">${esc(p.kamar)}</div><div class="tx"><b class="nm">${esc(p.nama)}</b><small>${lt?"Terakhir "+(isToday(lt)?"":lt.slice(8,10)+"/"+lt.slice(5,7)+" ")+fmt(lt):"Belum ada TTV"}</small></div>${has?`<span class="pill ${na?"lt":"ok"}">${na?"Perhatian":"Normal"}</span>`:""}<span class="ch">${ic("chev")}</span></button>${has?`<div class="mt">${M.map(m=>`<div class="${m[2]?(A[m[0]]?"a":"n"):""}"><small>${m[1]}</small><b>${esc(m[2]||"-")}</b></div>`).join("")}</div>`:""}<div class="pb">${chart(h)}${h.length?`<div style="margin-top:8px">${h.slice(-10).reverse().map(t=>`<div class="it"><div class="tx"><b>${esc((t.t||"-").replace("T"," · "))}</b><small>TD ${esc(t.td||"-")} · Nadi ${esc(t.nd||"-")} · RR ${esc(t.rr||"-")} · Suhu ${esc(t.sh||"-")}°C · SpO₂ ${esc(t.sp||"-")}%</small></div></div>`).join("")}</div>`:""}</div></div>`};
  return `<h2>Tanda-tanda vital</h2><button class="btn pri wide" data-q="ttv">Input TTV</button><div class="pn">${ps.map(card).join("")||'<div class="empty">Belum ada pasien. Tambah pasien lebih dulu.</div>'}</div><p class="foot">Ketuk nama pasien untuk melihat grafik nadi dan riwayat.</p>`},
-inj(a){const I={};data.forEach(p=>(p.obat||[]).filter(m=>m.rute==="Injeksi").forEach(m=>{const k=String(m.nama).trim().toLowerCase();I[k]=I[k]||{n:String(m.nama).trim(),c:0};I[k].c+=(m.jam||[]).length}));
+inj(a){const I={};data.forEach(p=>(p.obat||[]).filter(m=>m.rute==="Injeksi").forEach(m=>{const k=String(m.nama).trim().toLowerCase();I[k]=I[k]||{n:String(m.nama).trim(),c:0};I[k].c+=((m.jam&&m.jam.length)?m.jam.length:1);}));
  const K=Object.values(I).sort((x,y)=>y.c-x.c).slice(0,6),mx=K[0]?K[0].c:1,d=a.filter(x=>x.m.rute==="Injeksi"&&hit(x.p));
  return `<h2>Obat injeksi</h2><div class="pn" style="padding:6px 14px 10px">${K.map((k,i)=>`<div class="cat">${esc(k.n)}<span>${k.c}×/hari</span><div class="bar"><i style="width:${k.c/mx*100}%;background:${COL[i%6]}"></i></div></div>`).join("")||'<div class="empty">Belum ada obat injeksi.</div>'}</div>
  <h2>Jadwal injeksi hari ini</h2><div class="pn">${d.map(x=>dr(x,1)).join("")||'<div class="empty">Tidak ada jadwal injeksi.</div>'}</div>`}
 };
+
 const K={d:"nor",bb:"",mg:"4",ml:"50",s:"0.05",st:"0.05",n:"8",pt:"",wb:"",su:"",du:"24"},
 DEF={nor:{nm:"Vascon",mg:4,ml:50,s:0.05,st:0.05},dob:{nm:"Dobutamin",mg:250,ml:50,s:2.5,st:2.5}},
 IN=[["i1","Infus / cairan IV"],["i2","Minum / oral"],["i3","Obat & flushing"],["i4","Lain (darah, makanan cair)"]],
@@ -167,47 +174,54 @@ OUT=[["o1","Urine"],["o2","Muntah / NGT"],["o3","Drain / perdarahan"],["o4","Fes
 fl=(k,l)=>`<div><label>${l}</label><input data-k="${k}" type="number" step="any" inputmode="decimal" value="${esc(K[k])}"></div>`,
 stamp=()=>{const d=new Date();return p2(d.getDate())+"/"+p2(d.getMonth()+1)+" "+p2(d.getHours())+":"+p2(d.getMinutes())},
 psel=()=>`<label>Pasien tujuan (● = sudah ada catatan tindakan)</label><select data-k="pt"><option value="">Pilih pasien</option>${data.slice().sort(byRoom).map(p=>`<option value="${esc(p.id)}"${p.id===K.pt?" selected":""}>Kamar ${esc(p.kamar)} · ${esc(p.nama)}${p.rc?" ●":""}</option>`).join("")}</select>`;
-
 function kc(){const D=DEF[K.d],bb=+K.bb,mg=+K.mg,ml=+K.ml,s=+K.s,st=+K.st,n=Math.min(20,Math.max(1,Math.round(+K.n)||8));
  if(!(bb>0&&mg>0&&ml>0&&s>0&&st>=0))return null;
  const c=mg*1000/ml,f=d=>d*bb*60/c;return{D,bb,mg,ml,s,st,c,f,rows:Array.from({length:n},(_,i)=>{const d=+(s+i*st).toFixed(3);return{d,m:d*bb,r:f(d)}})}}
 function kres(){const c=kc(),e=$("#kres");if(!e)return;
  e.innerHTML=c?`<small style="color:var(--mu)">Konsentrasi ${+c.c.toFixed(1)} mcg/mL (${c.mg} mg dalam ${c.ml} mL)</small><div style="overflow-x:auto"><table class="tb"><tr><th>Dosis<br>mcg/kg/mnt</th><th>mcg/mnt</th><th>Pompa<br>mL/jam</th></tr>${c.rows.map((r,i)=>`<tr${i?"":' class="f"'}><td>${r.d}${i?"":" (awal)"}</td><td>${+r.m.toFixed(2)}</td><td>${r.r.toFixed(1)}</td></tr>`).join("")}</table></div>`:`<div class="empty">Isi berat badan, jumlah obat, dan dosis awal untuk melihat tabel.</div>`}
 const ktxt=()=>{const c=kc();return c?`${c.D.nm} ${c.mg} mg/${c.ml} mL, BB ${c.bb} kg: dosis awal ${c.s} mcg/kg/mnt = ${c.rows[0].r.toFixed(1)} mL/jam; naik tiap +${c.st} mcg/kg/mnt (+${c.f(c.st).toFixed(1)} mL/jam)`:""};
-
 function bc(){const g=k=>+K[k]||0,sm=a=>a.reduce((x,k)=>x+g(k[0]),0),I=sm(IN),O=sm(OUT),bb=g("wb"),du=g("du")||24,su=g("su"),iwl=bb>0?Math.round((15*bb/24+(su>36.8?200*(su-36.8)/24:0))*du):0;return{I,O,bb,du,iwl,b:I-O-iwl,uo:bb>0?g("o1")/bb/du:0}}
 function bres(){const r=bc(),e=$("#bres");if(!e)return;const low=r.bb>0&&(K.o1??"")!==""&&r.uo<0.5;
  e.innerHTML=`<div class="ms"><div class="n"><small>Masuk</small><b>${r.I} mL</b></div><div class="n"><small>Keluar</small><b>${r.O} mL</b></div><div class="n"><small>IWL</small><b>${r.iwl} mL</b></div><div class="n"><small>Balance</small><b>${r.b>0?"+":""}${r.b} mL</b></div><div class="${low?"a":"n"}"><small>Urine/kgBB/jam</small><b>${r.bb>0?r.uo.toFixed(2):"-"}</b></div></div><small style="color:var(--mu);display:block;margin-bottom:12px">Balance = masuk − (keluar + IWL). IWL = 15 × BB ÷ 24 × jam, ditambah 200 × (suhu − 36,8) ÷ 24 × jam bila suhu di atas 36,8 °C. Urine normal ≥ 0,5 mL/kgBB/jam.</small>`}
 const btxt=()=>{const r=bc();return r.I||r.O?`Balance ${r.du} jam: masuk ${r.I}, keluar ${r.O} + IWL ${r.iwl} mL = ${r.b>0?"+":""}${r.b} mL; urine ${r.bb>0?r.uo.toFixed(2)+" mL/kgBB/jam":"-"}${r.bb>0?"":" (BB kosong, IWL tidak dihitung)"}`:""};
 function svRc(w){const p=data.find(x=>x.id===K.pt);if(!p)return toast("Pilih pasien tujuan dulu");const t=w==="k"?ktxt():btxt();if(!t)return toast("Lengkapi data dulu");p.rc=(p.rc?p.rc+"\n":"")+"["+stamp()+"] "+t;persist();render();toast("Tersimpan di catatan tindakan "+p.nama)}
-
 V.bal=()=>`<h2>Balance cairan</h2><section class="pn" style="padding:14px">${psel()}<div class="g3">${fl("wb","BB (kg)")}${fl("su","Suhu (°C)")}${fl("du","Durasi (jam)")}</div><label style="color:var(--ac);margin-top:14px">Cairan masuk (mL)</label><div class="g2">${IN.map(x=>fl(x[0],x[1])).join("")}</div><label style="color:var(--ac);margin-top:14px">Cairan keluar (mL)</label><div class="g2">${OUT.map(x=>fl(x[0],x[1])).join("")}</div></section><div id="bres"></div><button class="btn pri wide" data-sv="b">Simpan ke catatan tindakan pasien</button>`;
 V.kal=()=>`<h2>Kalkulator dosis</h2>${tabs([["nor","Vascon"],["dob","Dobutamin"]],"kd",K.d)}<section class="pn" style="padding:14px">${psel()}<div class="g2">${fl("bb","BB (kg)")}${fl("n","Jumlah baris")}</div><div class="g2">${fl("mg","Obat (mg)")}${fl("ml","Total larutan (mL)")}</div><div class="g2">${fl("s","Dosis awal (mcg/kg/mnt)")}${fl("st","Kenaikan tiap baris")}</div><div id="kres"></div></section><button class="btn pri wide" data-sv="k">Simpan ke catatan tindakan pasien</button><p class="foot">Alat bantu hitung. Cocokkan dengan instruksi dokter, protokol RS, dan konsentrasi yang benar-benar dipakai.</p>`;
-
 ["input","change"].forEach(t=>document.addEventListener(t,e=>{const k=e.target.dataset&&e.target.dataset.k;if(!k)return;K[k]=e.target.value;if(view==="kal")kres();if(view==="bal")bres()}));
 function hit(p){const q=$("#q").value.toLowerCase();return(p.nama+" "+p.kamar+" "+p.dokter+" "+(p.rc||"")).toLowerCase().includes(q)&&(view!=="pasien"||(pf!=="ada"||!!p.rc)&&(pf!=="tanpa"||!p.rc))}
-
 function render(){
  const a=doses(),G=a.filter(x=>x.dn).length,L=a.filter(x=>x.late).length;
  $("#sub").textContent="R. Dahlia · "+new Date().toLocaleDateString("id-ID",{weekday:"long",day:"numeric",month:"long"});
  $("#v").innerHTML=V[view](a,G,L,a.length-G-L);if(view==="kal")kres();if(view==="bal")bres();
  $("#nav").innerHTML=[["home","Beranda","home"],["pill","Obat","obat",L],["users","Pasien","pasien"],["heart","TTV","ttv"],["syr","Injeksi","inj"],["drop","Balance","bal"],["calc","Kalkulator","kal"]].map(n=>`<button class="${n[2]==view?"on":""}" data-go="${n[2]}" aria-label="${n[1]}">${ic(n[0])}${n[3]?`<b>${n[3]}</b>`:""}</button>`).join("");
  $("#bell").innerHTML=ic("bell")+(L?`<i>${L}</i>`:"");$("#sbt").innerHTML=ic("search")}
-
-function drawSl(d,ck){const r=d.querySelector(".rt").value;let h="";
- if(JD[r])JD[r].forEach(g=>g[1].forEach(t=>h+=`<label><input type="checkbox" value="${t}"${ck.includes(t)?" checked":""}>${g[0]} ${t}</label>`));
- else{ck.slice().sort((a,b)=>tm(a)-tm(b)).forEach(t=>h+=`<label><input type="checkbox" value="${t}" checked>${t}</label>`);h+=`<span class="ad"><input type="time" class="nt" aria-label="Jam pemberian"><button type="button" class="btn sm ab">Tambah jam</button></span>`}
- d.querySelector(".sl").innerHTML=h;const b=d.querySelector(".ab");if(b)b.onclick=()=>{const v=d.querySelector(".nt").value;if(!v)return;const cur=[...d.querySelectorAll(".sl input:checked")].map(c=>c.value);if(!cur.includes(v))cur.push(v);drawSl(d,cur)}}
-
-function medRow(m){m=m||{};const d=document.createElement("div");d.className="mr";d.dataset.id=m.id||uid();d.dataset.done=JSON.stringify(m.done||{});
- d.innerHTML=`<input class="mn" placeholder="Nama obat" aria-label="Nama obat" value="${esc(m.nama)}"><input class="md" placeholder="Dosis" aria-label="Dosis" value="${esc(m.dosis)}"><button type="button" class="btn sm" aria-label="Hapus obat">✕</button><select class="rt" aria-label="Rute">${["Oral","Injeksi","Cairan","Drip","Syringe pump"].map(r=>`<option>${r}</option>`).join("")}</select><div class="sl"></div>`;
- const s=d.querySelector(".rt");s.value=m.rute||"Oral";drawSl(d,m.jam||[]);s.onchange=()=>drawSl(d,[...d.querySelectorAll(".sl input:checked")].map(c=>c.value));d.querySelector("button").onclick=()=>d.remove();$("#meds").appendChild(d)}
-
+function drawSl(d,ck){
+  const r=d.querySelector(".rt").value;let h="";
+  if(JD[r])JD[r].forEach(g=>g[1].forEach(t=>h+=`<label><input type="checkbox" value="${t}"${ck.includes(t)?" checked":""}>${g[0]==="K/P"?"K/P":g[0]+" "+t}</label>`));
+  else{
+    const times=ck.filter(t=>t!=="Kontinyu");
+    times.sort((a,b)=>tm(a)-tm(b)).forEach(t=>h+=`<label><input type="checkbox" value="${t}" checked>${t}</label>`);
+    h+=`<label class="ad"><input type="checkbox" value="Kontinyu"${ck.includes("Kontinyu")?" checked":""}>Kontinyu / Tanpa Jam</label>`;
+    h+=`<span class="ad"><input type="time" class="nt" aria-label="Jam pemberian"><button type="button" class="btn sm ab">Tambah jam</button></span>`;
+  }
+  d.querySelector(".sl").innerHTML=h;
+  const b=d.querySelector(".ab");
+  if(b)b.onclick=()=>{
+    const v=d.querySelector(".nt").value;if(!v)return;
+    const cur=[...d.querySelectorAll(".sl input:checked")].map(c=>c.value);
+    if(!cur.includes(v))cur.push(v);drawSl(d,cur);
+  }
+}
+function medRow(m){
+  m=m||{};const d=document.createElement("div");d.className="mr";d.dataset.id=m.id||uid();d.dataset.done=JSON.stringify(m.done||{});
+  d.innerHTML=`<input class="mn" placeholder="Nama obat" aria-label="Nama obat" value="${esc(m.nama)}"><input class="md" placeholder="Dosis" aria-label="Dosis" value="${esc(m.dosis)}"><button type="button" class="btn sm" aria-label="Hapus obat">✕</button><select class="rt" aria-label="Rute">${["Oral","Injeksi","Cairan","Drip","Syringe pump"].map(r=>`<option>${r}</option>`).join("")}</select><div class="sl"></div>`;
+  const s=d.querySelector(".rt");s.value=m.rute||"Oral";drawSl(d,m.jam||[]);s.onchange=()=>drawSl(d,[...d.querySelectorAll(".sl input:checked")].map(c=>c.value));d.querySelector("button").onclick=()=>d.remove();$("#meds").appendChild(d)
+}
 function openP(id){editId=id;const p=data.find(x=>x.id===id)||{};$("#meds").innerHTML="";$("#nama").value=p.nama||"";const kr=normRoom(p.kamar||"");$("#kamar").innerHTML=`<option value="">Pilih kamar</option>`+ROOMS.concat(kr&&!ROOMS.includes(kr)?[kr]:[]).map(r=>`<option>${esc(r)}</option>`).join("");$("#kamar").value=kr;$("#dokter").value=p.dokter||"";$("#rc").value=p.rc||"";(p.obat&&p.obat.length?p.obat:[{}]).forEach(medRow);$("#del").hidden=!id;$("#dlg").showModal()}
-
 function openT(id){
   const p=data.find(x=>x.id===id);
-  $("#tp").innerHTML=`<option value="">Pilih pasien</option>`+data.slice().sort(byRoom).map(x=>`<option value="${esc(x.id)}"${x.id===id?" selected":""}>Kamar ${esc(x.kamar)} · ${esc(x.nama)}</option>`).join("");
+  $("#tp").innerHTML=`<option value="">Pilih pasien</option>`+data.slice().sort(byRoom).map(p=>`<option value="${esc(p.id)}"${p.id===id?" selected":""}>Kamar ${esc(p.kamar)} · ${esc(p.nama)}</option>`).join("");
+  $("#tp").value=id||"";
   $("#td").value=p?.td||"";
   $("#nd").value=p?.nd||"";
   $("#rr").value=p?.rr||"";
@@ -216,7 +230,6 @@ function openT(id){
   $("#tdlg").showModal();
 }
 
-// Global Click Handlers
 document.addEventListener("click",e=>{
   const t=e.target.closest("[data-go],[data-q],[data-t],[data-e],[data-tp],[data-tt],[data-sv],[data-kd],[data-f],[data-p],[data-x]");
   if(!t)return;
@@ -237,26 +250,14 @@ document.addEventListener("click",e=>{
   if(t.dataset.tp){expanded[t.dataset.tp]=!expanded[t.dataset.tp];render()}
   if(t.dataset.tt){expT[t.dataset.tt]=!expT[t.dataset.tt];render()}
   if(t.dataset.sv)svRc(t.dataset.sv);
-  if(t.dataset.kd){
-    K.d=t.dataset.kd;
-    const D=DEF[K.d];
-    K.mg=D.mg;K.ml=D.ml;K.s=D.s;K.st=D.st;
-    render();
-  }
+  if(t.dataset.kd){K.d=t.dataset.kd;render()}
   if(t.dataset.f!==undefined){tab=t.dataset.f;render()}
   if(t.dataset.p!==undefined){pf=t.dataset.p;render()}
   if(t.dataset.x!==undefined){
-    const d=e.target.closest("dialog");
-    if(d)d.close();
+    e.target.closest("dialog").close();
   }
 });
 
-// Search and Toggle Search Bar
-$("#sbt").onclick=()=>$("#sb").classList.toggle("on");
-$("#bell").onclick=()=>{view="obat";tab="";render()};
-$("#q").oninput=render;
-
-// Form Submission Pasien
 $("#f").onsubmit=e=>{
   e.preventDefault();
   const nama=$("#nama").value.trim(),kamar=$("#kamar").value,dokter=$("#dokter").value.trim(),rc=$("#rc").value.trim();
@@ -280,7 +281,6 @@ $("#f").onsubmit=e=>{
   persist();render();$("#dlg").close();toast("Data pasien tersimpan");
 };
 
-// Form Submission TTV
 $("#tf").onsubmit=e=>{
   e.preventDefault();
   const id=$("#tp").value,p=data.find(x=>x.id===id);
@@ -304,27 +304,11 @@ $("#br").onclick=()=>{
     const parsed=JSON.parse($("#bt").value);
     if(Array.isArray(parsed)){
       data=parsed;persist();render();$("#bdlg").close();toast("Data berhasil dipulihkan");
-    }else{
-      toast("Data tidak sesuai format");
     }
   }catch(err){toast("Format JSON cadangan tidak valid")}
 };
 
-// Initial Load
 try{data=JSON.parse(localStorage.getItem(KEY))||[]}catch(e){data=[]}
-if(!data.length){
-  // Sample Data for Initial Demonstration
-  data=[{
-    id:uid(),
-    nama:"Ny. Susi",
-    kamar:"K-1",
-    dokter:"dr. Budi, Sp.PD",
-    rc:"Observasi TTV tiap 4 jam",
-    td:"120/80",nd:"84",rr:"20",sh:"36.6",sp:"98",
-    ttv:[{t:nowStr(),td:"120/80",nd:"84",rr:"20",sh:"36.6",sp:"98"}],
-    obat:[{id:uid(),nama:"Ceftriaxone",dosis:"1 gram",rute:"Injeksi",jam:["09:00","21:00"],done:{}}]
-  }];
-}
 render();
 loadFromCloud();
 </script>
