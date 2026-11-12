@@ -243,7 +243,6 @@ document.addEventListener("click",e=>{
  if(b.dataset.s){sel=b.dataset.s;return render()}
  if(b.dataset.tt){expT[b.dataset.tt]=!expT[b.dataset.tt];sel=b.dataset.tt;return render()}
  if(b.dataset.kd){K.d=b.dataset.kd;const D=DEF[K.d];K.mg=D.mg;K.ml=D.ml;K.s=D.s;K.st=D.st;return render()}
- if(b.dataset.ota){const a=b.dataset.ota.split("|"),p=data.find(x=>x.id===a[0]),m=p&&p.obat.find(x=>x.id===a[1]);if(m){m.done=m.done||{};m.done[a[2]]=m.done[a[2]]==="OTA"?"":"OTA";persist();render()}return}
  if(b.dataset.kx){const a=b.dataset.kx.split("|"),p=data.find(x=>x.id===a[0]),m=p&&p.obat.find(x=>x.id===a[1]);if(m){m.kpg=m.kpg||[];if(a[2]==="a")m.kpg.push(nowStr());else{const i=m.kpg.map(isToday).lastIndexOf(true);if(i>-1)m.kpg.splice(i,1)}m.kpg=m.kpg.slice(-60);persist();render()}return}
  if(b.dataset.sv)return svRc(b.dataset.sv);
  if(b.dataset.e)return openP(b.dataset.e);
