@@ -233,7 +233,7 @@ $("#tf").onsubmit=e=>{e.preventDefault();const id=$("#tp").value,v={};["td","nd"
 $("#del").onclick=()=>{const id=editId;ask("Hapus catatan pasien ini?",()=>{data=data.filter(x=>x.id!==id);persist();render();$("#dlg").close();toast("Pasien dihapus")})};
 $("#cy").onclick=()=>{const f=askCb;askCb=null;$("#cdlg").close();if(f)f()};
 $("#br").onclick=()=>{try{const v=JSON.parse($("#bt").value);if(!Array.isArray(v))throw 0;ask("Ganti semua data dengan data cadangan?",()=>{data=v;persist();render();$("#bdlg").close();toast("Data dipulihkan")})}catch(e){toast("Teks cadangan tidak valid")}};
-document.addEventListener("click",e=>{if(b.dataset.ota){const a=b.dataset.ota.split("|"),p=data.find(x=>x.id===a[0]),m=p&&p.obat.find(x=>x.id===a[1]);if(m){m.done=m.done||{};m.done[a[2]]=m.done[a[2]]==="OTA"?"": "OTA";persist();render()}return}
+document.addEventListener("click",e=>{
  const b=e.target.closest("button");if(!b)return;
  if(b.hasAttribute("data-x"))return b.closest("dialog").close();
  if(b.dataset.go){view=b.dataset.go;window.scrollTo(0,0);return render()}
@@ -243,6 +243,7 @@ document.addEventListener("click",e=>{if(b.dataset.ota){const a=b.dataset.ota.sp
  if(b.dataset.s){sel=b.dataset.s;return render()}
  if(b.dataset.tt){expT[b.dataset.tt]=!expT[b.dataset.tt];sel=b.dataset.tt;return render()}
  if(b.dataset.kd){K.d=b.dataset.kd;const D=DEF[K.d];K.mg=D.mg;K.ml=D.ml;K.s=D.s;K.st=D.st;return render()}
+ if(b.dataset.ota){const a=b.dataset.ota.split("|"),p=data.find(x=>x.id===a[0]),m=p&&p.obat.find(x=>x.id===a[1]);if(m){m.done=m.done||{};m.done[a[2]]=m.done[a[2]]==="OTA"?"":"OTA";persist();render()}return}
  if(b.dataset.kx){const a=b.dataset.kx.split("|"),p=data.find(x=>x.id===a[0]),m=p&&p.obat.find(x=>x.id===a[1]);if(m){m.kpg=m.kpg||[];if(a[2]==="a")m.kpg.push(nowStr());else{const i=m.kpg.map(isToday).lastIndexOf(true);if(i>-1)m.kpg.splice(i,1)}m.kpg=m.kpg.slice(-60);persist();render()}return}
  if(b.dataset.sv)return svRc(b.dataset.sv);
  if(b.dataset.e)return openP(b.dataset.e);
