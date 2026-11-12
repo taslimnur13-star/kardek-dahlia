@@ -92,8 +92,8 @@ const KEY="catatan-obat-v1",uid=()=>Date.now().toString(36)+Math.random().toStri
 let data=[],tab="",pf="",view="home",sel="",editId=null,askCb=null;
 const expT={},expanded={},COL=["#a592e6","#f7a8b6","#f9b85a","#f6dc7a","#a5d8a0","#93b9ee"];
 const nowStr=()=>{const d=new Date();return `${d.getFullYear()}-${p2(d.getMonth()+1)}-${p2(d.getDate())}T${p2(d.getHours())}:${p2(d.getMinutes())}`};
-const isToday=v=>typeof v==="string"&&v.slice(0,10)===nowStr().slice(0,10),fmt=v=>typeof v==="string"&&v.length>=16?v.slice(11,16):"";
-const toMin=t=>{const a=(t||"").split(":");return a.length<2?0:+a[0]*60+ +a[1]},tm=s=>{const t=toMin(s);return t<360?t+1440:t},nowMin=()=>{const d=new Date();return d.getHours()*60+d.getMinutes()};
+const dk=d=>{d=new Date(d.getTime()-216e5);return d.getFullYear()+"-"+p2(d.getMonth()+1)+"-"+p2(d.getDate())},isToday=v=>{if(typeof v!=="string"||v.length<16)return false;const d=new Date(v);return !isNaN(d)&&dk(d)===dk(new Date())},fmt=v=>typeof v==="string"&&v.length>=16?v.slice(11,16):"";
+const toMin=t=>{const a=(t||"").split(":");return a.length<2?0:+a[0]*60+ +a[1]},tm=s=>{const t=toMin(s);return t<360?t+1440:t},nowMin=()=>{const d=new Date(),m=d.getHours()*60+d.getMinutes();return m<360?m+1440:m};
 const JD={Injeksi:[["Pagi",["09:00"]],["Siang",["17:00","21:00"]],["Malam",["01:00"]]],Oral:[["Pagi",["07:00","12:00","15:00"]],["Sore",["19:00"]],["Malam",["23:00"]]]};
 const bt=s=>{const t=toMin(s);return t>=360&&t<720?"Pagi":t>=720&&t<1080?"Siang":"Malam"};
 const grp=(r,s)=>{let g="";(JD[r||"Oral"]||[]).forEach(x=>{if(x[1].includes(s))g=x[0]});return g||bt(s)};
@@ -144,7 +144,7 @@ home(a,G,L,W){const pc=a.length?Math.round(G/a.length*100):0,nx=a.filter(x=>!x.d
 obat(a){const ex=extra(),c={Pagi:0,Siang:0,Malam:0};a.forEach(x=>{if(!x.dn)c[x.sh]++});
  const h=data.filter(hit).sort(byRoom).map(p=>{const ds=a.filter(x=>x.p===p&&(!tab||x.sh===tab)),xs=ex.filter(x=>x.p===p);if(tab&&!ds.length&&!xs.length)return"";
  return `<div class="pt${expanded[p.id]?" ex":""}"><button class="ph" data-tp="${p.id}"><div class="tl">${esc(p.kamar)}</div><div class="tx"><b class="nm">${esc(p.nama)}</b><small>${esc(p.dokter)} · ${ds.filter(x=>x.dn).length}/${ds.length} jadwal${xs.length?" · "+xs.length+" K/P / tanpa jam":""}</small></div><span class="ch">${ic("chev")}</span></button><div class="pb">${ds.map(x=>dr(x)).join("")+xs.map(x=>xr(x)).join("")||'<div class="empty">Tidak ada jadwal.</div>'}</div></div>`}).join("");
- return `<h2>Jadwal obat hari ini</h2>${tabs([["","Semua ("+a.length+")"],["Pagi","Pagi ("+c.Pagi+")"],["Siang","Siang ("+c.Siang+")"],["Malam","Malam ("+c.Malam+")"]],"f",tab)}<div class="pn">${h||`<div class="empty">${data.length?"Tidak ada jadwal yang cocok.":"Belum ada pasien. Tambah pasien atau pulihkan data."}</div>`}</div>`},
+ return `<h2>Jadwal obat hari ini</h2>${tabs([["","Semua ("+a.length+")"],["Pagi","Pagi ("+c.Pagi+")"],["Siang","Siang ("+c.Siang+")"],["Malam","Malam ("+c.Malam+")"]],"f",tab)}<div class="pn">${h||`<div class="empty">${data.length?"Tidak ada jadwal yang cocok.":"Belum ada pasien. Tambah pasien atau pulihkan data."}</div>`}</div><button class="btn wide" data-q="rst" style="color:var(--lt)">Kosongkan semua ceklis pemberian</button><p class="foot">Hari jadwal obat berganti setiap pukul 06:00. Setelah itu semua ceklis kembali kosong.</p>`},
 pasien(){const np=data.filter(p=>p.rc).length,L=data.filter(hit).sort(byRoom).map(p=>{const a=Object.keys(abn(p)).length,has=p.td||p.nd||p.rr||p.sh||p.sp;
  return `<div class="px"><div class="px-t">${p.rc?esc(p.rc):'<span class="px-m">Belum ada catatan tindakan</span>'}</div><div class="px-f"><div class="px-n"><b>${esc(p.nama)}</b><small>Kamar ${esc(p.kamar)} · ${esc(p.dokter)} · ${(p.obat||[]).length} obat</small></div>${has?`<span class="pill ${a?"lt":"ok"}">${a?"Perhatian":"Normal"}</span>`:""}<button class="rb" data-e="${p.id}" aria-label="Ubah ${esc(p.nama)}">${ic("edit")}</button></div></div>`}).join("");
  return `<h2>Daftar pasien</h2><button class="btn pri wide" data-q="add">Tambah pasien</button>${tabs([["","Semua ("+data.length+")"],["ada","Ada tindakan ("+np+")"],["tanpa","Belum ada ("+(data.length-np)+")"]],"p",pf)}<div>${L||'<div class="empty">Belum ada pasien yang cocok.</div>'}</div>`},
@@ -218,6 +218,7 @@ document.addEventListener("click",e=>{
  if(b.dataset.kx){const a=b.dataset.kx.split("|"),p=data.find(x=>x.id===a[0]),m=p&&p.obat.find(x=>x.id===a[1]);if(m){m.kpg=m.kpg||[];if(a[2]==="a")m.kpg.push(nowStr());else{const i=m.kpg.map(isToday).lastIndexOf(true);if(i>-1)m.kpg.splice(i,1)}m.kpg=m.kpg.slice(-60);persist();render()}return}
  if(b.dataset.sv)return svRc(b.dataset.sv);
  if(b.dataset.e)return openP(b.dataset.e);
+ if(b.dataset.q==="rst")return ask("Kosongkan SEMUA ceklis pemberian obat (hari ini dan sebelumnya) untuk semua pasien? Anda perlu mencentang ulang satu per satu.",()=>{data.forEach(p=>(p.obat||[]).forEach(m=>{m.done={};m.kpg=[]}));persist();render();toast("Semua ceklis dikosongkan")});
  if(b.dataset.q){const q=b.dataset.q;return q=="add"?openP(null):q=="ttv"?openT():($("#bt").value=JSON.stringify(data),$("#bdlg").showModal(),$("#bt").select())}
  if(b.dataset.t){const a=b.dataset.t.split("|"),p=data.find(x=>x.id===a[0]),m=p&&p.obat.find(x=>x.id===a[1]);if(m){m.done=m.done||{};m.done[a[2]]=isToday(m.done[a[2]])?"":nowStr();persist();render()}}});
 $("#bell").onclick=()=>{view="obat";tab="";window.scrollTo(0,0);render()};
