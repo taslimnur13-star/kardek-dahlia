@@ -6,8 +6,8 @@
 <title>Catatan Obat – R. Dahlia</title>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#f4f4f8;--cd:#fff;--tx:#1f1d2e;--mu:#8c8aa3;--ln:#ececf3;--ac:#7f6fe0;--acl:#dcd8fa;--on:#fff;--tb:#fde6d2;--tc:#b45309;--pn:#0f766e;--ok:#2e8f5a;--okb:#d9f3e2;--wt:#a86f00;--wb:#fdefc4;--lt:#d23f57;--ltb:#fddde1;--sh:0 6px 18px rgba(80,70,140,.1);color-scheme:light}
-@media(prefers-color-scheme:dark){:root{--bg:#14131c;--cd:#211f2e;--tx:#f1f0fa;--mu:#a09eb8;--ln:#302e42;--ac:#a99cf5;--acl:#3a3560;--on:#1b1630;--tb:#4a3524;--tc:#ffb680;--pn:#5eead4;--ok:#6fe0a0;--okb:#1c4332;--wt:#f3c45a;--wb:#4a3f1c;--lt:#ff8fa2;--ltb:#522a37;--sh:0 6px 18px rgba(0,0,0,.4);color-scheme:dark}}
+:root{--bg:#f4f4f8;--cd:#fff;--tx:#1f1d2e;--mu:#8c8aa3;--ln:#ececf3;--ac:#7f6fe0;--acl:#dcd8fa;--on:#fff;--tb:#fde6d2;--tc:#b45309;--pn:#0f766e;--ok:#2e8f5a;--okb:#d9f3e2;--wt:#a86f00;--wb:#fdefc4;--lt:#d23f57;--ltb:#fddde1;--sh:0 6px 18px rgba(80,70,140,.1);--f-empty-bg:#fffbeb;--f-empty-bd:#f59e0b;--f-fill-bg:#ecfdf5;--f-fill-bd:#10b981;--mr-empty-bg:#fffdf5;--mr-empty-bd:#fbbf24;--mr-fill-bg:#f2fbf7;--mr-fill-bd:#34d399;color-scheme:light}
+@media(prefers-color-scheme:dark){:root{--bg:#14131c;--cd:#211f2e;--tx:#f1f0fa;--mu:#a09eb8;--ln:#302e42;--ac:#a99cf5;--acl:#3a3560;--on:#1b1630;--tb:#4a3524;--tc:#ffb680;--pn:#5eead4;--ok:#6fe0a0;--okb:#1c4332;--wt:#f3c45a;--wb:#4a3f1c;--lt:#ff8fa2;--ltb:#522a37;--sh:0 6px 18px rgba(0,0,0,.4);--f-empty-bg:#2c2516;--f-empty-bd:#d97706;--f-fill-bg:#162c24;--f-fill-bd:#059669;--mr-empty-bg:#262015;--mr-empty-bd:#b45309;--mr-fill-bg:#142820;--mr-fill-bd:#10b981;color-scheme:dark}}
 *{box-sizing:border-box;margin:0}
 html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--tx);font:14px/1.45 Manrope,system-ui,-apple-system,"Segoe UI",sans-serif;max-width:460px;margin:0 auto;padding:calc(14px + env(safe-area-inset-top,0px)) 16px calc(110px + env(safe-area-inset-bottom,0px))}
@@ -51,8 +51,16 @@ dialog h3{margin-bottom:10px;color:var(--ac)}
 label{display:block;font-size:12.5px;font-weight:700;color:var(--mu);margin:8px 0 3px}
 input:not([type=checkbox]),select,textarea{font:inherit;color:var(--tx);background:var(--bg);border:1px solid var(--ln);border-radius:14px;padding:9px 12px;width:100%}
 .g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-.mr{display:grid;grid-template-columns:1.6fr 1fr auto;gap:8px;margin:10px 0;padding-bottom:10px;border-bottom:1px dashed var(--ln)}.mr .rt,.mr .sl{grid-column:1/-1}
-.sl{display:flex;gap:14px;flex-wrap:wrap}.sl label,.sl .ad{display:flex;align-items:center;gap:6px;margin:0;color:var(--tx);font-size:13px}.sl .ad input{width:auto}
+..legend{display:flex;gap:12px;flex-wrap:wrap;font-size:11.5px;color:var(--mu);margin-bottom:10px}.legend span{display:inline-flex;align-items:center;gap:5px}.legend i{width:12px;height:12px;border-radius:4px;display:inline-block}.legend .l-emp{background:var(--f-empty-bg);border:1.5px dashed var(--f-empty-bd)}.legend .l-fil{background:var(--f-fill-bg);border:1.5px solid var(--f-fill-bd)}
+#f input:not([type=checkbox]).is-empty,#f select.is-empty,#f textarea.is-empty{background:var(--f-empty-bg);border:1.5px dashed var(--f-empty-bd)}
+#f input:not([type=checkbox]).is-filled,#f select.is-filled,#f textarea.is-filled{background:var(--f-fill-bg);border:1.5px solid var(--f-fill-bd);font-weight:700}
+.mr{display:grid;grid-template-columns:1.6fr 1fr auto;gap:8px;margin:10px 0;padding:12px;border-radius:18px;background:var(--mr-empty-bg);border:1.5px dashed var(--mr-empty-bd);transition:background-color .2s,border-color .2s}
+.mr.mr-filled{background:var(--mr-fill-bg);border:1.5px solid var(--mr-fill-bd)}
+.mr-st{grid-column:1/-1;display:flex;justify-content:space-between;align-items:center;font-size:11.5px;font-weight:800;margin-bottom:2px}
+.mr-st .badge{padding:2px 9px;border-radius:99px;font-size:10.5px;background:var(--wb);color:var(--wt)}
+.mr.mr-filled .mr-st .badge{background:var(--okb);color:var(--ok)}
+.mr .rt,.mr .sl{grid-column:1/-1}
+.sl{display:flex;gap:8px;flex-wrap:wrap}.sl label{display:inline-flex;align-items:center;gap:6px;margin:0;color:var(--tx);font-size:12.5px;padding:5px 10px;border-radius:10px;border:1px solid var(--ln);background:var(--cd);cursor:pointer}.sl label input{width:auto}.sl label:has(input:checked),.kpl:has(input:checked){background:var(--okb);border-color:var(--f-fill-bd);color:var(--ok);font-weight:800}.sl .ad{display:flex;align-items:center;gap:6px;margin:0;color:var(--tx);font-size:13px}.sl .ad input{width:auto}
 .row{display:flex;gap:10px;justify-content:flex-end;margin-top:16px;flex-wrap:wrap}dialog .row{position:sticky;bottom:-20px;background:var(--cd);padding:12px 0 4px;z-index:2}
 .toast{position:fixed;left:50%;bottom:calc(92px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ac);color:var(--on);padding:9px 18px;border-radius:99px;font-weight:800;z-index:99;max-width:90vw;text-align:center}
 </style>
@@ -66,6 +74,7 @@ input:not([type=checkbox]),select,textarea{font:inherit;color:var(--tx);backgrou
 <nav id="nav" aria-label="Menu utama"></nav>
 
 <dialog id="dlg"><form id="f" novalidate><h3>Data pasien</h3>
+  <div class="legend"><span><i class="l-fil"></i> Sudah terisi</span><span><i class="l-emp"></i> Belum terisi</span></div>
   <label for="nama">Nama pasien</label><input id="nama" required>
   <div class="g2"><div><label for="kamar">Kamar</label><select id="kamar" required></select></div><div><label for="dokter">Dokter</label><input id="dokter" required></div></div>
   <label>Obat</label><div id="meds"></div><button type="button" class="btn sm" id="addm">Tambah obat</button>
@@ -185,14 +194,31 @@ function render(){
  $("#v").innerHTML=V[view](a,G,L,a.length-G-L);if(view==="kal")kres();if(view==="bal")bres();
  $("#nav").innerHTML=[["home","Beranda","home"],["pill","Obat","obat",L],["users","Pasien","pasien"],["heart","TTV","ttv"],["syr","Injeksi","inj"],["drop","Balance","bal"],["calc","Kalkulator","kal"]].map(n=>`<button class="${n[2]==view?"on":""}" data-go="${n[2]}" aria-label="${n[1]}">${ic(n[0])}${n[3]?`<b>${n[3]}</b>`:""}</button>`).join("");
  $("#bell").innerHTML=ic("bell")+(L?`<i>${L}</i>`:"");$("#sbt").innerHTML=ic("search")}
+function syncFormState(){
+ const form=$("#f");if(!form)return;
+ form.querySelectorAll("input:not([type=checkbox]):not([type=time]),select,textarea").forEach(el=>{
+  const ok=String(el.value||"").trim()!=="";
+  el.classList.toggle("is-filled",ok);el.classList.toggle("is-empty",!ok);
+ });
+ form.querySelectorAll(".mr").forEach((row,idx)=>{
+  const nm=row.querySelector(".mn").value.trim(),ru=row.querySelector(".rt").value;
+  const hasJam=[...row.querySelectorAll(".sl input:checked")].length>0,hasKp=JD[ru]&&row.querySelector(".kp").checked;
+  const done=nm!==""&&(hasJam||hasKp||!JD[ru]);
+  row.classList.toggle("mr-filled",done);
+  row.querySelector(".mr-title").textContent=`Obat #${idx+1}${nm?" · "+nm:""}`;
+  row.querySelector(".badge").textContent=!nm?"Belum diisi":(!done?"Pilih jam / K/P":"Lengkap ✓");
+ });
+}
+["input","change"].forEach(ev=>$("#f").addEventListener(ev,syncFormState));
+
 function drawSl(d,ck){const r=d.querySelector(".rt").value;let h="";
  if(JD[r])JD[r].forEach(g=>g[1].forEach(t=>h+=`<label><input type="checkbox" value="${t}"${ck.includes(t)?" checked":""}>${g[0]} ${t}</label>`));
  else{ck.slice().sort((a,b)=>tm(a)-tm(b)).forEach(t=>h+=`<label><input type="checkbox" value="${t}" checked>${t}</label>`);h+=`<span class="ad"><input type="time" class="nt" aria-label="Jam pemberian"><button type="button" class="btn sm ab">Tambah jam</button></span>`}
- d.querySelector(".sl").innerHTML=h;const kl=d.querySelector(".kpl");if(kl)kl.hidden=!JD[r];const b=d.querySelector(".ab");if(b)b.onclick=()=>{const v=d.querySelector(".nt").value;if(!v)return;const cur=[...d.querySelectorAll(".sl input:checked")].map(c=>c.value);if(!cur.includes(v))cur.push(v);drawSl(d,cur)}}
+ d.querySelector(".sl").innerHTML=h;const kl=d.querySelector(".kpl");if(kl)kl.hidden=!JD[r];const b=d.querySelector(".ab");if(b)b.onclick=()=>{const v=d.querySelector(".nt").value;if(!v)return;const cur=[...d.querySelectorAll(".sl input:checked")].map(c=>c.value);if(!cur.includes(v))cur.push(v);drawSl(d,cur);syncFormState()};syncFormState()}
 function medRow(m){m=m||{};const d=document.createElement("div");d.className="mr";d.dataset.id=m.id||uid();d.dataset.done=JSON.stringify(m.done||{});d.dataset.kpg=JSON.stringify(m.kpg||[]);
- d.innerHTML=`<input class="mn" placeholder="Nama obat" aria-label="Nama obat" value="${esc(m.nama)}"><input class="md" placeholder="Dosis" aria-label="Dosis" value="${esc(m.dosis)}"><button type="button" class="btn sm" aria-label="Hapus obat">✕</button><select class="rt" aria-label="Rute">${["Oral","Injeksi","Cairan","Drip","Syringe pump"].map(r=>`<option>${r}</option>`).join("")}</select><div class="sl"></div><label class="kpl"><input type="checkbox" class="kp"> K/P (jika perlu)</label>`;
- const s=d.querySelector(".rt");s.value=m.rute||"Oral";d.querySelector(".kp").checked=!!m.kp;drawSl(d,m.jam||[]);s.onchange=()=>drawSl(d,[...d.querySelectorAll(".sl input:checked")].map(c=>c.value));d.querySelector("button").onclick=()=>d.remove();$("#meds").appendChild(d)}
-function openP(id){editId=id;const p=data.find(x=>x.id===id)||{};$("#meds").innerHTML="";$("#nama").value=p.nama||"";const kr=normRoom(p.kamar||"");$("#kamar").innerHTML=`<option value="">Pilih kamar</option>`+ROOMS.concat(kr&&!ROOMS.includes(kr)?[kr]:[]).map(r=>`<option>${esc(r)}</option>`).join("");$("#kamar").value=kr;$("#dokter").value=p.dokter||"";$("#rc").value=p.rc||"";(p.obat&&p.obat.length?p.obat:[{}]).forEach(medRow);$("#del").hidden=!id;$("#dlg").showModal()}
+ d.innerHTML=`<div class="mr-st"><span class="mr-title">Obat</span><span class="badge">Belum diisi</span></div><input class="mn" placeholder="Nama obat" aria-label="Nama obat" value="${esc(m.nama)}"><input class="md" placeholder="Dosis" aria-label="Dosis" value="${esc(m.dosis)}"><button type="button" class="btn sm" aria-label="Hapus obat">✕</button><select class="rt" aria-label="Rute">${["Oral","Injeksi","Cairan","Drip","Syringe pump"].map(r=>`<option>${r}</option>`).join("")}</select><div class="sl"></div><label class="kpl"><input type="checkbox" class="kp"> K/P (jika perlu)</label>`;
+ const s=d.querySelector(".rt");s.value=m.rute||"Oral";d.querySelector(".kp").checked=!!m.kp;drawSl(d,m.jam||[]);s.onchange=()=>{drawSl(d,[...d.querySelectorAll(".sl input:checked")].map(c=>c.value));syncFormState()};d.querySelector("button").onclick=()=>{d.remove();syncFormState()};$("#meds").appendChild(d);syncFormState()}
+function openP(id){editId=id;const p=data.find(x=>x.id===id)||{};$("#meds").innerHTML="";$("#nama").value=p.nama||"";const kr=normRoom(p.kamar||"");$("#kamar").innerHTML=`<option value="">Pilih kamar</option>`+ROOMS.concat(kr&&!ROOMS.includes(kr)?[kr]:[]).map(r=>`<option>${esc(r)}</option>`).join("");$("#kamar").value=kr;$("#dokter").value=p.dokter||"";$("#rc").value=p.rc||"";(p.obat&&p.obat.length?p.obat:[{}]).forEach(medRow);$("#del").hidden=!id;$("#dlg").showModal();syncFormState()}
 function openT(){$("#tp").innerHTML=`<option value="">Pilih pasien</option>`+data.slice().sort(byRoom).map(p=>`<option value="${esc(p.id)}"${p.id===sel?" selected":""}>Kamar ${esc(p.kamar)} · ${esc(p.nama)}</option>`).join("");["td","nd","rr","sh","sp"].forEach(k=>$("#"+k).value="");$("#tdlg").showModal()}
 $("#f").onsubmit=e=>{e.preventDefault();try{if(!$("#nama").value.trim()){toast("Isi nama pasien");$("#nama").focus();return}if(!$("#kamar").value){toast("Pilih kamar");$("#kamar").focus();return}if(!$("#dokter").value.trim()){toast("Isi nama dokter");$("#dokter").focus();return}saveP()}catch(x){console.error(x);toast("Gagal menyimpan: "+x.message)}};
 function saveP(){const old=data.find(x=>x.id===editId)||{};
