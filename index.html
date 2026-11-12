@@ -6,6 +6,7 @@
 <title>Catatan Obat – R. Dahlia</title>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&display=swap" rel="stylesheet">
 <style>
+.pill.ota{background:#f3f4f6;color:#4b5563;border:1px dashed #9ca3af}
 :root{--bg:#f4f4f8;--cd:#fff;--tx:#1f1d2e;--mu:#8c8aa3;--ln:#ececf3;--ac:#7f6fe0;--acl:#dcd8fa;--on:#fff;--tb:#fde6d2;--tc:#b45309;--pn:#0f766e;--ok:#2e8f5a;--okb:#d9f3e2;--wt:#a86f00;--wb:#fdefc4;--lt:#d23f57;--ltb:#fddde1;--sh:0 6px 18px rgba(80,70,140,.1);--f-empty-bg:#fffbeb;--f-empty-bd:#f59e0b;--f-fill-bg:#ecfdf5;--f-fill-bd:#10b981;--mr-empty-bg:#fffdf5;--mr-empty-bd:#fbbf24;--mr-fill-bg:#f2fbf7;--mr-fill-bd:#34d399;color-scheme:light}
 @media(prefers-color-scheme:dark){:root{--bg:#14131c;--cd:#211f2e;--tx:#f1f0fa;--mu:#a09eb8;--ln:#302e42;--ac:#a99cf5;--acl:#3a3560;--on:#1b1630;--tb:#4a3524;--tc:#ffb680;--pn:#5eead4;--ok:#6fe0a0;--okb:#1c4332;--wt:#f3c45a;--wb:#4a3f1c;--lt:#ff8fa2;--ltb:#522a37;--sh:0 6px 18px rgba(0,0,0,.4);--f-empty-bg:#2c2516;--f-empty-bd:#d97706;--f-fill-bg:#162c24;--f-fill-bd:#059669;--mr-empty-bg:#262015;--mr-empty-bd:#b45309;--mr-fill-bg:#142820;--mr-fill-bd:#10b981;color-scheme:dark}}
 *{box-sizing:border-box;margin:0}
@@ -128,15 +129,16 @@ async function loadFromCloud(){
   }catch(e){console.error("Gagal membaca Cloud Data:",e)}
 }
 
-function doses(){const o=[];data.forEach(p=>(p.obat||[]).forEach(m=>(m.jam||[]).forEach(s=>{const dn=isToday(m.done&&m.done[s]);o.push({p,m,s,dn,late:!dn&&nowMin()>tm(s)+60,sh:shift(m,s)})})));return o.sort((a,b)=>tm(a.s)-tm(b.s))}
-const dr=(x,sp)=>{const{p,m,s,dn,late,sh}=x;return `<div class="it${dn?" dn":""}"><div class="tl tm">${s}</div><div class="tx"><b>${esc(m.nama)} ${esc(m.dosis)}</b><small>${sp?'<span class="nm">'+esc(p.nama)+"</span> · Kamar "+esc(p.kamar)+" · ":""}${esc(m.rute||"Oral")} · ${sh}${dn?" · "+fmt(m.done[s]):""}</small></div><span class="pill ${dn?"ok":late?"lt":"wt"}">${dn?"Selesai":late?"Terlambat":"Menunggu"}</span><button class="rb" data-t="${p.id}|${m.id}|${s}" aria-label="${dn?"Batalkan":"Tandai diberikan"}: ${esc(m.nama)}">${ic(dn?"undo":"check")}</button></div>`};
-const tabs=(arr,k,cur)=>`<div class="tabs">${arr.map(c=>`<button class="${cur==c[0]?"on":""}" data-${k}="${esc(c[0])}">${c[1]}</button>`).join("")}</div>`;
+function doses(){const o=[];data.forEach(p=>(p.obat||[]).forEach(m=>(m.jam||[]).forEach(s=>{const dn=isToday(m.done&&m.done[s]&&m.done[s]!=="OTA");const ota=isToday(m.done&&m.done[s]==="OTA");o.push({p,m,s,dn,ota,late:!dn&&!ota&&nowMin()>tm(s)+60,sh:shift(m,s)})})));return o.sort((a,b)=>tm(a.s)-tm(b.s))}
+const dr=(x,sp)=>{const{p,m,s,dn,ota,late,sh}=x;
+return `<div class="it${dn||ota?" dn":""}"><div class="tl tm">${s}</div><div class="tx"><b>${esc(m.nama)} ${esc(m.dosis)}</b><small>${sp?'<span class="nm">'+esc(p.nama)+"</span> · Kamar "+esc(p.kamar)+" · ":""}${esc(m.rute||"Oral")} · ${sh}${dn?" · "+fmt(m.done[s]):ota?" · (Obat Tidak Ada)":""}</small></div><span class="pill ${dn?"ok":ota?"ota":late?"lt":"wt"}">${dn?"Selesai":ota?"OTA":late?"Terlambat":"Menunggu"}</span><button class="rb" data-ota="${p.id}|${m.id}|${s}" style="background:${ota?"var(--mu)":""};color:${ota?"#fff":""}" title="Tandai Obat Tidak Ada (OTA)">🚫</button><button class="rb" data-t="${p.id}|${m.id}|${s}" aria-label="${dn?"Batalkan":"Tandai diberikan"}: ${esc(m.nama)}">${ic(dn?"undo":"check")}</button></div>`};
 
 function extra(){const o=[];data.forEach(p=>(p.obat||[]).forEach(m=>{if(m.kp){const g=(m.kpg||[]).filter(isToday);o.push({p,m,kp:1,n:g.length,last:g[g.length-1]})}if(!(m.jam||[]).length&&!m.kp)o.push({p,m,nt:1,dn:isToday(m.done&&m.done["-"])})}));return o}
 const PB={Cairan:"Cairan",Drip:"Drip","Syringe pump":"Pump"},
-xr=(x,sp)=>{const{p,m}=x,w=sp?`<span class="nm">${esc(p.nama)}</span> · Kamar ${esc(p.kamar)} · `:"",t=`<b>${esc(m.nama)} ${esc(m.dosis)}</b>`;
+const xr=(x,sp)=>{const{p,m}=x,w=sp?`<span class="nm">${esc(p.nama)}</span> · Kamar ${esc(p.kamar)} · `:"",t=`<b>${esc(m.nama)} ${esc(m.dosis)}</b>`;
  if(x.kp)return `<div class="it"><div class="tl kp">K/P</div><div class="tx">${t}<small>${w}${esc(m.rute||"Oral")} · jika perlu${x.n?" · "+x.n+"× hari ini, terakhir "+fmt(x.last):""}</small></div><span class="pill ${x.n?"ok":"wt"}">${x.n?x.n+"×":"K/P"}</span>${x.n?`<button class="rb" data-kx="${p.id}|${m.id}|u" aria-label="Batalkan pemberian terakhir: ${esc(m.nama)}">${ic("undo")}</button>`:""}<button class="rb" data-kx="${p.id}|${m.id}|a" aria-label="Catat pemberian: ${esc(m.nama)}">${ic("check")}</button></div>`;
- return `<div class="it${x.dn?" dn":""}"><div class="tl tm">${PB[m.rute]||"Rutin"}</div><div class="tx">${t}<small>${w}${esc(m.rute||"Oral")} · tanpa jam${x.dn?" · "+fmt(m.done["-"]):""}</small></div><span class="pill ${x.dn?"ok":"wt"}">${x.dn?"Selesai":"Menunggu"}</span><button class="rb" data-t="${p.id}|${m.id}|-" aria-label="${x.dn?"Batalkan":"Tandai diberikan"}: ${esc(m.nama)}">${ic(x.dn?"undo":"check")}</button></div>`};
+ const ota=isToday(m.done&&m.done["-"]&&m.done["-"]==="OTA");
+ return `<div class="it${x.dn||ota?" dn":""}"><div class="tl tm">${PB[m.rute]||"Rutin"}</div><div class="tx">${t}<small>${w}${esc(m.rute||"Oral")} · tanpa jam${x.dn?" · "+fmt(m.done["-"]):ota?" · (Obat Tidak Ada)":""}</small></div><span class="pill ${x.dn?"ok":ota?"ota":"wt"}">${x.dn?"Selesai":ota?"OTA":"Menunggu"}</span><button class="rb" data-ota="${p.id}|${m.id}|-" style="background:${ota?"var(--mu)":""};color:${ota?"#fff":""}" title="Tandai Obat Tidak Ada (OTA)">🚫</button><button class="rb" data-t="${p.id}|${m.id}|-" aria-label="${x.dn?"Batalkan":"Tandai diberikan"}: ${esc(m.nama)}">${ic(x.dn?"undo":"check")}</button></div>`}
 function chart(h){const d=h.filter(x=>+x.nd).slice(-12);if(d.length<2)return'<div class="empty">Grafik nadi tampil setelah 2 kali input TTV.</div>';
  const W=300,H=120,X=i=>10+i*(W-20)/(d.length-1),Y=v=>H-Math.max(0,Math.min(1,(v-40)/120))*H;
  return `<svg viewBox="0 0 ${W} ${H+18}" width="100%" role="img" aria-label="Grafik nadi"><rect x="0" y="${Y(100)}" width="${W}" height="${Y(60)-Y(100)}" rx="8" fill="var(--acl)" opacity=".6"/><polyline points="${d.map((x,i)=>X(i)+","+Y(+x.nd)).join(" ")}" fill="none" stroke="var(--ac)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>${d.map((x,i)=>`<circle cx="${X(i)}" cy="${Y(+x.nd)}" r="4" fill="var(--ac)"/>`).join("")}<text x="0" y="${H+14}" font-size="10" fill="var(--mu)">${fmt(d[0].t)}</text><text x="${W}" y="${H+14}" font-size="10" fill="var(--mu)" text-anchor="end">${fmt(d[d.length-1].t)}</text></svg><small style="color:var(--mu);font-size:11px">Area ungu muda: nadi normal 60–100 x/mnt</small>`}
@@ -231,7 +233,7 @@ $("#tf").onsubmit=e=>{e.preventDefault();const id=$("#tp").value,v={};["td","nd"
 $("#del").onclick=()=>{const id=editId;ask("Hapus catatan pasien ini?",()=>{data=data.filter(x=>x.id!==id);persist();render();$("#dlg").close();toast("Pasien dihapus")})};
 $("#cy").onclick=()=>{const f=askCb;askCb=null;$("#cdlg").close();if(f)f()};
 $("#br").onclick=()=>{try{const v=JSON.parse($("#bt").value);if(!Array.isArray(v))throw 0;ask("Ganti semua data dengan data cadangan?",()=>{data=v;persist();render();$("#bdlg").close();toast("Data dipulihkan")})}catch(e){toast("Teks cadangan tidak valid")}};
-document.addEventListener("click",e=>{
+document.addEventListener("click",e=>{if(b.dataset.ota){const a=b.dataset.ota.split("|"),p=data.find(x=>x.id===a[0]),m=p&&p.obat.find(x=>x.id===a[1]);if(m){m.done=m.done||{};m.done[a[2]]=m.done[a[2]]==="OTA"?"": "OTA";persist();render()}return}
  const b=e.target.closest("button");if(!b)return;
  if(b.hasAttribute("data-x"))return b.closest("dialog").close();
  if(b.dataset.go){view=b.dataset.go;window.scrollTo(0,0);return render()}
